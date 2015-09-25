@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+	<definition name="superadminhome" extends="baseLayout">
+		<put-attribute name="title" value="Super Admin Home" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/superadmin/superadmin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/superadmin/superadmin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/superadmin/clients.jsp" />
+	</definition>
+	<definition name="registeradmin" extends="baseLayout">
+		<put-attribute name="title" value="Admin Registeration" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/superadmin/superadmin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/superadmin/superadmin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/superadmin/superadminhome.jsp" />
+	</definition>
+
+
+	<definition name="resetpasswordsuperadmin" extends="baseLayout">
+		<put-attribute name="title" value="Super Admin Reset Password" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/superadmin/superadmin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/superadmin/superadmin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/superadmin/resetpasswordsuperadmin.jsp" />
+	</definition>
+
+
+
+	<definition name="logout" extends="loginLayout">
+		<put-attribute name="title" value="Log Out" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/login.jsp" />
+	</definition>
+
+
+
+</tiles-definitions>
