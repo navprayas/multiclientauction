@@ -24,7 +24,6 @@
 <script type="text/javascript"
 	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript" src="${js_url}/json.min.js"></script>
-<%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script> --%>
 <script type='text/javascript' src='/Bidding/dwr/engine.js'> </script>
 <script type='text/javascript' src='/Bidding/dwr/util.js'> </script>
 
@@ -262,28 +261,19 @@ function getPageForMarketType(marketType)
 			<form id="form1" name="form1" method="post" action="">
 				<table class="table table-bordered table-striped text-center">
 					<tr>
-					<td colspan="3"><input type="radio" name="radio" id="radio"
-						value="1" onclick="getPageForMarketType(this.value)" /> <a
-						href="${observer_market_url}"
-						onmouseover="ddrivetip('Market List','', 'auto')"
-						;
-onmouseout="hideddrivetip()">&nbsp;Market List</a></td>
-					<td colspan="3"><input type="radio" checked name="radio"
-						id="radio2" value="2" /><a href="#"
-						onmouseover="ddrivetip('Active Market','', 'auto')"
-						;
-onmouseout="hideddrivetip()">&nbsp;Active Market</a></td>
-					<td colspan="3"><input type="radio" name="radio" id="radio3" value="3"
-						onclick="getPageForMarketType(this.value)" /> <a
-						href="${observer_close_url}"
-						onmouseover="ddrivetip('Closed Market','', 'auto')"
-						;
-onmouseout="hideddrivetip()">&nbsp;Closed Market</a></td>
-					<td colspan="7" align="right" ><strong>Total
-							No. of Forward Markets in Active List: <c:out
-								value="${fn:length(bidItemsList)}" />
-					</strong></td>
-				</tr>
+						<td colspan="3"><input type="radio" name="radio" id="radio"
+							value="1" onclick="getPageForMarketType(this.value)" /> <a
+							href="${observer_market_url}">&nbsp;Market List</a></td>
+						<td colspan="3"><input type="radio" checked name="radio"
+							id="radio2" value="2" /><a href="#">&nbsp;Active Market</a></td>
+						<td colspan="3"><input type="radio" name="radio" id="radio3"
+							value="3" onclick="getPageForMarketType(this.value)" /> <a
+							href="${observer_close_url}">&nbsp;Closed Market</a></td>
+						<td colspan="7" align="right"><strong>Total No. of
+								Forward Markets in Active List: <c:out
+									value="${fn:length(bidItemsList)}" />
+						</strong></td>
+					</tr>
 				</table>
 			</form>
 		</div>
@@ -324,54 +314,22 @@ onmouseout="hideddrivetip()">&nbsp;Closed Market</a></td>
 							</select>
 						</form>
 					</td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Market Name','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Market Name</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Remark','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Remark</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Length Range','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Length Range</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Actual Range','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Actual Length<br /> (Approx)
+					<td><a href="#">Market Name</a></td>
+					<td><a href="#">Remark</a></td>
+					<td><a href="#">Length Range</a></td>
+					<td><a href="#">Actual Length<br /> (Approx)
 					</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Quantity','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Quantity</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Zone','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Zone</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Current Market Price','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Current <br /> Market Price<br />(INR)
+					<td><a href="#">Quantity</a></td>
+					<td><a href="#">Zone</a></td>
+					<td><a href="#">Current <br /> Market Price<br />(INR)
 					</a></td>
-					<td><a href="#" onmouseover="ddrivetip('H1','', 'auto')"
-						;
-onmouseout="hideddrivetip()">H1</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Time Left','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Time Left</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Reserved Price','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Reserve Price<br />(INR)
+					<td><a href="#">H1</a></td>
+					<td><a href="#">Time Left</a></td>
+					<td><a href="#">Reserve Price<br />(INR)
 					</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Last Price','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Last Price<br />(INR)
+					<td><a href="#">Last Price<br />(INR)
 					</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Time Extension','', 'auto')"
-						;
-onmouseout="hideddrivetip()">Time Extension</a></td>
+					<td><a href="#">Time Extension</a></td>
 				</tr>
 				<c:forEach items="${bidItemsList}" var="bidItem" varStatus="status">
 					<tr class="table">
@@ -379,112 +337,107 @@ onmouseout="hideddrivetip()">Time Extension</a></td>
 						<td align="center" valign="middle" class="DetailBorRight">
 
 
-<div class="modal fade" id="dialog_desc${status.index+1}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
+							<div class="modal fade" id="dialog_desc${status.index+1}"
+								tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+											<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+										</div>
+										<div class="modal-body">
 
 
 
 
-							<div id="dialog_desc${status.index+1}" class="desc"
-								title="Item Description" >
+											<div id="dialog_desc${status.index+1}" class="desc"
+												title="Item Description">
 
-								<table class="table table-bordered table-striped text-center">
-									<tr>
-										<td ><form name="form1"
-												method="post" action="" style="margin: 0px;">
-												<table class="table table-bordered table-striped text-center" >
-
+												<table
+													class="table table-bordered table-striped text-center">
 													<tr>
-														<td>Sr.
-															No.</td>
-														<td >Category</td>
-														<td >Lot
-															No.</td>
-														<td >Market
-															Name</td>
-														<td >Remark</td>
-														<td >Length
-															Range</td>
-														<td >Actual
-															Length <br /> (Approx)
-														</td>
-														<td >Qty</td>
-														<td >Zone</td>
-													</tr>
-													<tr>
-														<td >${bidItem.serialNo}.
-														</td>
-														<td ><div
-																id="categoryName${bidItem.bidItemId}">
-																${bidItem.category.categoryName}</div></td>
+														<td><form name="form1" method="post" action=""
+																style="margin: 0px;">
+																<table
+																	class="table table-bordered table-striped text-center">
 
-														<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
-															varStatus="status2">
-															<c:if test="${status2.index+1 == 1}">
-																<td >${itemLotUnique.lotNo}</td>
-															</c:if>
-														</c:forEach>
-														<td >${bidItem.name}</td>
-														<c:if test="${fn:length(bidItem.itemLots) == 1}">
-															<c:forEach items="${bidItem.itemLots}"
-																var="itemLotUnique" varStatus="status2">
-																<td >${itemLotUnique.remark}</td>
-																<td >${itemLotUnique.lengthRange}</td>
-																<td >${itemLotUnique.actualLengh}</td>
-															</c:forEach>
-														</c:if>
-														<c:if test="${fn:length(bidItem.itemLots) > 1}">
-															<td >&nbsp;</td>
-															<td >&nbsp;</td>
-															<td >&nbsp;</td>
-														</c:if>
-														<td >${bidItem.totalQuantity}
-															${bidItem.unit}</td>
-														<c:if test="${fn:length(bidItem.itemLots) == 1}">
-															<c:forEach items="${bidItem.itemLots}"
-																var="itemLotUnique" varStatus="status2">
-																<td >${bidItem.zone}</td>
-															</c:forEach>
-														</c:if>
-														<c:if test="${fn:length(bidItem.itemLots) > 1}">
-															<td >&nbsp;</td>
-														</c:if>
+																	<tr>
+																		<td>Sr. No.</td>
+																		<td>Category</td>
+																		<td>Lot No.</td>
+																		<td>Market Name</td>
+																		<td>Remark</td>
+																		<td>Length Range</td>
+																		<td>Actual Length <br /> (Approx)
+																		</td>
+																		<td>Qty</td>
+																		<td>Zone</td>
+																	</tr>
+																	<tr>
+																		<td>${bidItem.serialNo}.</td>
+																		<td><div id="categoryName${bidItem.bidItemId}">
+																				${bidItem.category.categoryName}</div></td>
+
+																		<c:forEach items="${bidItem.itemLots}"
+																			var="itemLotUnique" varStatus="status2">
+																			<c:if test="${status2.index+1 == 1}">
+																				<td>${itemLotUnique.lotNo}</td>
+																			</c:if>
+																		</c:forEach>
+																		<td>${bidItem.name}</td>
+																		<c:if test="${fn:length(bidItem.itemLots) == 1}">
+																			<c:forEach items="${bidItem.itemLots}"
+																				var="itemLotUnique" varStatus="status2">
+																				<td>${itemLotUnique.remark}</td>
+																				<td>${itemLotUnique.lengthRange}</td>
+																				<td>${itemLotUnique.actualLengh}</td>
+																			</c:forEach>
+																		</c:if>
+																		<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																			<td>&nbsp;</td>
+																			<td>&nbsp;</td>
+																			<td>&nbsp;</td>
+																		</c:if>
+																		<td>${bidItem.totalQuantity}${bidItem.unit}</td>
+																		<c:if test="${fn:length(bidItem.itemLots) == 1}">
+																			<c:forEach items="${bidItem.itemLots}"
+																				var="itemLotUnique" varStatus="status2">
+																				<td>${bidItem.zone}</td>
+																			</c:forEach>
+																		</c:if>
+																		<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																			<td>&nbsp;</td>
+																		</c:if>
+																	</tr>
+																	<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																		<c:forEach items="${bidItem.itemLots}" var="itemLot"
+																			varStatus="status1">
+																			<tr>
+																				<td>${status1.index+1}.</td>
+																				<td>${bidItem.category.categoryName}</td>
+																				<td>${itemLot.lotNo}</td>
+																				<td>${itemLot.name}</td>
+																				<td>${itemLot.remark}</td>
+																				<td>${itemLot.lengthRange}</td>
+																				<td>${itemLot.actualLengh}</td>
+																				<td>${itemLot.quantity}${itemLot.unit}</td>
+																				<td>${itemLot.zone}</td>
+																			</tr>
+																		</c:forEach>
+																	</c:if>
+																</table>
+															</form></td>
 													</tr>
-													<c:if test="${fn:length(bidItem.itemLots) > 1}">
-														<c:forEach items="${bidItem.itemLots}" var="itemLot"
-															varStatus="status1">
-															<tr>
-																<td>${status1.index+1}.
-																</td>
-																<td >${bidItem.category.categoryName}</td>
-																<td >${itemLot.lotNo}</td>
-																<td >${itemLot.name}</td>
-																<td >${itemLot.remark}</td>
-																<td >${itemLot.lengthRange}</td>
-																<td >${itemLot.actualLengh}</td>
-																<td >${itemLot.quantity}
-																	${itemLot.unit}</td>
-																<td >${itemLot.zone}</td>
-															</tr>
-														</c:forEach>
-													</c:if>
 												</table>
-											</form></td>
-									</tr>
-								</table>
-							</div> 
-							
-							</div></div></div></div>
-							
-							
-							
-							<input type="submit" name="button7" id="desc${status.index+1}"
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</div> <input type="submit" name="button7" id="desc${status.index+1}"
 							value="Desc" data-toggle="modal"
 							data-target="#dialog_desc${status.index+1}" />
 						</td>
@@ -513,17 +466,15 @@ onmouseout="hideddrivetip()">Time Extension</a></td>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td >&nbsp;</td>
+							<td>&nbsp;</td>
 						</c:if>
-						<td><div
-								id="totalQuantity${bidItem.bidItemId}">
+						<td><div id="totalQuantity${bidItem.bidItemId}">
 								${bidItem.totalQuantity} ${bidItem.unit}</div></td>
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td>${bidItem.zone}
-									<input type="hidden" value="${bidItem.bidItemId}"
-									id="bidItemIdinput" />
+								<td>${bidItem.zone}<input type="hidden"
+									value="${bidItem.bidItemId}" id="bidItemIdinput" />
 								</td>
 							</c:forEach>
 						</c:if>
@@ -537,9 +488,8 @@ onmouseout="hideddrivetip()">Time Extension</a></td>
 						<td>
 							<div id="countdown${bidItem.bidItemId}"></div> <script>setTimeLefts(parseInt('${bidItem.timeLeft}'), '${bidItem.bidItemId}');</script>
 						</td>
-						<td><div
-								id="Item${bid.bidItem.bidItemId}" style="display:none">${bid.bidItem.minBidPrice}</div>
-						</td>
+						<td><div id="Item${bid.bidItem.bidItemId}"
+								style="display: none">${bid.bidItem.minBidPrice}</div></td>
 						<td align="center" valign="middle" class="DetailBorRight"><div
 								id="minBidIncrement${bid.bidItem.bidItemId}"
 								style="display: none">${bid.bidItem.minBidIncrement}</div></td>
@@ -551,7 +501,7 @@ onmouseout="hideddrivetip()">Time Extension</a></td>
 							onclick="extension(${bidItem.bidItemId});"
 							class="ui-state-default-time-top ui-corner-all" /></td>
 					</tr>
-			  </c:forEach>
+				</c:forEach>
 			</table>
 		</div>
 		<script>
@@ -602,8 +552,8 @@ function update()
 			
 			var tempVal1 = document.getElementById('Item'+bitItemId).innerHTML;
 			if(tempVal != tempVal1){
-				document.getElementById('firmtd').style.background = '#bbd5e6';	
-				document.getElementById('currentpricetd').style.background = '#bbd5e6';
+				//document.getElementById('firmtd').style.background = '#bbd5e6';	
+				//document.getElementById('currentpricetd').style.background = '#bbd5e6';
 				tempVal = tempVal1;
 				setTimeout("resetTextColor("+bitItemId+")",3000);
 			}			

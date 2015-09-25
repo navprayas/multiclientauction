@@ -171,7 +171,7 @@ public class RedisCacheService {
 		String s = null;
 		try {
 			jedis = redis.connect();
-			if (!bidItemExists(bidItemId)) {
+			if (!bidItemExists(bidItemId,clientId)) {
 				redis.close(jedis);
 				return null;
 			}
@@ -431,7 +431,7 @@ public class RedisCacheService {
 		List<BidItem> bidItems = new ArrayList<BidItem>();
 		try {
 			jedis = redis.connect();
-			Set<String> bidItemIds = jedis.smembers(RedisConstants.BIDITEMS);
+			Set<String> bidItemIds = jedis.smembers(RedisConstants.BIDITEMS+clientId);
 			for (String bidItemId : bidItemIds) {
 				bidItems.add(getBidItem(RedisConstants.BIDITEM + bidItemId,
 						bidItemId, clientId));
@@ -445,11 +445,11 @@ public class RedisCacheService {
 		return bidItems;
 	}
 
-	public static boolean bidItemExists(String bidItemId) {
+	public static boolean bidItemExists(String bidItemId,Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			return jedis.sismember(RedisConstants.BIDITEMS, bidItemId);
+			return jedis.sismember(RedisConstants.BIDITEMS+clientId, bidItemId);
 		} catch (Exception e) {
 			logger.error("FAILED TO CHECK BIDITEM IN CACHE: " + e.getMessage());
 			e.printStackTrace();

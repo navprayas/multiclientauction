@@ -170,8 +170,7 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	public void setBidItem(BidItem bidItem, Long clientId) {
-		RedisCacheService.setBidItem(
-				RedisConstants.BIDITEM + bidItem.getAuctionId()
+		RedisCacheService.setBidItem(RedisConstants.BIDITEM + bidItem.getAuctionId()
 						+ bidItem.getBidItemId()+clientId, bidItem, clientId);
 		logger.debug("DAO Set BidItem : " + bidItem);
 		logger.debug("REDIS Set BidItem : "

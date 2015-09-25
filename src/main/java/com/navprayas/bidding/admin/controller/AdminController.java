@@ -31,7 +31,6 @@ import com.navprayas.bidding.common.form.Auction;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.ICommonService;
-import com.navprayas.bidding.utility.KilimEngineGenerator;
 import com.navprayas.bidding.utility.ObjectRegistry;
 import com.navprayas.bidding.utility.RedisCacheService;
 
@@ -46,7 +45,7 @@ public class AdminController {
 
 	@Autowired
 	@Qualifier("commonService")
-	private ICommonService commonService;
+	private ICommonService  commonService;
 	@Autowired
 	private VariableService variableservice;
 	@Autowired
