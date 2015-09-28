@@ -8,7 +8,7 @@ public class RedisCacheDataBaseFlushListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		System.out.println("context Initialized");
-		RedisCacheService.flushDB();
+		//RedisCacheService.flushDB();
 	}
 
 	@Override

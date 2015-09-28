@@ -29,8 +29,8 @@
 
 
 <script type="text/javascript" src="${js_url}/json.min.js"></script>
-<script type='text/javascript' src='/Bidding/dwr/engine.js'> </script>
-<script type='text/javascript' src='/Bidding/dwr/util.js'> </script>
+<script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
+<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
 <script type='text/javascript'>
 
 function changeStyleSelectedHover()
@@ -366,15 +366,10 @@ function blah( oCB )
 			<table class="table table-bordered table-striped text-center">
 
 				<tr>
-					<td><a href="#" onmouseover="ddrivetip('Select','', 'auto')"
-						onMouseout="hideddrivetip()">Select</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Sr No','', 'auto')"
-						onMouseout="hideddrivetip()">Sr. No</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Description','', 'auto')"
-						onMouseout="hideddrivetip()">Description</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Lot No','', 'auto')"
-						onMouseout="hideddrivetip()">Lot No.</a></td>
+					<td><a href="#">Select</a></td>
+					<td><a href="#">Sr. No</a></td>
+					<td><a href="#">Description</a></td>
+					<td><a href="#">Lot No.</a></td>
 					<td class="vikd">
 						<form name="categoryform" action="active" method="get">
 							<select name="category" id="category"
@@ -404,56 +399,35 @@ function blah( oCB )
 							</select>
 						</form>
 					</td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Material Name','', 'auto')"
-						onMouseout="hideddrivetip()">Material Name</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Remark','', 'auto')"
-						onMouseout="hideddrivetip()">Remark</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Length Range','', 'auto')"
-						onMouseout="hideddrivetip()">Length Range</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Actual Length','', 'auto')"
-						onMouseout="hideddrivetip()">Actual Length<br />(Approx)
+					<td><a href="#">Material Name</a></td>
+					<td><a href="#">Remark</a></td>
+					<td><a href="#">Length Range</a></td>
+					<td><a href="#">Actual Length<br />(Approx)
 					</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Quantity','', 'auto')"
-						onMouseout="hideddrivetip()">Quantity</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Zone','', 'auto')"
-						onMouseout="hideddrivetip()">Zone</a></td>
+					<td><a href="#">Quantity</a></td>
+					<td><a href="#">Zone</a></td>
 					<td><a href="#">Min Increment</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Current Price','', 'auto')"
-						onMouseout="hideddrivetip()">Current Price (INR)</a></td>
-					<td><a href="#" onmouseover="ddrivetip('Rank','', 'auto')"
-						onmouseout="hideddrivetip()">Rank</a><a href="#"
-						onmouseover="ddrivetip('Rank','', 'auto'); changeStyleSelectedHover();"
-						onMouseout="hideddrivetip(); changeStyleSelectedOut();"></a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Time Left','', 'auto')"
-						onMouseout="hideddrivetip()">Time Left</a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Time Left','', 'auto');"
-						onmouseout="hideddrivetip()">Next Bid</a><a href="#"
-						onmouseover="ddrivetip('Next Bid','', 'auto')"
-						onMouseout="hideddrivetip()"></a></td>
-					<td><a href="#"
-						onmouseover="ddrivetip('Other Bids','', 'auto');"
-						onMouseout="hideddrivetip();"> Other Bids</a></td>
+					<td><a href="#">Current Price (INR)</a></td>
+					<td><a href="#">Rank</a><a href="#"
+						onmouseover="changeStyleSelectedHover();"
+						onMouseout="changeStyleSelectedOut();"></a></td>
+					<td><a href="#">Time Left</a></td>
+					<td><a href="#">Next Bid</a><a href="#"></a></td>
+					<td><a href="#"> Other Bids</a></td>
 				</tr>
 				<c:forEach items="${bidItemsList}" var="bidItem" varStatus="status">
 					<div id="bidStartTime${bidItem.bidItemId}" style="display: none">${bidItem.bidStartTime}</div>
 					<tr class="table" onmouseover="changeStyleSelectedHover()"
 						onmouseout="changeStyleSelectedOut()">
-						<td height="40" align="center" valign="middle"
-							class="DetailBorRight"><input
+						<td class="DetailBorRight"><input
 							id="itemRow${bidItem.bidItemId}"
 							<c:if test='${bidItemPrefferMap[bidItem.bidItemId] == 1}'><c:out value="checked"/></c:if>
 							onclick="setPreference(this, ${bidItem.bidItemId}); blah(this);"
 							type="checkbox" name="checkbox" id="checkbox" /> <script>setPreferenceDisplay('${bidItem.bidItemId}');</script>
 						</td>
-						<td height="40" align="center" valign="middle"
-							class="DetailBorRight"><div id="seqId${bidItem.bidItemId}">${bidItem.serialNo}.</div></td>
-						<td align="center" valign="middle" class="DetailBorRight">
+						<td class="DetailBorRight"><div
+								id="seqId${bidItem.bidItemId}">${bidItem.serialNo}.</div></td>
+						<td>
 
 							<div class="modal fade" id="dialog_desc${status.index+1}"
 								tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -672,37 +646,33 @@ function blah( oCB )
 											style="margin: 0px;">
 											<table class="table table-bordered table-striped text-center">
 												<tr>
-													<td height="30" colspan="3" align="left" bgcolor="#dee7d2"
-														style="border-right: 1px solid #fff;">&nbsp;
-														${status.index+1}. &nbsp;&nbsp;&nbsp;&nbsp;${bidItem.name}
+													<td>&nbsp; ${status.index+1}.
+														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.name}
 														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 														${bidItem.unit}</td>
 												</tr>
 												<tr>
-													<td width="110" height="30" bgcolor="#f0f3ea"
-														style="border-right: 1px solid #fff;">&nbsp; Bid Type</td>
+													<td>&nbsp; Bid Type</td>
 													<td bgcolor="#f0f3ea">
-														<table>
+														<table
+															class="table table-bordered table-striped text-center">
 															<tr>
-																<td width="20" style="padding-left: 10px;" align="left"><input
-																	type="radio" name="radio"
+																<td><input type="radio" name="radio"
 																	id="NormalBid${bidItem.bidItemId}" value="radio"
 																	class="checkbox"
 																	onclick="changeBidText(1, '${bidItem.bidItemId}')" /></td>
-																<td width="87">Normal Bid</td>
-																<td width="10" style="padding-left: 10px;" align="left"><input
-																	type="radio" name="radio"
+																<td>Normal Bid</td>
+																<td><input type="radio" name="radio"
 																	id="AutoBid${bidItem.bidItemId}" value="radio"
 																	class="checkbox"
 																	onclick="changeBidText(2, '${bidItem.bidItemId}')" /></td>
-																<td width="132">Auto Bid</td>
+																<td>Auto Bid</td>
 															</tr>
 														</table>
 													</td>
 												</tr>
 												<tr>
-													<td width="110" height="30" bgcolor="#DEE7D6"
-														style="border-right: 1px solid #fff;"><c:if
+													<td><c:if
 															test='${bidItemWithAutoBidFlag[bidItem.bidItemId] == 1}'>
 															<div id="bidAmountText${bidItem.bidItemId}">&nbsp;Bid
 																amount</div>
@@ -711,24 +681,18 @@ function blah( oCB )
 															<div id="autoBidText${bidItem.bidItemId}">&nbsp;Auto
 																Bid Limit</div>
 														</c:if></td>
-													<td bgcolor="#DEE7D6" style="padding-left: 10px;"
-														align="left"><input type="text" name="textfield"
+													<td><input type="text" name="textfield"
 														id="Amount${bidItem.bidItemId}" width="200" /></td>
 												</tr>
 												<tr>
-													<td height="30" bgcolor="#F7F3EF"
-														style="border-right: 1px solid #fff;">&nbsp;&nbsp;Comments</td>
-													<td height="60" colspan="2" bgcolor="#F7F3EF"
-														style="padding-left: 10px;"><textarea
-															name="textfield2" id="Comments${bidItem.bidItemId}"
-															class="PopupFieldComm"></textarea></td>
+													<td>&nbsp;&nbsp;Comments</td>
+													<td><textarea name="textfield2"
+															id="Comments${bidItem.bidItemId}" class="PopupFieldComm"></textarea></td>
 												</tr>
 												<tr>
-													<td height="30" bgcolor="#DEE7D6"
-														style="border-right: 1px solid #fff;">&nbsp;</td>
-													<td colspan="2" bgcolor="#DEE7D6"
-														style="padding-left: 10px;"><input type="submit"
-														name="button" id="button" value="Submit"
+													<td>&nbsp;</td>
+													<td colspan="2"><input type="submit" name="button"
+														id="button" value="Submit"
 														onclick="doBid('${bidItem.bidItemId}', '${bidItem.currentMarketPrice}', '${bidItem.minBidIncrement}'); return false;" /></td>
 												</tr>
 											</table>
@@ -793,19 +757,19 @@ function isNumber(n) {
 
 function doBid(bidId, curMarketPrice, minBidIncrement)
 {
-	var location1 = ""
+	var location1 = "";
 	var NewcurMarketPrice = document.getElementById("Item"+bidId).innerHTML;
 	var bidTypeObj = "NormalBid"+bidId
 	//alert("bidTypeObj " + bidTypeObj)
-	var bidType = 1
+	var bidType = 1;
 	var bidTypeElem = document.getElementById(bidTypeObj).checked
 	if(bidTypeElem)
 		{
-		bidType = 1
+		bidType = 1;
 		}
 	else
 		{
-		bidType = 2
+		bidType = 2;
 		}
 	var bidAmountObj = "Amount"+bidId
 	//alert(bidAmountObj)

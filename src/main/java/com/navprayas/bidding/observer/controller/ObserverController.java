@@ -684,7 +684,7 @@ public class ObserverController {
 					RedisConstants.BIDITEM + bidItemId, user.getParentId());
 			RedisCacheService.setBidItemLastUpdateTime(bidItemId,
 					bidItem.getLastUpDateTime(), RedisConstants.BIDITEM
-							+ bidItemId);
+							+ bidItemId, user.getParentId());
 			CometPusher.getInstance().pushBidExtendTime(bidItem);
 		}
 

@@ -49,7 +49,7 @@ public class RedisCacheService {
 		for (BidItem item : bidItems) {
 			setBidItem(
 					RedisConstants.BIDITEM + item.getAuctionId()
-							+ item.getBidItemId(), item, clientId);
+							+ item.getBidItemId() + clientId, item, clientId);
 		}
 	}
 
@@ -58,15 +58,11 @@ public class RedisCacheService {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			/*
-			 * if(jedis.sismember(RedisConstants.BIDITEMS,
-			 * String.valueOf(bidItem.getBidItemId()))) { redis.close(jedis);
-			 * return; }
-			 */
-			jedis.sadd(
-					RedisConstants.BIDITEMS + clientId,
-					String.valueOf(bidItem.getAuctionId()
-							+ bidItem.getBidItemId()));
+			jedis.sadd(RedisConstants.BIDITEMS + clientId,
+					String.valueOf(bidItem.getBidItemId()));
+			// System.out.println("Biditems getting after setting "+jedis.smembers(RedisConstants.BIDITEMS
+			// + clientId));
+
 			jedis.hsetnx(key, RedisConstants.ATTR_BIDITEMID + clientId,
 					String.valueOf(bidItem.getBidItemId()));
 			jedis.hsetnx(key, RedisConstants.ATTR_NAME + clientId,
@@ -155,8 +151,8 @@ public class RedisCacheService {
 			jedis.hsetnx(key, RedisConstants.ATTR_BIDSEQUENCEID + clientId,
 					String.valueOf(bidItem.getSeqId()));
 
-			setBidders(bidItem);
-			setCategory(bidItem.getBidItemId(), bidItem.getCategory());
+			setBidders(bidItem, clientId);
+			setCategory(bidItem.getBidItemId(), bidItem.getCategory(), clientId);
 		} catch (Exception e) {
 			logger.error("FAILED TO CACHE RedisConstants.BIDITEM: "
 					+ e.getMessage());
@@ -169,9 +165,10 @@ public class RedisCacheService {
 		Jedis jedis = null;
 		BidItem bidItem = new BidItem();
 		String s = null;
+		System.out.println("Bid Item" + bidItemId);
 		try {
 			jedis = redis.connect();
-			if (!bidItemExists(bidItemId,clientId)) {
+			if (!bidItemExists(bidItemId, clientId)) {
 				redis.close(jedis);
 				return null;
 			}
@@ -233,7 +230,7 @@ public class RedisCacheService {
 			s = jedis.hget(key, RedisConstants.ATTR_CURRENCY + clientId);
 			bidItem.setCurrency(s);
 			s = jedis.hget(key, RedisConstants.ATTR_CATEGORYID + clientId);
-			bidItem.setCategory((s != null) ? getCategory(s) : null);
+			bidItem.setCategory((s != null) ? getCategory(s, clientId) : null);
 			s = jedis.hget(key, RedisConstants.ATTR_AUCTIONID + clientId);
 			bidItem.setAuctionId((s == null || s.equals("null") || s.length() == 0) ? 0L
 					: Long.parseLong(s));
@@ -250,7 +247,7 @@ public class RedisCacheService {
 			bidItem.setSeqId((s == null || s.equals("null") || s.length() == 0) ? 0L
 					: Long.parseLong(s));
 
-			getBidders(bidItem);
+			getBidders(bidItem, clientId);
 
 		} catch (Exception e) {
 			logger.error("FAILED TO GET BIDITEM FROM CACHE: " + e.getMessage());
@@ -261,16 +258,16 @@ public class RedisCacheService {
 	}
 
 	public static boolean setBidEndTime(long bidItemId, Date bidEndTime,
-			String key,Long clientId) {
+			String key, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			if (!jedis.sismember(RedisConstants.BIDITEMS,
+			if (!jedis.sismember(RedisConstants.BIDITEMS + clientId,
 					String.valueOf(bidItemId))) {
 				redis.close(jedis);
 				return false;
 			}
-			jedis.hset(key, RedisConstants.ATTR_BIDENDTIME+clientId,
+			jedis.hset(key, RedisConstants.ATTR_BIDENDTIME + clientId,
 					sdf.format(bidEndTime));
 		} catch (Exception e) {
 			logger.error("FAILED TO SET BIDITEM END TIME: " + e.getMessage());
@@ -280,12 +277,13 @@ public class RedisCacheService {
 		return true;
 	}
 
-	public static Date getBidEndTime(long bidItemId, String key,Long clientId) {
+	public static Date getBidEndTime(long bidItemId, String key, Long clientId) {
 		Jedis jedis = null;
 		Date bidEndTime = null;
 		try {
 			jedis = redis.connect();
-			String endTime = jedis.hget(key, RedisConstants.ATTR_BIDENDTIME+clientId);
+			String endTime = jedis.hget(key, RedisConstants.ATTR_BIDENDTIME
+					+ clientId);
 			bidEndTime = (endTime == null || endTime.length() == 0 || endTime
 					.equals("null")) ? null : sdf.parse(endTime);
 		} catch (Exception e) {
@@ -297,16 +295,16 @@ public class RedisCacheService {
 	}
 
 	public static boolean setBidItemLastUpdateTime(long bidItemId,
-			Date lastUpdateTime, String key) {
+			Date lastUpdateTime, String key, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			if (!jedis.sismember(RedisConstants.BIDITEMS,
+			if (!jedis.sismember(RedisConstants.BIDITEMS + clientId,
 					String.valueOf(bidItemId))) {
 				redis.close(jedis);
 				return false;
 			}
-			jedis.hset(key, RedisConstants.ATTR_LASTUPDATETIME,
+			jedis.hset(key, RedisConstants.ATTR_LASTUPDATETIME + clientId,
 					sdf.format(lastUpdateTime));
 		} catch (Exception e) {
 			logger.error("FAILED TO SET BIDITEM LAST UPDATE TIME: "
@@ -317,13 +315,14 @@ public class RedisCacheService {
 		return true;
 	}
 
-	public static Date getBidItemLastUpdateTime(long bidItemId, String key) {
+	public static Date getBidItemLastUpdateTime(long bidItemId, String key,
+			Long clientId) {
 		Jedis jedis = null;
 		Date bidEndTime = null;
 		try {
 			jedis = redis.connect();
-			String endTime = jedis
-					.hget(key, RedisConstants.ATTR_LASTUPDATETIME);
+			String endTime = jedis.hget(key, RedisConstants.ATTR_LASTUPDATETIME
+					+ clientId);
 			bidEndTime = (endTime == null || endTime.length() == 0 || endTime
 					.equals("null")) ? null : sdf.parse(endTime);
 		} catch (Exception e) {
@@ -335,13 +334,13 @@ public class RedisCacheService {
 		return bidEndTime;
 	}
 
-	public static void getBidders(BidItem bidItem) {
+	public static void getBidders(BidItem bidItem, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
 
 			Set<String> bidders = jedis.smembers(RedisConstants.BIDDERS
-					+ bidItem.getBidItemId());
+					+ bidItem.getBidItemId() + clientId);
 			for (String bidder : bidders) {
 				bidItem.addBidder(getBidder(bidItem.getBidItemId(), bidder));
 			}
@@ -352,26 +351,28 @@ public class RedisCacheService {
 		redis.close(jedis);
 	}
 
-	public static void setBidders(BidItem bidItem) {
+	public static void setBidders(BidItem bidItem, Long clientId) {
 		List<Bidder> bidders = bidItem.getCurrentBidderList();
 		if (bidders == null || bidders.isEmpty())
 			return;
 		for (Bidder b : bidders) {
 			setBidder(bidItem.getBidItemId(), b.getBidderName(), b.isAutoBid(),
-					b.getCurrentBidAmount());
+					b.getCurrentBidAmount(), clientId);
 		}
 	}
 
 	public static void setBidder(long bidItemId, String bidderName,
-			boolean isAutoBid, double bidAmount) {
+			boolean isAutoBid, double bidAmount, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
 			String key = RedisConstants.BIDDER + bidItemId + "::";
-			jedis.sadd(RedisConstants.BIDDERS + bidItemId, bidderName);
-			jedis.hsetnx(key + bidderName, "bidderName", bidderName);
-			jedis.hsetnx(key + bidderName, "autoBid", String.valueOf(isAutoBid));
-			jedis.hsetnx(key + bidderName, "bidAmount",
+			jedis.sadd(RedisConstants.BIDDERS + bidItemId + clientId,
+					bidderName);
+			jedis.hsetnx(key + bidderName + clientId, "bidderName", bidderName);
+			jedis.hsetnx(key + bidderName + clientId, "autoBid",
+					String.valueOf(isAutoBid));
+			jedis.hsetnx(key + bidderName + clientId, "bidAmount",
 					String.valueOf(bidAmount));
 		} catch (Exception e) {
 			logger.error("FAILED TO STORE BIDDER FOR BIDITEM: "
@@ -431,10 +432,12 @@ public class RedisCacheService {
 		List<BidItem> bidItems = new ArrayList<BidItem>();
 		try {
 			jedis = redis.connect();
-			Set<String> bidItemIds = jedis.smembers(RedisConstants.BIDITEMS+clientId);
+			Set<String> bidItemIds = jedis.smembers(RedisConstants.BIDITEMS
+					+ clientId);
+			System.out.println("bidItemIds" + bidItemIds);
 			for (String bidItemId : bidItemIds) {
-				bidItems.add(getBidItem(RedisConstants.BIDITEM + bidItemId,
-						bidItemId, clientId));
+				bidItems.add(getBidItem(RedisConstants.BIDITEM + bidItemId
+						+ clientId, bidItemId, clientId));
 			}
 
 		} catch (Exception e) {
@@ -445,11 +448,11 @@ public class RedisCacheService {
 		return bidItems;
 	}
 
-	public static boolean bidItemExists(String bidItemId,Long clientId) {
+	public static boolean bidItemExists(String bidItemId, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			return jedis.sismember(RedisConstants.BIDITEMS+clientId, bidItemId);
+			return jedis.sismember(RedisConstants.BIDITEMS + clientId,bidItemId);
 		} catch (Exception e) {
 			logger.error("FAILED TO CHECK BIDITEM IN CACHE: " + e.getMessage());
 			e.printStackTrace();
@@ -458,14 +461,15 @@ public class RedisCacheService {
 		return false;
 	}
 
-	public static void setCategory(long bidItemId, Category category) {
+	public static void setCategory(long bidItemId, Category category,
+			Long clientId) {
 		if (category == null)
 			return;
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			jedis.sadd(RedisConstants.CATEGORIES + category.getCategoryId(),
-					String.valueOf(bidItemId));
+			jedis.sadd(RedisConstants.CATEGORIES + category.getCategoryId()
+					+ clientId, String.valueOf(bidItemId));
 		} catch (Exception e) {
 			logger.error("FAILED TO SET BIDITEM TO CATEGORY: " + e.getMessage());
 			e.printStackTrace();
@@ -473,17 +477,18 @@ public class RedisCacheService {
 		redis.close(jedis);
 	}
 
-	public static Category getCategory(String categoryId) {
+	public static Category getCategory(String categoryId, Long clientId) {
 		Jedis jedis = null;
 		Category category = null;
 		try {
 			jedis = redis.connect();
 			category = new Category();
 			category.setCategoryName(jedis.hget(RedisConstants.CATEGORY
-					+ categoryId, RedisConstants.ATTR_CATEGORY_NAME));
+					+ categoryId + clientId, RedisConstants.ATTR_CATEGORY_NAME
+					+ clientId));
 			category.setCategoryId(Long.valueOf(jedis.hget(
-					RedisConstants.CATEGORY + categoryId,
-					RedisConstants.ATTR_CATEGORY_ID)));
+					RedisConstants.CATEGORY + categoryId + clientId,
+					RedisConstants.ATTR_CATEGORY_ID + clientId)));
 		} catch (Exception e) {
 			logger.error("FAILED TO GET CATEGOY FROM CACHE: " + e.getMessage());
 			e.printStackTrace();
@@ -558,11 +563,11 @@ public class RedisCacheService {
 		redis.close(jedis);
 	}
 
-	public static void setBidIdKey(long maxBidId,Long clientId) {
+	public static void setBidIdKey(long maxBidId, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			jedis.set("::BIDID::"+clientId, String.valueOf(maxBidId));
+			jedis.set("::BIDID::" + clientId, String.valueOf(maxBidId));
 		} catch (Exception e) {
 			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: "
 					+ e.getMessage());
@@ -571,11 +576,11 @@ public class RedisCacheService {
 		redis.close(jedis);
 	}
 
-	public static void setAutoBidIdKey(long maxAutoBidId,Long clientId) {
+	public static void setAutoBidIdKey(long maxAutoBidId, Long clientId) {
 		Jedis jedis = null;
 		try {
 			jedis = redis.connect();
-			jedis.set("::AUTOBIDID::"+clientId, String.valueOf(maxAutoBidId));
+			jedis.set("::AUTOBIDID::" + clientId, String.valueOf(maxAutoBidId));
 		} catch (Exception e) {
 			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: "
 					+ e.getMessage());
@@ -637,10 +642,6 @@ public class RedisCacheService {
 			for (String bidItemId : bidItemList) {
 				jedis.lpush(RedisConstants.BIDITEMSEQUENCEIDS + clientId,
 						bidItemId);
-				/*System.out.println(jedis.rpop(RedisConstants.BIDITEMSEQUENCEIDS
-						+ clientId));
-				System.out.println(jedis.rpop(RedisConstants.BIDITEMSEQUENCEIDS
-						+ clientId));*/
 			}
 
 		} catch (Exception e) {
@@ -758,7 +759,8 @@ public class RedisCacheService {
 			jedis.hset(RedisConstants.BIDITEM + bidItemId + clientId,
 					RedisConstants.ATTR_STATUSCODE + clientId, "CLOSED");
 			jedis.hset(RedisConstants.BIDITEM + bidItemId + clientId,
-					RedisConstants.ATTR_BIDENDTIME+clientId, sdf.format(new Date()));
+					RedisConstants.ATTR_BIDENDTIME + clientId,
+					sdf.format(new Date()));
 		} catch (Exception e) {
 			logger.error("FAILED TO GET ENDSEQUNCE IN CACHE: " + e.getMessage());
 			e.printStackTrace();

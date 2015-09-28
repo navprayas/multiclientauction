@@ -40,6 +40,7 @@ public class BidItemScheduler {
 			public void run() {
 				try {
 					long span = cacheService.setNextBidItem(clientId);
+					System.out.println("Span time " + span);
 					if (span == 0) {
 						timer.cancel();
 						return;

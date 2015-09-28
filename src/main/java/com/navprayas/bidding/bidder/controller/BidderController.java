@@ -299,7 +299,7 @@ public class BidderController {
 				+ categoryId);
 		HttpSession session = httpServletRequest.getSession();
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
-
+           
 		String name = user.getUsername();
 		logger.debug("UserName For category: " + name);
 		if (categoryId == null) {
