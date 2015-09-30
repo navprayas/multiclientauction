@@ -115,7 +115,9 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 			auctionStartFlags.put(clientId, false);
 			logger.debug("In Start of Sequence");
 			RedisCacheService.setActiveBidItemId(clientId);
-			BidItem bidItem = getBidItem(RedisCacheService.getActiveBidItemId(clientId),clientAuctionMap.get(clientId), clientId);
+			BidItem bidItem = getBidItem(
+					RedisCacheService.getActiveBidItemId(clientId),
+					clientAuctionMap.get(clientId), clientId);
 			logger.debug("BidItem from Redis : " + bidItem);
 			return bidItem.getBidSpan();
 		} else {
@@ -123,8 +125,9 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 			long activeBidItemId = RedisCacheService
 					.getActiveBidItemId(clientId);
 			BidItem bidItem = RedisCacheService.getBidItem(
-					RedisConstants.BIDITEM + clientAuctionMap.get(clientId)+ activeBidItemId+clientId, String.valueOf(activeBidItemId),
-					clientId);
+					RedisConstants.BIDITEM + clientAuctionMap.get(clientId)
+							+ activeBidItemId + clientId,
+					String.valueOf(activeBidItemId), clientId);
 			logger.debug("BidItem from Redis : " + bidItem);
 			if (bidItem == null)
 				return 0;
@@ -167,9 +170,15 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	public void setBidItem(BidItem bidItem, Long clientId) {
-		RedisCacheService.setBidItem(RedisConstants.BIDITEM + bidItem.getAuctionId()+ bidItem.getBidItemId()+clientId, bidItem, clientId);
+		RedisCacheService.setBidItem(
+				RedisConstants.BIDITEM + bidItem.getAuctionId()
+						+ bidItem.getBidItemId() + clientId, bidItem, clientId);
 		logger.debug("DAO Set BidItem : " + bidItem);
-		logger.debug("REDIS Set BidItem : "+ RedisCacheService.getBidItem(RedisConstants.BIDITEM + bidItem.getAuctionId()+ bidItem.getBidItemId() + clientId,String.valueOf(bidItem.getBidItemId()), clientId));
+		logger.debug("REDIS Set BidItem : "
+				+ RedisCacheService.getBidItem(
+						RedisConstants.BIDITEM + bidItem.getAuctionId()
+								+ bidItem.getBidItemId() + clientId,
+						String.valueOf(bidItem.getBidItemId()), clientId));
 	}
 
 	@Transactional
@@ -218,8 +227,9 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 		return auctionStartTimeMap.get(clientId);
 	}
 
-	public long getAuctionId(Long clientId) {
-		return clientAuctionMap.get(clientId);
+	public Long getAuctionId(Long clientId) {
+		
+			return clientAuctionMap.get(clientId);
 	}
 
 }

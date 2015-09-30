@@ -36,8 +36,8 @@
 			<script type="text/javascript"
 				src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
 			<script type="text/javascript" src="${js_url}/json.min.js"></script>
-			<script type='text/javascript' src='/Bidding/dwr/engine.js'> </script>
-			<script type='text/javascript' src='/Bidding/dwr/util.js'> </script>
+			<script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
+			<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
 			<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
 
@@ -460,7 +460,7 @@ function blah( oCB )
 																	class="table table-bordered table-striped text-center">
 																	<tr>
 																		<td>Sr. No.</td>
-																		<td >Category</td>
+																		<td>Category</td>
 																		<td>Lot No.</td>
 																		<td>Material Name</td>
 																		<td>Remark</td>
@@ -480,7 +480,7 @@ function blah( oCB )
 																			</c:if>
 																		</c:forEach>
 
-																		<td >${bidItem.name}</td>
+																		<td>${bidItem.name}</td>
 																		<c:if test="${fn:length(bidItem.itemLots) == 1}">
 																			<c:forEach items="${bidItem.itemLots}"
 																				var="itemLotUnique" varStatus="status2">
@@ -619,58 +619,45 @@ function blah( oCB )
 													Bid</h4>
 											</div>
 											<div class="modal-body">
-
-												<div id="dialog_bids${bidItem.bidItemId}" class="bids"
-													title="Auto Bid">
-													<table>
+												<div id="dialog_bids${bidItem.bidItemId}" title="Auto Bid">
+													<table
+														class="table table-bordered table-striped text-center">
 														<tr>
-															<td align="left" valign="top">
+															<td>
 																<form action="marketlist/saveautobid" method="post"
 																	name="saveautobidform1"
-																	id="saveAutoBidForm${bidItem.bidItemId}"
-																	style="margin: 0px;">
+																	id="saveAutoBidForm${bidItem.bidItemId}">
 																	<input type="hidden" name="bidItemId"
 																		value="${bidItem.bidItemId}" /> <input type="hidden"
 																		name="categoryId" id="categoryId${bidItem.bidItemId}"
 																		value="0" />
-																	<table width="400" border="0" cellspacing="0"
-																		cellpadding="0">
+																	<table
+																		class="table table-bordered table-striped text-center">
 
 																		<tr>
-																			<td height="30" colspan="3" align="left"
-																				bgcolor="#dee7d2" class="td"
-																				style="border-right: 1px solid #fff;">&nbsp;
-																				${bidItem.serialNo}.
+																			<td colspan="2">&nbsp; ${bidItem.serialNo}.
 																				&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.name}
 																				&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 																				${bidItem.unit}</td>
 																		</tr>
 
 																		<tr>
-																			<td width="110" height="30" bgcolor="#DEE7D6"
-																				class="td" style="border-right: 1px solid #fff;">&nbsp;
-																				Auto Bid Limit</td>
-																			<td colspan="2" bgcolor="#DEE7D6" class="td"
-																				style="padding-left: 10px;"><input type="text"
+																			<td>&nbsp; Auto Bid Limit</td>
+																			<td colspan="2"><input type="text"
 																				name="autoBidAmount"
 																				id="autoBidLimit${bidItem.bidItemId}"
 																				class="PopupField" /></td>
 																		</tr>
 																		<tr>
-																			<td height="30" bgcolor="#F7F3EF" class="td"
-																				style="border-right: 1px solid #fff;">&nbsp;&nbsp;Comments</td>
-																			<td height="60" colspan="2" bgcolor="#F7F3EF"
-																				class="td" style="padding-left: 10px;"><textarea
-																					name="textfield2" id="comments${bidItem.bidItemId}"
+																			<td>&nbsp;&nbsp;Comments</td>
+																			<td colspan="2"><textarea name="textfield2"
+																					id="comments${bidItem.bidItemId}"
 																					class="PopupFieldComm"></textarea></td>
 																		</tr>
 																		<tr>
-																			<td height="30" bgcolor="#DEE7D6" class="td"
-																				style="border-right: 1px solid #fff;">&nbsp;</td>
-																			<td colspan="2" bgcolor="#DEE7D6" class="td"
-																				style="padding-left: 10px;"><input
-																				type="button" name="button" id="button"
-																				value="Submit"
+																			<td>&nbsp;</td>
+																			<td colspan="2"><input type="button"
+																				name="button" id="button" value="Submit"
 																				onClick="autoBidSave('${bidItem.bidItemId}', '${bidItem.currentMarketPrice}', '${bidItem.minBidIncrement}');" /></td>
 																		</tr>
 																	</table>
@@ -706,9 +693,9 @@ function blah( oCB )
 											<div class="modal-body">
 
 												<div id="dialog_removediv${bidItem.bidItemId}"
-													class="removediv" title="Auto Bid : Remove">
-													<table width="400" border="0" cellspacing="0"
-														cellpadding="0">
+													title="Auto Bid : Remove">
+													<table
+														class="table table-bordered table-striped text-center">
 														<tr>
 															<td align="left" valign="top">
 																<form name="deleteAutoBidForm"
@@ -719,30 +706,26 @@ function blah( oCB )
 																		value="${bidItem.currentAutoBidId}" /> <input
 																		type="hidden" name="categoryId"
 																		id="categoryId${bidItem.bidItemId}" value="0" />
-																	<table width="400" border="0" cellspacing="0"
-																		cellpadding="0">
+																	<table
+																		class="table table-bordered table-striped text-center">
 
 																		<tr>
-																			<td colspan="8" align="center" valign="middle"
-																				style="border-right: 1px solid #fff;"><table
-																					width="100%" cellpadding="0" cellspacing="0"
-																					class="td">
+																			<td colspan="8" 
+																				><table
+																					class="table table-bordered table-striped text-center">
 																					<tr class="td">
 
-																						<td width="66%" height="25" align="center"
-																							bgcolor="#dee7d6" class="td">${bidItem.serialNo}.
+																						<td >${bidItem.serialNo}.
 																							&nbsp;&nbsp;${bidItem.name}
 																							&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 																							${bidItem.unit}</td>
 																					</tr>
 																					<tr class="td">
-																						<td height="25" colspan="2" align="center"
-																							bgcolor="#EFEFE7" class="td">Are you sure,
+																						<td >Are you sure,
 																							you want to Remove the Auto Bid</td>
 																					</tr>
 																					<tr class="td">
-																						<td height="30" colspan="2" align="center"
-																							bgcolor="#DEE7D6" class="td"><input
+																						<td ><input
 																							type="submit" name="button" id="button"
 																							value="Yes"
 																							onclick="removeAutoBid('${bidItem.bidItemId}')" />
@@ -885,7 +868,7 @@ window.onunload = function() {
 }
 function errorHandler(message, ex) {
     dwr.util.setValue("error", "<font color='red'>Cannot connect to server. Initializing retry logic.</font>", {escapeHtml:false});
-    setTimeout(function() { dwr.util.setValue("error", ""); }, 5000)
+    setTimeout(function() { dwr.util.setValue("error", ""); }, 5000);
 }
 
 function updatePollStatus(pollStatus) {

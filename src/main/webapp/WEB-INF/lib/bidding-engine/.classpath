@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="C:/NavprayasProjects/BiddingProject/lib/ocpsoft-pretty-time-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/NavprayasProjects/BiddingProject/lib/asm-all-2.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/NavprayasProjects/BiddingProject/lib/jredis-core-all-a.0-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="C:/NavprayasProjects/BiddingProject/lib/kilim.jar"/>
+	<classpathentry kind="output" path="classes"/>
+</classpath>

@@ -426,9 +426,9 @@ public class ObserverController {
 		modelMap.addAttribute("categoryName", categoryId);
 
 		List<BidItem> bidItemsList = new ArrayList<BidItem>();
+		
 		BidItem activeBidItem = bidItemsCacheService.getBidItem(
-				RedisCacheService.getActiveBidItemId(user.getParentId()),
-				bidItemsCacheService.getAuctionId(user.getParentId()),
+				RedisCacheService.getActiveBidItemId(user.getParentId()),bidItemsCacheService.getAuctionId(user.getParentId()),
 				user.getParentId());
 		if (activeBidItem != null) {
 

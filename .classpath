@@ -18,7 +18,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/cfeindia/Desktop/auction/src/main/webapp/WEB-INF/lib/bidding-engine.jar"/>
+	<classpathentry kind="lib" path="/home/cfeindia/Desktop/auction/src/main/webapp/WEB-INF/lib/bidding-engine.jar" sourcepath="/home/cfeindia/auction-modules-project/auction/bidderfactoryjarsource/bidding-engine.jar.src/com/navprayas/bidding/engine/intf"/>
 	<classpathentry kind="lib" path="/home/cfeindia/Desktop/auction/src/main/webapp/WEB-INF/lib/commons-digester-2.1.jar"/>
 	<classpathentry kind="lib" path="/home/cfeindia/Desktop/auction/src/main/webapp/WEB-INF/lib/commons-pool-1.5.6.jar"/>
 	<classpathentry kind="lib" path="/home/cfeindia/Desktop/auction/src/main/webapp/WEB-INF/lib/dwr.jar"/>

@@ -205,9 +205,9 @@ public class BidderController {
 					.getBidItemSequenceDetails(activeBidItemId,
 							user.getParentId());
 			long auctionId = Long.parseLong(activeItemDetails
-					.get(RedisConstants.ATTR_AUCTIONID+user.getParentId()));
+					.get(RedisConstants.ATTR_AUCTIONID + user.getParentId()));
 			long seqId = Long.parseLong(activeItemDetails
-					.get(RedisConstants.ATTR_SEQUENCEID+user.getParentId()));
+					.get(RedisConstants.ATTR_SEQUENCEID + user.getParentId()));
 
 			commonVO.setSequenceId(seqId);
 			commonVO.setAuctionId(auctionId);
@@ -299,7 +299,7 @@ public class BidderController {
 				+ categoryId);
 		HttpSession session = httpServletRequest.getSession();
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
-           
+
 		String name = user.getUsername();
 		logger.debug("UserName For category: " + name);
 		if (categoryId == null) {
@@ -433,9 +433,9 @@ public class BidderController {
 					.getBidItemSequenceDetails(activeBidItemId,
 							user.getParentId());
 			long auctionId = Long.parseLong(activeItemDetails
-					.get(RedisConstants.ATTR_AUCTIONID+user.getParentId()));
+					.get(RedisConstants.ATTR_AUCTIONID + user.getParentId()));
 			long seqId = Long.parseLong(activeItemDetails
-					.get(RedisConstants.ATTR_SEQUENCEID+user.getParentId()));
+					.get(RedisConstants.ATTR_SEQUENCEID + user.getParentId()));
 
 			commonVO.setSequenceId(seqId);
 			commonVO.setAuctionId(auctionId);
@@ -539,15 +539,14 @@ public class BidderController {
 			@RequestParam(value = "bidType", required = true) Integer bidType,
 			@RequestParam(value = "bidAmount", required = true) Double bidAmount,
 			@RequestParam(value = "comments", required = true) String comments,
-			ModelMap modelMap, HttpSession session)
-
-	{
+			ModelMap modelMap, HttpSession session) {
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
 		String userName = user.getUsername();
 		boolean returnVal = bidderService.doBid(bidItemId.intValue(), bidType,
 				new Double(bidAmount), userName, comments,
 				bidItemsCacheService.getAuctionId(user.getParentId()),
 				user.getParentId());
+		System.out.println("Return Value" + returnVal);
 
 		if (bidType == 2) {
 			BidItem bidItem = bidItemsCacheService.getBidItem(bidItemId,

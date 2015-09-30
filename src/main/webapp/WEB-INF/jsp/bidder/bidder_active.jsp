@@ -331,21 +331,13 @@ function blah( oCB )
 					<tr>
 						<td colspan="3"><input type="radio" name="radio" id="radio"
 							value="1" onClick="getPageForMarketType(this.value)" /> <a
-							href="${bidder_market_url}"
-							onmouseover="ddrivetip('Market List','', 'auto')"
-							onMouseout="hideddrivetip()" class="subTitleLink">&nbsp;Market
-								List</a></td>
+							href="${bidder_market_url}">&nbsp;Market List</a></td>
 						<td colspan="3"><input type="radio" checked name="radio"
-							id="radio2" value="2" /> <a href="#"
-							onmouseover="ddrivetip('Active Market','', 'auto')"
-							onMouseout="hideddrivetip()" class="subTitleLink">&nbsp;Active
+							id="radio2" value="2" /> <a href="#">&nbsp;Active
 								Market</a></td>
 						<td colspan="3"><input type="radio" name="radio" id="radio3"
 							value="3" onClick="getPageForMarketType(this.value)" /> <a
-							href="${bidder_close_url}"
-							onmouseover="ddrivetip('Closed Market','', 'auto')"
-							onMouseout="hideddrivetip()" class="subTitleLink">&nbsp;Closed
-								Market</a></td>
+							href="${bidder_close_url}">&nbsp;Closed Market</a></td>
 
 						<td colspan="8" align="right"><strong>Total No. of
 								Forward Markets in Active List: <c:out
@@ -545,15 +537,15 @@ function blah( oCB )
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.remark}</td>
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.lengthRange}</td>
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.actualLengh}</td>
+								<td>${itemLotUnique.remark}</td>
+								<td>${itemLotUnique.lengthRange}</td>
+								<td>${itemLotUnique.actualLengh}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
-							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
-							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
-							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
 						</c:if>
 						<td align="center" valign="middle" class="DetailBorRight"><div
 								id="totalQuantity${bidItem.bidItemId}">${bidItem.totalQuantity}
@@ -561,33 +553,28 @@ function blah( oCB )
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td align="center" valign="middle" class="DetailBorRight">${bidItem.zone}</td>
+								<td>${bidItem.zone}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
-							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
+							<td>&nbsp;</td>
 						</c:if>
 
 
-						<td align="center" valign="middle" class="DetailBorRight"><div
-								id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
-						<td align="center" valign="middle" id="currentpricetd"
-							class="DetailBorRight" onmouseover="changeStyleSelectedHover()"
-							onmouseout="changeStyleSelectedOut()">
+						<td><div id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
+						<td id="currentpricetd">
 							<div id="Item${bidItem.bidItemId}">${bidItem.currentMarketPrice}</div>
 						</td>
-						<td align="center" valign="middle" id="ranktd"
-							class="DetailBorRight" onmouseover="changeStyleSelectedHover()"
-							onmouseout="changeStyleSelectedOut()">
+						<td id="ranktd">
 							<div id="rank${bidItem.bidItemId}">
 								<c:out value='${bidItemWithRanks[bidItem.bidItemId]}' />
 							</div>
 						</td>
-						<td align="center" valign="middle" class="DetailBorRight">
+						<td >
 							<div id="countdown${bidItem.bidItemId}"></div> <script>setTimeLefts(parseInt('${bidItem.timeLeft}'), '${bidItem.bidItemId}');</script>
 
 						</td>
-						<td align="center" valign="middle" class="DetailBorRight"><c:choose>
+						<td ><c:choose>
 								<c:when
 									test='${bidItemWithAutoBidFlag[bidItem.bidItemId] == 2 && bidItemWithRanks[bidItem.bidItemId] == 1} '>
 									<input type="submit" name="button3"
@@ -639,32 +626,30 @@ function blah( oCB )
 								</c:otherwise>
 							</c:choose>
 
-							<table>
+							<table class="table table-bordered table-striped text-center">
 								<tr>
-									<td align="left" valign="top">
+									<td>
 										<form action="" method="post" name="form1" id="form2"
 											style="margin: 0px;">
 											<table class="table table-bordered table-striped text-center">
 												<tr>
-													<td>&nbsp; ${status.index+1}.
+													<td colspan="2">&nbsp; ${status.index+1}.
 														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.name}
 														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 														${bidItem.unit}</td>
 												</tr>
 												<tr>
 													<td>&nbsp; Bid Type</td>
-													<td bgcolor="#f0f3ea">
+													<td>
 														<table
 															class="table table-bordered table-striped text-center">
 															<tr>
 																<td><input type="radio" name="radio"
 																	id="NormalBid${bidItem.bidItemId}" value="radio"
-																	class="checkbox"
 																	onclick="changeBidText(1, '${bidItem.bidItemId}')" /></td>
 																<td>Normal Bid</td>
 																<td><input type="radio" name="radio"
 																	id="AutoBid${bidItem.bidItemId}" value="radio"
-																	class="checkbox"
 																	onclick="changeBidText(2, '${bidItem.bidItemId}')" /></td>
 																<td>Auto Bid</td>
 															</tr>
@@ -681,8 +666,8 @@ function blah( oCB )
 															<div id="autoBidText${bidItem.bidItemId}">&nbsp;Auto
 																Bid Limit</div>
 														</c:if></td>
-													<td><input type="text" name="textfield"
-														id="Amount${bidItem.bidItemId}" width="200" /></td>
+													<td colspan="2" align="left"><input type="text"
+														name="textfield" id="Amount${bidItem.bidItemId}" /></td>
 												</tr>
 												<tr>
 													<td>&nbsp;&nbsp;Comments</td>

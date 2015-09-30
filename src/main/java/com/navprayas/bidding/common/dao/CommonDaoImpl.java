@@ -36,7 +36,7 @@ import com.navprayas.bidding.common.form.UserActivity;
 import com.navprayas.bidding.common.form.UserDetails;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.util.CommonUtil;
-import com.navprayas.bidding.engine.orm.Bid;
+import com.navprayas.bidding.engine.common.Bid;
 import com.navprayas.bidding.utility.RedisCacheService;
 
 @Repository("commonRepository")

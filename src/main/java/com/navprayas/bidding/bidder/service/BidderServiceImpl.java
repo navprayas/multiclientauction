@@ -94,23 +94,12 @@ public class BidderServiceImpl implements IBidderService {
 			final String userName, String comments, Long auctionId,
 			Long clientId) {
 
-		BidItem bidItem = bidItemsCacheService.getBidItem(
-				bidItemId.longValue(), auctionId, clientId);
+		BidItem bidItem = bidItemsCacheService.getBidItem(bidItemId.longValue(), auctionId, clientId);
 		Bid bid = new Bid(userName, bidItem.getAuctionId(), bidItemId,
 				bidAmount.doubleValue(), bidItem.getCurrency(),
 				bidItem.getStatusCode(), bidType, comments,
 				// Bid Type - 2 : Auto Bid, Bid Type - 1 : Normal Bid
-				(bidType == AUTO_BIDTYPE) ? bidAmount.doubleValue() : 0.0); // IF
-																			// Auto
-																			// Bid
-																			// set
-																			// Bid
-																			// Amount
-																			// to
-																			// Max
-																			// Auto
-																			// Bid
-																			// Amount
+				(bidType == AUTO_BIDTYPE) ? bidAmount.doubleValue() : 0.0);
 		bid.setStatus("I");
 		// bid.setVersion(bidItem.getVersion());
 		logger.debug(bidAmount + " Bid is " + bid);

@@ -27,8 +27,8 @@
 <script type="text/javascript"
 	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
 <%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script>
- --%><script type='text/javascript' src='/Bidding/dwr/engine.js'> </script>
-<script type='text/javascript' src='/Bidding/dwr/util.js'> </script>
+ --%><script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
+<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
 <script type="text/javascript">
 	function onSubmit(pageNo) {
 		document.paginationForm.category.value = document.forms["categoryform"].category.value;

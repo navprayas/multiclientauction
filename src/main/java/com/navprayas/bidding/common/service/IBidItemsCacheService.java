@@ -16,5 +16,5 @@ public interface IBidItemsCacheService {
 
 	public Date getAuctionStartTime(Long clientId);
 
-	public long getAuctionId(Long clientId);
+	public Long getAuctionId(Long clientId);
 }
