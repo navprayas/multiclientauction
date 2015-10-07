@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.navprayas.bidding.auctioncache.AuctionCacheManager;
+import com.navprayas.bidding.auctioncache.AuctionQueueUtility;
 import com.navprayas.bidding.common.dao.ICommonDao;
 import com.navprayas.bidding.common.form.BidItem;
 import com.navprayas.bidding.common.form.BidSequence;
 import com.navprayas.bidding.common.form.Category;
-import com.navprayas.bidding.engine.redis.RedisConstants;
 import com.navprayas.bidding.utility.BidItemScheduler;
 import com.navprayas.bidding.utility.ObjectRegistry;
-import com.navprayas.bidding.utility.RedisCacheService;
 
 @Service("bidItemsCacheService")
 public class BidItemsCacheService implements IBidItemsCacheService {
@@ -62,7 +62,6 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	@Transactional
 	public void initCache(Long clientId) {
 		logger.debug("Initializing cache " + new Date());
-
 		auctionStartFlags.put(clientId, true);
 		Date startTime = null;
 		if (auctionStartTimeMap.get(clientId) != null) {
@@ -80,15 +79,26 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 		logger.debug("bidSequenceList " + bidSequenceList);
 		try {
 			// RedisCacheService.flushDB();
-			RedisCacheService.setBidSequenceList(bidSequenceList, clientId);
+			// RedisCacheService.setBidSequenceList(bidSequenceList, clientId);
+			AuctionQueueUtility.setBidSequenceQueue(
+					AuctionCacheManager.getActiveAuctionCacheBean(clientId),
+					bidSequenceList);
 			if (bidSequenceList != null && bidSequenceList.size() > 0) {
 				List<Category> categories = commonDao.getCategoryList(clientId);
 
-				RedisCacheService.setCategories(categories, clientId);
-				RedisCacheService
-						.setBidIdKey(commonDao.getMaxBidId(), clientId);
-				RedisCacheService.setAutoBidIdKey(commonDao.getMaxAutoBidId(),
-						clientId);
+				// RedisCacheService.setCategories(categories, clientId);
+				AuctionCacheManager.setCategories(categories);
+				/*
+				 * RedisCacheService.setBidIdKey(commonDao.getMaxBidId(),
+				 * clientId);
+				 * RedisCacheService.setAutoBidIdKey(commonDao.getMaxAutoBidId
+				 * (), clientId);
+				 */
+
+				AuctionCacheManager.setBidIdKey(clientId,
+						commonDao.getMaxBidId());
+				AuctionCacheManager.setAutoBidIdKey(clientId,
+						commonDao.getMaxAutoBidId());
 
 				scheduler = new BidItemScheduler();
 				scheduler.setCacheService(this);
@@ -101,33 +111,38 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	public long setNextBidItem(Long clientId) {
-		String endSequence = RedisCacheService.isEndSequence(clientId);
+		// String endSequence = RedisCacheService.isEndSequence(clientId);
+		String endSequence = AuctionQueueUtility.isEndSequence(clientId);
 		if (endSequence != null && endSequence.equals("TRUE")) {
 			logger.debug("In End of Sequence");
 			commonDao.setAuctionEndTime(clientAuctionMap.get(clientId),
 					new Date());
-			cleanBidItem(RedisCacheService.getActiveBidItemId(clientId),
-					Long.parseLong(RedisCacheService.getAuctionId(clientId)),
-					clientId);
+			cleanBidItem(AuctionCacheManager.getActiveBidItemId(clientId),
+					AuctionCacheManager.getActiveAuctionId(clientId), clientId);
 			// scheduler.stop();
 			return 0L;
 		} else if (auctionStartFlags.get(clientId)) {
 			auctionStartFlags.put(clientId, false);
 			logger.debug("In Start of Sequence");
-			RedisCacheService.setActiveBidItemId(clientId);
+			/* RedisCacheService.setActiveBidItemId(clientId); */
+			AuctionCacheManager.setActiveBidItemId(clientId,
+					AuctionQueueUtility.pollActiveBidItemId(clientId));
 			BidItem bidItem = getBidItem(
-					RedisCacheService.getActiveBidItemId(clientId),
+					AuctionCacheManager.getActiveBidItemId(clientId),
 					clientAuctionMap.get(clientId), clientId);
 			logger.debug("BidItem from Redis : " + bidItem);
 			return bidItem.getBidSpan();
 		} else {
 			logger.debug("In Next of Sequence");
-			long activeBidItemId = RedisCacheService
+			long activeBidItemId = AuctionCacheManager
 					.getActiveBidItemId(clientId);
-			BidItem bidItem = RedisCacheService.getBidItem(
-					RedisConstants.BIDITEM + clientAuctionMap.get(clientId)
-							+ activeBidItemId + clientId,
-					String.valueOf(activeBidItemId), clientId);
+			/*
+			 * BidItem bidItem =
+			 * AuctionCacheManager.getBidItem(RedisConstants.BIDITEM +
+			 * clientAuctionMap.get(clientId) + activeBidItemId + clientId,
+			 * String.valueOf(activeBidItemId), clientId);
+			 */
+			BidItem bidItem = AuctionCacheManager.getActiveBidItem(clientId);
 			logger.debug("BidItem from Redis : " + bidItem);
 			if (bidItem == null)
 				return 0;
@@ -136,11 +151,14 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 				logger.debug("Extended Time: " + bidItem.getTimeLeft());
 				return bidItem.getTimeLeft();
 			} else {
-				RedisCacheService.setActiveBidItemId(clientId);
-				cleanBidItem(activeBidItemId, Long.parseLong(RedisCacheService
-						.getAuctionId(clientId)), clientId);
+				// AuctionCacheManager.setActiveBidItemId(clientId);
+				AuctionCacheManager.setActiveBidItemId(clientId,
+						activeBidItemId);
+				cleanBidItem(activeBidItemId,
+						AuctionCacheManager.getActiveAuctionId(clientId),
+						clientId);
 				bidItem = getBidItem(
-						RedisCacheService.getActiveBidItemId(clientId),
+						AuctionCacheManager.getActiveBidItemId(clientId),
 						clientAuctionMap.get(clientId), clientId);
 				if (bidItem == null)
 					return 0;
@@ -155,13 +173,10 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 		bidItem.setBidStartTime(cal.getTime());
 		// long bidSpan =
 		// RedisCacheService.getBidItemSpan(bidItem.getBidItemId());
-		Map<String, String> bidItemDetails = RedisCacheService
-				.getBidItemSequenceDetails(bidItem.getBidItemId(), clientId);
+		BidItem activeBidItem = AuctionCacheManager.getActiveBidItem(clientId);
 
-		long bidSpan = Long.parseLong((String) bidItemDetails
-				.get(RedisConstants.ATTR_BIDSPAN + clientId));
-		long seqId = Long.parseLong((String) bidItemDetails
-				.get(RedisConstants.ATTR_SEQUENCEID + clientId));
+		long bidSpan = activeBidItem.getBidSpan();
+		long seqId = activeBidItem.getSeqId();
 		cal.add(Calendar.SECOND, (int) bidSpan);
 		bidItem.setBidEndTime(cal.getTime());
 		bidItem.setStatusCode("ACTIVE");
@@ -170,22 +185,25 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	public void setBidItem(BidItem bidItem, Long clientId) {
-		RedisCacheService.setBidItem(
-				RedisConstants.BIDITEM + bidItem.getAuctionId()
-						+ bidItem.getBidItemId() + clientId, bidItem, clientId);
+		AuctionCacheManager
+				.setActiveBidItemId(clientId, bidItem.getBidItemId());
+		/*
+		 * RedisCacheService.setBidItem( RedisConstants.BIDITEM +
+		 * bidItem.getAuctionId() + bidItem.getBidItemId() + clientId, bidItem,
+		 * clientId);
+		 */
 		logger.debug("DAO Set BidItem : " + bidItem);
-		logger.debug("REDIS Set BidItem : "
-				+ RedisCacheService.getBidItem(
-						RedisConstants.BIDITEM + bidItem.getAuctionId()
-								+ bidItem.getBidItemId() + clientId,
-						String.valueOf(bidItem.getBidItemId()), clientId));
+		/*
+		 * logger.debug("REDIS Set BidItem : " + RedisCacheService.getBidItem(
+		 * RedisConstants.BIDITEM + bidItem.getAuctionId() +
+		 * bidItem.getBidItemId() + clientId,
+		 * String.valueOf(bidItem.getBidItemId()), clientId));
+		 */
 	}
 
 	@Transactional
 	public BidItem getBidItem(Long bidItemId, Long auctionId, Long clientId) {
-		BidItem bidItem = RedisCacheService.getBidItem(RedisConstants.BIDITEM
-				+ auctionId + bidItemId + clientId, String.valueOf(bidItemId),
-				clientId);
+		BidItem bidItem = AuctionCacheManager.getActiveBidItem(clientId);
 		if (bidItem == null && bidItemId != 0) {
 			bidItem = commonDao.getBidItem(bidItemId);
 			initializeBidItem(bidItem, clientId);
@@ -195,17 +213,28 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	private void cleanBidItem(long bidItemId, Long auctionId, Long clientId) {
-		RedisCacheService.setExpiredBidItem(bidItemId, clientId);
-		commonDao.updateBidItem(RedisCacheService.getBidItem(
-				RedisConstants.BIDITEM + auctionId + bidItemId + clientId,
-				bidItemId + "", clientId));
+		// RedisCacheService.setExpiredBidItem(bidItemId, clientId);
+		/*
+		 * commonDao.updateBidItem(RedisCacheService.getBidItem(RedisConstants.
+		 * BIDITEM + auctionId + bidItemId + clientId, bidItemId + "",
+		 * clientId));
+		 */
+
+		AuctionCacheManager.setExpiredBidItem(clientId,
+				AuctionCacheManager.getActiveBidItem(clientId));
+
+		commonDao.updateBidItem(AuctionCacheManager.getActiveBidItem(clientId));
+
 	}
 
 	public boolean setBidEndTime(long bidItemId, Date bidEndTime,
 			Long auctionId, Long clientId) {
-		return RedisCacheService.setBidEndTime(bidItemId, bidEndTime,
-				RedisConstants.BIDITEM + auctionId + bidItemId + clientId,
-				clientId);
+		/*
+		 * return RedisCacheService.setBidEndTime(bidItemId, bidEndTime,
+		 * RedisConstants.BIDITEM + auctionId + bidItemId + clientId, clientId);
+		 */
+		return true;
+
 	}
 
 	/**
@@ -228,8 +257,8 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 	}
 
 	public Long getAuctionId(Long clientId) {
-		
-			return clientAuctionMap.get(clientId);
+
+		return clientAuctionMap.get(clientId);
 	}
 
 }

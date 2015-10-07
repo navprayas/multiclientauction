@@ -5,10 +5,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.navprayas.bidding.engine.core.Auctioneer;
-import com.navprayas.bidding.engine.core.AuctioneerFactory;
-import com.navprayas.bidding.engine.core.BidPublisher;
-
 public class KilimEngineGenerator implements InitializingBean {
 
 	private final static Logger logger = LoggerFactory

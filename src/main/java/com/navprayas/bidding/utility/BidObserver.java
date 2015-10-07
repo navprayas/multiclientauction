@@ -13,8 +13,7 @@ import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.IBidItemsCacheService;
 import com.navprayas.bidding.common.service.ICommonService;
-import com.navprayas.bidding.engine.common.Bid;
-import com.navprayas.bidding.engine.common.BidPublisher;
+import com.navprayas.bidding.engine.orm.Bid;
 
 public class BidObserver implements Observer {
 
@@ -67,8 +66,7 @@ public class BidObserver implements Observer {
 			logger.debug("In Bid Observer: " + bid);
 			String bidderName = bid.getBidderName();
 			Users user = commonService.getUserForUsername(bidderName);
-			BidItem bidItem = bidItemsCacheService.getBidItem(
-					bid.getBidItemId(),
+			BidItem bidItem = bidItemsCacheService.getBidItem(bid.getBidItemId(),
 					bidItemsCacheService.getAuctionId(user.getParentId()),
 					user.getParentId());
 			bidItem.setCurrentMarketPrice(bid.getBidAmount());

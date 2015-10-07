@@ -54,9 +54,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	<listener> <listener-class>com.navprayas.bidding.utility.RedisCacheDataBaseFlushListener</listener-class> 
-</listener>
-
 	<display-name>bidding</display-name>
 	<servlet>
 		<servlet-name>bidding</servlet-name>
@@ -74,7 +71,7 @@
 
 		<init-param>
 			<param-name>allowedResourcePaths</param-name>
-			<param-value>/*/*.css,/*/*.gif,/*/*.ico,/*/*.jpeg,/*/*.jpg,/*/*.js,/*/*.png,/*/*/*.css,/*/*/*.gif,/*/*/*.ico,/*/*/*.jpeg,/*/*/*.jpg,/*/*/*.js,/*/*/*.png,/*/*/*/*.css,/*/*/*/*.gif,/*/*/*/*.ico,/*/*/*/*.jpeg,/*/*/*/*.jpg,/*/*/*/*.js,/*/*/*/*.png,/*/*.pdf,/*/*.woff,/*/*.woff2,/*/*.ttf,/*/*.css,/*/*/*.css,/*/*.css.map,/*/*/*.css.map</param-value>
+			<param-value>/*/*.css,/*/*.gif,/*/*.ico,/*/*.jpeg,/*/*.jpg,/*/*.js,/*/*.png,/*/*/*.css,/*/*/*.gif,/*/*/*.ico,/*/*/*.jpeg,/*/*/*.jpg,/*/*/*.js,/*/*/*.png,/*/*/*/*.css,/*/*/*/*.gif,/*/*/*/*.ico,/*/*/*/*.jpeg,/*/*/*/*.jpg,/*/*/*/*.js,/*/*/*/*.png,/*/*.pdf,/*/*.woff,/*/*.woff2,/*/*.ttf,/*/*.css,/*/*/*.css,/*/*.css.map,/*/*/*.css.map,/css,/images</param-value>
 		</init-param>
 	</servlet>
 

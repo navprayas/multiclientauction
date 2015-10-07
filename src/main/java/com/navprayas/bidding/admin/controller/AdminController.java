@@ -26,13 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.navprayas.bidding.admin.form.Variable;
 import com.navprayas.bidding.admin.service.ManageUserService;
 import com.navprayas.bidding.admin.service.VariableService;
+import com.navprayas.bidding.auctioncache.AuctionCacheBean;
+import com.navprayas.bidding.auctioncache.AuctionCacheManager;
 import com.navprayas.bidding.common.constant.CommonConstants;
 import com.navprayas.bidding.common.form.Auction;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.ICommonService;
 import com.navprayas.bidding.utility.ObjectRegistry;
-import com.navprayas.bidding.utility.RedisCacheService;
 
 @RequestMapping("/admin/**")
 @Controller
@@ -45,7 +46,7 @@ public class AdminController {
 
 	@Autowired
 	@Qualifier("commonService")
-	private ICommonService  commonService;
+	private ICommonService commonService;
 	@Autowired
 	private VariableService variableservice;
 	@Autowired
@@ -134,8 +135,14 @@ public class AdminController {
 		 */
 		// KilimEngineGenerator.getAuctioneer().stopAuction();
 		// RedisCacheService.flushDB();
-		RedisCacheService.setAuctionId(auctionId.toString(), user.getUserId());
+		// RedisCacheService.setAuctionId(auctionId.toString(),
+		// user.getUserId());
 		// KilimEngineGenerator.getAuctioneer().restart();
+		AuctionCacheBean auctionCacheBean = new AuctionCacheBean();
+		auctionCacheBean.setClientId(user.getUserId());
+		auctionCacheBean.setAuctionId(auctionId);
+		AuctionCacheManager.setActiveAuctionId(auctionCacheBean);
+
 		BidItemsCacheService bidItemsCacheService = (BidItemsCacheService) ObjectRegistry
 				.getInstance().getObject(BidItemsCacheService.class.getName());
 		/* bidItemsCacheService.setAuctionId(auctionId); */
@@ -221,7 +228,7 @@ public class AdminController {
 			msg = "Auction Closed - " + auctionId;
 			httpServletRequest.setAttribute("SuccessMessage", "Auction Closed");
 			// KilimEngineGenerator.getAuctioneer().stopAuction();
-			 //RedisCacheService.flushDB();
+			// RedisCacheService.flushDB();
 		} catch (Exception e) {
 			e.printStackTrace();
 			msg = "Auction Could not be Closed - " + auctionId;

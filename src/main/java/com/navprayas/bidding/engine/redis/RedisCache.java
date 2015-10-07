@@ -1,19 +1,7 @@
 package com.navprayas.bidding.engine.redis;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Set;
 
-import redis.clients.jedis.Jedis;
-
-import com.navprayas.bidding.engine.common.AutoBid;
-import com.navprayas.bidding.engine.common.Bid;
-import com.navprayas.bidding.engine.common.BidItem;
-
-public class  RedisCache  {
+public class  RedisCache  {/*
 	private static Redis redis;
 	public static SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssZ");
 
@@ -319,4 +307,4 @@ public class  RedisCache  {
 		}
 		redis.close(jedis);
 	}
-}
+*/}

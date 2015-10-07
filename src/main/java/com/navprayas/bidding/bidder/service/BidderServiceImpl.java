@@ -15,8 +15,8 @@ import com.navprayas.bidding.bidder.dao.IBidderDao;
 import com.navprayas.bidding.common.dto.CommonVO;
 import com.navprayas.bidding.common.form.BidItem;
 import com.navprayas.bidding.common.service.IBidItemsCacheService;
-import com.navprayas.bidding.engine.common.Bid;
-import com.navprayas.bidding.engine.core.BidderFactory;
+import com.navprayas.bidding.engine.orm.Bid;
+import com.navprayas.bidding.utility.BidderFactory;
 
 @Configurable
 @Service("bidderService")

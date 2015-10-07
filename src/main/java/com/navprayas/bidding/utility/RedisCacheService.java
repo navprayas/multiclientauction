@@ -1,37 +1,18 @@
 package com.navprayas.bidding.utility;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.navprayas.bidding.common.bean.Bidder;
-import com.navprayas.bidding.common.form.BidItem;
-import com.navprayas.bidding.common.form.BidSequence;
-import com.navprayas.bidding.common.form.Category;
-import com.navprayas.bidding.engine.redis.Redis;
-import com.navprayas.bidding.engine.redis.RedisConstants;
-import com.navprayas.bidding.engine.redis.RedisImpl;
-import redis.clients.jedis.Jedis;
-
-public class RedisCacheService {
+public class RedisCacheService {/*
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(RedisCacheService.class);
 	private static Redis redis = RedisImpl.getInstance();
-	public static SimpleDateFormat sdf = new SimpleDateFormat(
-			RedisConstants.DATESTRING);
+	public static SimpleDateFormat sdf = new SimpleDateFormat(RedisConstants.DATESTRING);
 
-	/*
+	
 	 * public static Jedis jedis; static { try { jedis = redis.connect(); }
 	 * catch(Exception e) { logger.error("FAILED TO GET REDIS CONNECTION!!!!");
 	 * } }
-	 */
+	 
 
 	public static void flushDB() {
 		Jedis jedis = null;
@@ -388,10 +369,10 @@ public class RedisCacheService {
 		try {
 			jedis = redis.connect();
 			String key = RedisConstants.BIDDER + bidItemId + "::";
-			/*
+			
 			 * if(!jedis.sismember(RedisConstants.BIDDERS + bidItemId,
 			 * bidderName)) { redis.close(jedis); return null; }
-			 */
+			 
 			bidder = new Bidder();
 			bidder.setBidderName(jedis.hget(key + bidderName, "bidderName"));
 			bidder.setAutoBid(Boolean.parseBoolean((jedis.hget(
@@ -768,4 +749,4 @@ public class RedisCacheService {
 		redis.close(jedis);
 	}
 
-}
+*/}
