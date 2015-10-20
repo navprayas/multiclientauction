@@ -84,7 +84,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
 			</props>
 		</property>
 	</bean>
@@ -96,13 +96,13 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="kilimInitializer" class="com.navprayas.bidding.utility.KilimEngineGenerator"
+	<!-- <bean id="kilimInitializer" class="com.navprayas.bidding.utility.KilimEngineGenerator"
 		init-method="init" destroy-method="destroy">
 		<constructor-arg>
 			<ref bean="sessionFactory" />
 		</constructor-arg>
 
-	</bean>
+	</bean> -->
 
 	<bean id="observerEmailSender" class="com.navprayas.bidding.common.email.EmailSender">
 		<constructor-arg>

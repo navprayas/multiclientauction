@@ -428,30 +428,30 @@
 			<artifactId>commons-pool</artifactId>
 			<version>1.5.6</version>
 		</dependency>
-<!-- 
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
-			<version>2.2.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-template</artifactId>
-			<version>2.2.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
+
 
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-servlet</artifactId>
-			<version>2.2.2</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency> -->
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${org.springframework.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.apache.tiles</groupId> <artifactId>tiles-core</artifactId> 
+			<version>2.2.2</version> <type>jar</type> <scope>compile</scope> </dependency> 
+			<dependency> <groupId>org.apache.tiles</groupId> <artifactId>tiles-template</artifactId> 
+			<version>2.2.2</version> <type>jar</type> <scope>compile</scope> </dependency> 
+			<dependency> <groupId>org.apache.tiles</groupId> <artifactId>tiles-servlet</artifactId> 
+			<version>2.2.2</version> <type>jar</type> <scope>compile</scope> </dependency> -->
 	</dependencies>
+
+
 
 
 	<properties>

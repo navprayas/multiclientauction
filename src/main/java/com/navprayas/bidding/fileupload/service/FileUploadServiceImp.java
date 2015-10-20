@@ -20,7 +20,7 @@ import com.navprayas.bidding.fileupload.dao.FileUploadDao;
 import com.navprayas.bidding.fileupload.entity.BidItemEntity;
 import com.navprayas.bidding.fileupload.entity.ItemLotEntity;
 
-@Service
+@Service("fileUploadServiceImp")
 @Transactional
 public class FileUploadServiceImp implements FileUploadService {
 	@Autowired

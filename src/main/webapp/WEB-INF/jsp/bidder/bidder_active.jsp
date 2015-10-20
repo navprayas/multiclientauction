@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -12,25 +11,7 @@
 <spring:url value="/bidder" var="bidder_home_url" />
 <spring:url value="/bidder/marketlist" var="bidder_market_url" />
 <spring:url value="/bidder/closed" var="bidder_close_url" />
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<!--New Script-->
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" />
-<link type="text/css" href="${css_url}/custom.css" rel="stylesheet" />
-<%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script> --%>
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
-
-
-
-<script type="text/javascript" src="${js_url}/json.min.js"></script>
-<script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
-<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
 <script type='text/javascript'>
 
 function changeStyleSelectedHover()
@@ -133,7 +114,7 @@ function getResultForCategory()
 	document.forms["categoryform"].submit();
 }
 
-function getPageForMarketType(marketType)
+/* function getPageForMarketType(marketType)
 {
 	var location1 = ""
 	if(marketType == "1")
@@ -143,7 +124,7 @@ function getPageForMarketType(marketType)
 	else if(marketType == "3")
 		location1 = "${bidder_home_url}/closed";		
 	window.location.href=location1
-}
+} */
 
 window.onload = function() {
 }
@@ -528,8 +509,8 @@ function blah( oCB )
 							</c:if>
 						</c:forEach>
 
-						<td align="center" valign="middle" class="DetailBorRight">${bidItem.category.categoryName}</td>
-						<td align="center" valign="middle" class="DetailBorRight">
+						<td >${bidItem.category.categoryName}</td>
+						<td >
 							<div id="bidItemName${bidItem.bidItemId}" style="display: none">${bidItem.name}</div>
 							<a href="#" class="LinkSelected"
 							onclick="javascript:setIdForBiddingHistory(${bidItem.bidItemId});">${bidItem.name}</a>
@@ -537,15 +518,15 @@ function blah( oCB )
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td>${itemLotUnique.remark}</td>
-								<td>${itemLotUnique.lengthRange}</td>
-								<td>${itemLotUnique.actualLengh}</td>
+								<td >${itemLotUnique.remark}</td>
+								<td >${itemLotUnique.lengthRange}</td>
+								<td >${itemLotUnique.actualLengh}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
+							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
+							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
+							<td align="center" valign="middle" class="DetailBorRight">&nbsp;</td>
 						</c:if>
 						<td align="center" valign="middle" class="DetailBorRight"><div
 								id="totalQuantity${bidItem.bidItemId}">${bidItem.totalQuantity}
@@ -553,19 +534,21 @@ function blah( oCB )
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td>${bidItem.zone}</td>
+								<td align="center" valign="middle" class="DetailBorRight">${bidItem.zone}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
-							<td>&nbsp;</td>
+							<td >&nbsp;</td>
 						</c:if>
 
 
-						<td><div id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
-						<td id="currentpricetd">
+						<td ><div
+								id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
+						<td >
 							<div id="Item${bidItem.bidItemId}">${bidItem.currentMarketPrice}</div>
 						</td>
-						<td id="ranktd">
+						<td  id="ranktd"
+							>
 							<div id="rank${bidItem.bidItemId}">
 								<c:out value='${bidItemWithRanks[bidItem.bidItemId]}' />
 							</div>
@@ -630,17 +613,17 @@ function blah( oCB )
 								<tr>
 									<td>
 										<form action="" method="post" name="form1" id="form2"
-											style="margin: 0px;">
+											>
 											<table class="table table-bordered table-striped text-center">
 												<tr>
-													<td colspan="2">&nbsp; ${status.index+1}.
-														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.name}
+												<td>${status.index+1}.</td>
+													<td >${bidItem.name}
 														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 														${bidItem.unit}</td>
 												</tr>
 												<tr>
 													<td>&nbsp; Bid Type</td>
-													<td>
+													<td >
 														<table
 															class="table table-bordered table-striped text-center">
 															<tr>
@@ -666,13 +649,13 @@ function blah( oCB )
 															<div id="autoBidText${bidItem.bidItemId}">&nbsp;Auto
 																Bid Limit</div>
 														</c:if></td>
-													<td colspan="2" align="left"><input type="text"
-														name="textfield" id="Amount${bidItem.bidItemId}" /></td>
+													<td><input type="text" name="textfield"
+														id="Amount${bidItem.bidItemId}" /></td>
 												</tr>
 												<tr>
 													<td>&nbsp;&nbsp;Comments</td>
 													<td><textarea name="textfield2"
-															id="Comments${bidItem.bidItemId}" class="PopupFieldComm"></textarea></td>
+															id="Comments${bidItem.bidItemId}" ></textarea></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
@@ -1088,7 +1071,6 @@ function removePreffered(bidId)
 </script>
 
 </body>
-</html>
 
 
 

@@ -13,23 +13,7 @@
 <spring:url value="/observer/closed" var="observer_close_url" />
 
 <spring:url value="/observer/marketlist" var="form_url" />
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<%-- <title>MSL Auction</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<script type="text/javascript" src="${js_url}/csspopup.js"></script>
-<link href="${css_url}/menu.css" rel="stylesheet" media="screen" />
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" /> --%>
-	<link type="text/css" href="${css_url}/custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
-<%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script>
- --%><script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
-<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
-<script type="text/javascript">
+<script>
 	function onSubmit(pageNo) {
 		document.paginationForm.category.value = document.forms["categoryform"].category.value;
 		document.paginationForm.page.value=pageNo;

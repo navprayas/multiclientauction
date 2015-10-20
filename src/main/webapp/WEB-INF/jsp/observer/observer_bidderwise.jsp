@@ -4,20 +4,6 @@
 <spring:url value="/static/css" var="css_url" />
 <spring:url value="/static/js" var="js_url" />
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<script type="text/javascript" src="${js_url}/csspopup.js"></script>
-<link href="${css_url}/menu.css" rel="stylesheet" media="screen" />
-<script type="text/javascript">
-<!--
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-//-->
-</script>
-</head>
 
 <body>
 <div class="Mian">

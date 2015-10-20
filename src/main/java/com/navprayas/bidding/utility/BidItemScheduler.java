@@ -50,6 +50,7 @@ public class BidItemScheduler {
 							+ " seconds...");
 					Thread.sleep(TimeUnit.SECONDS.toMillis(span));
 				} catch (Exception e) {
+					logger.debug("Bid Item scheduler catch exception");
 					logger.error(e.getMessage(), e);
 					e.printStackTrace();
 					timer.cancel();

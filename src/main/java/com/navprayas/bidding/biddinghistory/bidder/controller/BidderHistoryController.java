@@ -1,6 +1,7 @@
 package com.navprayas.bidding.biddinghistory.bidder.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,10 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.navprayas.bidding.bidder.controller.BidderController;
+import com.navprayas.bidding.bidder.service.IBidderService;
 import com.navprayas.bidding.biddinghistory.bidder.sevice.IBidderHistoryService;
 import com.navprayas.bidding.common.bean.BiddingHistoryBean;
+import com.navprayas.bidding.common.form.BidItem;
 import com.navprayas.bidding.common.form.BiddingDetailsForm;
 import com.navprayas.bidding.common.service.ICommonService;
+import com.navprayas.bidding.engine.redis.RedisConstants;
+import com.navprayas.bidding.utility.RedisCacheService;
 
 @RequestMapping("/bidderHistory/**")
 @Controller

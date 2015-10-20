@@ -8,11 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.navprayas.bidding.auctioncache.AuctionCacheManager;
+import com.navprayas.bidding.auctioncache.BidPublisher;
 import com.navprayas.bidding.common.form.BidItem;
-import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.IBidItemsCacheService;
-import com.navprayas.bidding.common.service.ICommonService;
 import com.navprayas.bidding.engine.orm.Bid;
 
 public class BidObserver implements Observer {
@@ -22,8 +22,6 @@ public class BidObserver implements Observer {
 	@Autowired
 	@Qualifier("bidItemsCacheService")
 	private IBidItemsCacheService bidItemsCacheService;
-	@Autowired
-	private ICommonService commonService;
 
 	private static BidObserver _instance;
 
@@ -65,16 +63,18 @@ public class BidObserver implements Observer {
 
 			logger.debug("In Bid Observer: " + bid);
 			String bidderName = bid.getBidderName();
-			Users user = commonService.getUserForUsername(bidderName);
-			BidItem bidItem = bidItemsCacheService.getBidItem(bid.getBidItemId(),
-					bidItemsCacheService.getAuctionId(user.getParentId()),
-					user.getParentId());
+			logger.debug("In Bid Observer: " + bidderName);
+			logger.debug("bidderName" + bidderName);
+			AuctionCacheManager.getActiveAuctionCacheBean(bid.getParentId());
+			BidItem bidItem = bidItemsCacheService.getBidItem(
+					bid.getBidItemId(), bidItemsCacheService.getAuctionId(bid.getParentId()),
+					bid.getParentId());
 			bidItem.setCurrentMarketPrice(bid.getBidAmount());
-			bidItemsCacheService.setBidItem(bidItem, user.getParentId());
+			bidItemsCacheService.setBidItem(bidItem, bid.getParentId());
 			logger.debug("In Bid Observer: " + bidItem);
 			// update Bid End Time
 
-			logger.debug("Calling Comet Pusher " + bidItem);
+			logger.debug("Calling Comet Pusher" + bidItem);
 			CometPusher.getInstance().setBidDisplay(bidItem, bidderName);
 		} catch (Exception e) {
 			logger.debug(e.getMessage(), e);

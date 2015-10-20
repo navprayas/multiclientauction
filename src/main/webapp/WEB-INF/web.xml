@@ -71,7 +71,7 @@
 
 		<init-param>
 			<param-name>allowedResourcePaths</param-name>
-			<param-value>/*/*.css,/*/*.gif,/*/*.ico,/*/*.jpeg,/*/*.jpg,/*/*.js,/*/*.png,/*/*/*.css,/*/*/*.gif,/*/*/*.ico,/*/*/*.jpeg,/*/*/*.jpg,/*/*/*.js,/*/*/*.png,/*/*/*/*.css,/*/*/*/*.gif,/*/*/*/*.ico,/*/*/*/*.jpeg,/*/*/*/*.jpg,/*/*/*/*.js,/*/*/*/*.png,/*/*.pdf,/*/*.woff,/*/*.woff2,/*/*.ttf,/*/*.css,/*/*/*.css,/*/*.css.map,/*/*/*.css.map,/css,/images</param-value>
+			<param-value>/*/*.css,/*/*.gif,/*/*.ico,/*/*.jpeg,/*/*.jpg,/*/*.js,/*/*.png,/*/*/*.css,/*/*/*.gif,/*/*/*.ico,/*/*/*.jpeg,/*/*/*.jpg,/*/*/*.js,/*/*/*.png,/*/*/*/*.css,/*/*/*/*.gif,/*/*/*/*.ico,/*/*/*/*.jpeg,/*/*/*/*.jpg,/*/*/*/*.js,/*/*/*/*.png,/*/*.pdf,/*/*.woff,/*/*.woff2,/*/*.ttf,/*/*.css,/*/*/*.css,/*/*.css.map,/*/*/*.css.map</param-value>
 		</init-param>
 	</servlet>
 

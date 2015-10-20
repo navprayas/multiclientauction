@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.navprayas.bidding.auctioncache.AuctionCacheManager;
 import com.navprayas.bidding.common.constant.BiddingConstants;
 import com.navprayas.bidding.common.dto.ReportVO;
 import com.navprayas.bidding.common.form.BidItem;
@@ -213,8 +212,7 @@ public class ReportDaoImpl implements IReportDao {
 	private void processSummary1ReportList(List<Object[]> objectsList,
 			List<Bids> bidsList, Long clientId) {
 		List<Bids> bidsListO = new ArrayList<Bids>();
-		/*Long activeId = RedisCacheService.getActiveBidItemId(clientId);*/
-		Long activeId=AuctionCacheManager.getActiveBidItemId(clientId);
+		Long activeId = RedisCacheService.getActiveBidItemId(clientId);
 		for (Object[] objects : objectsList) {
 
 			Bids bids = new Bids();

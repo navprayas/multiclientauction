@@ -16,7 +16,7 @@
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		p:viewClass="org.springframework.web.servlet.view.tiles2.TilesView" />
 
-	<bean id="tilesConfigurer"
+	<!-- <bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<property name="definitions">
 			<list>
@@ -24,7 +24,7 @@
 				<value>/WEB-INF/jsp/**/views.xml</value>
 			</list>
 		</property>
-	</bean>
+	</bean> -->
 <!-- 	
 	<bean id="dataSource" 
       class="org.springframework.jndi.JndiObjectFactoryBean">

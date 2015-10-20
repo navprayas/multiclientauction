@@ -1,7 +1,5 @@
 package com.navprayas.bidding.auctioncache;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +9,12 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import com.navprayas.bidding.common.form.BidItem;
-import com.navprayas.bidding.common.form.Category;
 
 @Component
 public class AuctionCacheManager implements InitializingBean {
 
 	private static Map<Long, AuctionCacheBean> activeAuctionMap = new HashMap<Long, AuctionCacheBean>();
-	private static List<Category> categoryList = new ArrayList<Category>();
+
 	private static Map<Long, Long> maxBidMap = new HashMap<Long, Long>();
 	private static Map<Long, Long> maxAutoBidMap = new HashMap<Long, Long>();
 
@@ -49,7 +46,6 @@ public class AuctionCacheManager implements InitializingBean {
 
 	public static void setActiveBidItem(Long clientId, BidItem bidItem) {
 		System.out.println("Setting Active Bid Item " + bidItem);
-		initializeBidItem(bidItem, clientId);
 		activeAuctionMap.get(clientId).getBidItemsMap().put(clientId, bidItem);
 	}
 
@@ -91,6 +87,11 @@ public class AuctionCacheManager implements InitializingBean {
 		return activeAuctionMap.get(clientId);
 	}
 
+	public static void setActiveAuctionCacheBean(
+			AuctionCacheBean auctionCacheBean) {
+		 activeAuctionMap.put(auctionCacheBean.getClientId(),auctionCacheBean);
+	}
+
 	public static Long getActiveBidSequenceId(Long clientId) {
 		BidItem bidItem = getActiveBidItem(clientId);
 		return bidItem != null ? bidItem.getSeqId() : null;
@@ -102,18 +103,6 @@ public class AuctionCacheManager implements InitializingBean {
 			return activeAuctionMap.get(clientId).getBidItems();
 		}
 		return null;
-	}
-
-	public static void setCategories(List<Category> list) {
-		if (categoryList == null) {
-			categoryList.addAll(list);
-		}
-	}
-
-	public static List<Category> getCategories() {
-
-		return categoryList;
-
 	}
 
 	public static void setBidIdKey(Long clientId, Long maxBidId) {
@@ -129,41 +118,18 @@ public class AuctionCacheManager implements InitializingBean {
 
 	}
 
-	/*
-	 * public static BidItem getBidItemDetails(Long activeBidItemId, Long
-	 * clientId) {
-	 * System.out.println(AuctionCacheManager.getActiveAuctionCacheBean(
-	 * clientId).getBidItemsMap()); return
-	 * AuctionCacheManager.getActiveAuctionCacheBean(clientId)
-	 * .getBidItemsMap().get(activeBidItemId);
-	 * 
-	 * }
-	 */
-
-	public static void initializeBidItem(BidItem bidItem, Long clientId) {
-		Calendar cal = Calendar.getInstance();
-		bidItem.setLastUpDateTime(cal.getTime());
-		bidItem.setBidStartTime(cal.getTime());
-		// long bidSpan =
-		// RedisCacheService.getBidItemSpan(bidItem.getBidItemId());
-		BidItem activeBidItem = AuctionCacheManager.getActiveBidItem(clientId);
-
-		long bidSpan = bidItem.getBidSpan();
-		long seqId = bidItem.getSeqId();
-		cal.add(Calendar.SECOND, (int) bidSpan);
-		bidItem.setBidEndTime(cal.getTime());
-		bidItem.setStatusCode("ACTIVE");
-		bidItem.setBidSpan(bidSpan);
-		bidItem.setSeqId(seqId);
-	}
-
 	public static void setExpiredBidItem(Long clientId, BidItem bidItem) {
 		bidItem.setStatus("CLOSED");
 		bidItem.setBidEndTime(new Date());
-		AuctionCacheBean auctionCacheManager = AuctionCacheManager
+		AuctionCacheBean auctionCacheBean = AuctionCacheManager
 				.getActiveAuctionCacheBean(clientId);
-		auctionCacheManager.getExpiredBidItems().put(bidItem.getBidItemId(),
-				bidItem);
+		if (auctionCacheBean.getExpiredBidItems() != null) {
+			auctionCacheBean.getExpiredBidItems().put(bidItem.getBidItemId(),
+					bidItem);
+		} else {
+			Map<Long, BidItem> map = new HashMap<Long, BidItem>();
+			map.put(bidItem.getBidItemId(), bidItem);
+		}
 	}
 
 }

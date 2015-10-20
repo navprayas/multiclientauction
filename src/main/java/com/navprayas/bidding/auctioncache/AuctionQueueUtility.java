@@ -23,12 +23,15 @@ public class AuctionQueueUtility {
 		if (bidSequenceList != null && !bidSequenceList.isEmpty()) {
 
 			for (BidSequence bidSequence : bidSequenceList) {
+				System.out.println("Bid sequence loop");
 				if (bidSequence != null
 						&& bidSequence.getBidItem().getBidItemId() != null
 						&& bidSequence.getBidItem().getBidItemId() != null) {
 					bidSequenceQueue.add(bidSequence.getBidItem()
 							.getBidItemId());
-					bidSequence.getBidItem().setSeqId(bidSequence.getSequenceId());
+					BidItem bidItem = bidSequence.getBidItem();
+					bidItem.setSeqId(bidSequence.getSequenceId());
+					bidItem.setBidSpan(bidSequence.getBidspan());
 					bidItemMap.put(bidSequence.getBidItem().getBidItemId(),
 							bidSequence.getBidItem());
 					bidSequenceQueueMap.put(auctionCacheBean.getClientId(),
@@ -38,12 +41,15 @@ public class AuctionQueueUtility {
 			auctionCacheBean.setBidItemsMap(bidItemMap);
 
 		}
+		System.out.println("Setting biditem span and sequence id to bid item " + bidItemMap);
+		System.out.println("bidSequenceQueue" + bidSequenceQueue);
 	}
 
 	public static Long pollActiveBidItemId(Long clientId) {
 		Queue<Long> bidSequenceQueue = bidSequenceQueueMap.get(clientId);
 		if (bidSequenceQueue != null) {
 			Long activeBidItemId = bidSequenceQueue.poll();
+			System.out.println(activeBidItemId);
 			return activeBidItemId;
 		}
 		return null;

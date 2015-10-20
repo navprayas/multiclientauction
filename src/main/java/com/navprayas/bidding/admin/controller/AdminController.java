@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.navprayas.bidding.admin.form.Variable;
 import com.navprayas.bidding.admin.service.ManageUserService;
 import com.navprayas.bidding.admin.service.VariableService;
-import com.navprayas.bidding.auctioncache.AuctionCacheBean;
-import com.navprayas.bidding.auctioncache.AuctionCacheManager;
+import com.navprayas.bidding.auctioncache.BidConsumerEngine;
 import com.navprayas.bidding.common.constant.CommonConstants;
 import com.navprayas.bidding.common.form.Auction;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.ICommonService;
 import com.navprayas.bidding.utility.ObjectRegistry;
+import com.navprayas.bidding.utility.RedisCacheService;
 
 @RequestMapping("/admin/**")
 @Controller
@@ -51,6 +51,8 @@ public class AdminController {
 	private VariableService variableservice;
 	@Autowired
 	private ManageUserService manageuserservive;
+	@Autowired
+	private BidConsumerEngine bidConsumerEngine;
 
 	@RequestMapping("/home")
 	public String getAdminHome(ModelMap modelMap,
@@ -135,14 +137,8 @@ public class AdminController {
 		 */
 		// KilimEngineGenerator.getAuctioneer().stopAuction();
 		// RedisCacheService.flushDB();
-		// RedisCacheService.setAuctionId(auctionId.toString(),
-		// user.getUserId());
+		RedisCacheService.setAuctionId(auctionId.toString(), user.getUserId());
 		// KilimEngineGenerator.getAuctioneer().restart();
-		AuctionCacheBean auctionCacheBean = new AuctionCacheBean();
-		auctionCacheBean.setClientId(user.getUserId());
-		auctionCacheBean.setAuctionId(auctionId);
-		AuctionCacheManager.setActiveAuctionId(auctionCacheBean);
-
 		BidItemsCacheService bidItemsCacheService = (BidItemsCacheService) ObjectRegistry
 				.getInstance().getObject(BidItemsCacheService.class.getName());
 		/* bidItemsCacheService.setAuctionId(auctionId); */
@@ -159,7 +155,7 @@ public class AdminController {
 			} else if (auctionTimeExt != null && auctionTimeExt.length() > 0) {
 				Calendar cal = Calendar.getInstance();
 				int time = Integer.parseInt(auctionTimeExt);
-				cal.add(Calendar.MINUTE, time + 3);
+				cal.add(Calendar.MINUTE, time + 1);
 				// bidItemsCacheService.setAuctionStartTime(cal.getTime());
 				bidItemsCacheService.auctionStartTimeMap.put(user.getUserId(),
 						cal.getTime());
@@ -181,6 +177,7 @@ public class AdminController {
 			throw new RuntimeException(e.getMessage());
 		}
 		bidItemsCacheService.initCache(user.getUserId());
+		bidConsumerEngine.startAuctionBidConsumerThread(auctionId);
 		String msg = "Auction Started - " + auctionId;
 		return "redirect:/admin/superAdmin?Message=" + msg;
 	}

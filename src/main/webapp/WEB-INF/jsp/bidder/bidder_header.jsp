@@ -15,8 +15,49 @@
 <spring:url value="/static/pdf" var="pdf_url" />
 <spring:url value="/" var="home_url" />
 <spring:url value="/bidder" var="bidder_home_url" />
-<script type="text/javascript" src="${js_url}/json.min.js"></script>
 <spring:url value="bidder/bidderReport" var="bidder_report_url" />
+<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
+<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
+	rel="stylesheet" />
+<link href="${css_url}/bootstrap.css" rel="stylesheet">
+<link href="${css_url}/font-awesome.min.css" rel="stylesheet">
+<link type="text/css" href="${css_url}/custom.css" rel="stylesheet" />
+<script type="text/javascript" src="${js_url}/json.min.js"></script>
+<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
+<script type="text/javascript"
+	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
+
+<script type='text/javascript' src='/bidding/dwr/engine.js'>
+	
+</script>
+<script type='text/javascript' src='/bidding/dwr/util.js'>
+	
+</script>
+<script>
+
+function getPageForMarketType(marketType)
+{
+	var location1 = ""
+	if(marketType == "1")
+		location1 = "${bidder_home_url}/marketlist";
+	else if(marketType == "2")
+		location1 = "${bidder_home_url}/active";
+	else if(marketType == "3")
+		location1 = "${bidder_home_url}/closed";		
+	window.location.href=location1
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
 
 
 <head>
@@ -26,7 +67,8 @@
 
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="icon" href="${images_url}/<%=session.getAttribute(CommonConstants.CLIENTID)%>-favicon.png">
+<link rel="icon"
+	href="${images_url}/<%=session.getAttribute(CommonConstants.CLIENTID)%>-favicon.png">
 
 <title></title>
 
@@ -50,19 +92,24 @@
 	<div class="container">
 		<div class="col-xs-12 col-sm-3 hdr-lft">
 			<div class="hdr-lft-in">
-				<img src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-ltd.png">
+				<img
+					src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-ltd.png">
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-6 hdr-mdl">
 			<div class="hdr-mdl-in">
 				<marquee scrollamount="2" onmouseover="stop();"
-					onmouseout="start();"> <!-- In case of any technical
-					difficulties, please contact support at +912225970344 --> Welcome To Online Auction Service Portal</marquee>
+					onmouseout="start();">
+					<!-- In case of any technical
+					difficulties, please contact support at +912225970344 -->
+					Welcome To Online Auction Service Portal
+				</marquee>
 			</div>
 		</div>
 		<div class="col-xs-12 col-sm-3 hdr-rgt">
 			<div class="hdr-rgt-in text-right">
-				<img src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
+				<img
+					src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
 			</div>
 		</div>
 	</div>

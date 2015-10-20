@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -13,19 +12,6 @@
 <spring:url value="/observer" var="observer_home_url" />
 <spring:url value="/observer/marketlist" var="observer_market_url" />
 <spring:url value="/observer/closed" var="observer_close_url" />
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
-<script type="text/javascript" src="${js_url}/json.min.js"></script>
-<script type='text/javascript' src='/bidding/dwr/engine.js'> </script>
-<script type='text/javascript' src='/bidding/dwr/util.js'> </script>
 
 <script type="text/javascript">
 function isNumber(n) {
@@ -102,30 +88,10 @@ window.onunload = function() {
   		document.getElementById("lLTime").value = currentTime.getTime();
   		window.location.reload(true); 
   }
-</script>
-<script type="text/javascript">
 function getResultForCategory()
 {
 	document.forms["categoryform"].submit();
 }
-<!--
-function MM_openBrWindow(theURL,winName,features) { //v2.0
-  window.open(theURL,winName,features);
-}
-function getPageForMarketType(marketType)
-{
-	var location1 = ""
-	if(marketType == "1")
-		location1 = "${observer_home_url}/marketlist";
-	else if(marketType == "2")
-		location1 = "${observer_home_url}/active";
-	else if(marketType == "3")
-		location1 = "${observer_home_url}/closed";		
-	window.location.href=location1
-}
-//-->
-</script>
-<script type="text/javascript">
 			$(function(){
 				// Dialog			
 				
@@ -204,8 +170,6 @@ function getPageForMarketType(marketType)
 			
 				
 			});
-		</script>
-<script type="text/javascript">
 	
 	$(function() {
 		$(".desc").dialog({
@@ -248,7 +212,6 @@ function getPageForMarketType(marketType)
 	
 
 	</script>
-</head>
 
 <body onload="displayTimes();">
 	<div class="container">
@@ -458,9 +421,9 @@ function getPageForMarketType(marketType)
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
 
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.remark}</td>
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.lengthRange}</td>
-								<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.actualLengh}</td>
+								<td>${itemLotUnique.remark}</td>
+								<td>${itemLotUnique.lengthRange}</td>
+								<td>${itemLotUnique.actualLengh}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
@@ -524,9 +487,7 @@ function getPageForMarketType(marketType)
  		return false;
 	}  	
 	
-  </script>
-
-		<script>
+ 
 function fn()
 {
 	dwr.engine.setActiveReverseAjax(true);
@@ -571,7 +532,6 @@ function resetTextColor(bitItemId)
 </script>
 	</div>
 </body>
-</html>
 
 
 

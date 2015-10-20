@@ -28,8 +28,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.tuckey.web.filters.urlrewrite.utils.StringUtils;
 
-import com.navprayas.bidding.auctioncache.AuctionCacheManager;
-import com.navprayas.bidding.auctioncache.AuctionQueueUtility;
 import com.navprayas.bidding.bidder.service.IBidderService;
 import com.navprayas.bidding.common.bean.Bidder;
 import com.navprayas.bidding.common.constant.CommonConstants;
@@ -43,6 +41,7 @@ import com.navprayas.bidding.common.form.UserActivity;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.IBidItemsCacheService;
 import com.navprayas.bidding.common.service.ICommonService;
+import com.navprayas.bidding.engine.redis.RedisConstants;
 import com.navprayas.bidding.observer.service.IObserverService;
 import com.navprayas.bidding.utility.CometPusher;
 import com.navprayas.bidding.utility.RedisCacheService;
@@ -73,12 +72,8 @@ public class ObserverController {
 	@RequestMapping("/showOnlineUser")
 	public String showOnlineUser(ModelMap modelMap, HttpSession session) {
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
-		/*
-		 * String strAuctionId =
-		 * RedisCacheService.getAuctionId(user.getParentId());
-		 */
-		String strAuctionId = AuctionCacheManager.getActiveAuctionId(
-				user.getParentId()).toString();
+		String strAuctionId = RedisCacheService
+				.getAuctionId(user.getParentId());
 		if (strAuctionId == null) {
 			return "observer_onlineUser";
 		}
@@ -234,19 +229,19 @@ public class ObserverController {
 		List<BidItem> bidItemsList = null;
 
 		modelMap.addAttribute("refreshTime", -1);
-		// String endSeq = RedisCacheService.isEndSequence(user.getParentId());
-		String endSeq = AuctionQueueUtility.isEndSequence(user.getParentId());
+		String endSeq = RedisCacheService.isEndSequence(user.getParentId());
+
 		CommonVO commonVO = new CommonVO();
 
 		commonVO.setUserName(name);
 		NavigationInfo navigationInfo = new NavigationInfo();
 
 		if (endSeq == null) {
-			if (AuctionCacheManager.getActiveAuctionId(user.getParentId()) == null) {
+			if (RedisCacheService.getAuctionId(user.getParentId()) == null) {
 				return "observer_marketlist";
 			}
-			Long auctionId = AuctionCacheManager.getActiveAuctionId(user
-					.getParentId());
+			Long auctionId = new Long(RedisCacheService.getAuctionId(user
+					.getParentId()));
 
 			commonVO.setSequenceId(0L);
 			commonVO.setAuctionId(auctionId);
@@ -320,27 +315,18 @@ public class ObserverController {
 				}
 			}
 		} else if (endSeq.equalsIgnoreCase("false")) {
-			long activeBidItemId = AuctionCacheManager.getActiveBidItemId(user
+			long activeBidItemId = RedisCacheService.getActiveBidItemId(user
 					.getParentId());
-			/*
-			 * long activeBidItemId = RedisCacheService.getActiveBidItemId(user
-			 * .getParentId());
-			 */
-			/*
-			 * Map<String, String> activeItemDetails = RedisCacheService
-			 * .getBidItemSequenceDetails(activeBidItemId, user.getParentId());
-			 * long auctionId = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_AUCTIONID + user.getParentId())); long
-			 * seqId = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_SEQUENCEID + user.getParentId()));
-			 */
+			Map<String, String> activeItemDetails = RedisCacheService
+					.getBidItemSequenceDetails(activeBidItemId,
+							user.getParentId());
+			long auctionId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_AUCTIONID));
+			long seqId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_SEQUENCEID));
 
-			BidItem bidItem = AuctionCacheManager.getActiveBidItem(user
-					.getParentId());
-
-			commonVO.setSequenceId(bidItem.getSeqId());
-			commonVO.setAuctionId(AuctionCacheManager.getActiveAuctionId(user
-					.getParentId()));
+			commonVO.setSequenceId(seqId);
+			commonVO.setAuctionId(auctionId);
 			commonVO.setCategoryId(categoryId);
 
 			Long count = null;
@@ -373,15 +359,10 @@ public class ObserverController {
 				bidItemsList = bidderService
 						.getBidItemsForCategoryForMarketListForBidder(commonVO);
 
-			/*
-			 * BidItem activeBidItem = bidItemsCacheService.getBidItem(
-			 * RedisCacheService.getActiveBidItemId(user.getParentId()),
-			 * bidItemsCacheService.getAuctionId(user.getParentId()),
-			 * user.getParentId());
-			 */
-
-			BidItem activeBidItem = AuctionCacheManager.getActiveBidItem(user
-					.getParentId());
+			BidItem activeBidItem = bidItemsCacheService.getBidItem(
+					RedisCacheService.getActiveBidItemId(user.getParentId()),
+					bidItemsCacheService.getAuctionId(user.getParentId()),
+					user.getParentId());
 
 			long refreshTime = activeBidItem.getTimeLeft();
 			logger.debug("*****refreshTime::" + refreshTime);
@@ -392,14 +373,14 @@ public class ObserverController {
 			}
 			modelMap.addAttribute("refreshTime", refreshTime);
 
-			for (BidItem bidItem1 : bidItemsList) {
-				bidItem1.setTimeLeft(refreshTime);
-				logger.debug("bidItem : " + bidItem1.getBidItemId() + " "
-						+ bidItem1.getBidSpan() + " " + refreshTime);
-				refreshTime += bidItem1.getBidSpan();
-				if (bidItem1.getCurrentMarketPrice() == null) {
-					bidItem1.setCurrentMarketPrice(bidItem1.getMinBidPrice());
-					bidItemsList.set(bidItemsList.indexOf(bidItem1), bidItem1);
+			for (BidItem bidItem : bidItemsList) {
+				bidItem.setTimeLeft(refreshTime);
+				logger.debug("bidItem : " + bidItem.getBidItemId() + " "
+						+ bidItem.getBidSpan() + " " + refreshTime);
+				refreshTime += bidItem.getBidSpan();
+				if (bidItem.getCurrentMarketPrice() == null) {
+					bidItem.setCurrentMarketPrice(bidItem.getMinBidPrice());
+					bidItemsList.set(bidItemsList.indexOf(bidItem), bidItem);
 				}
 			}
 		} else {
@@ -445,16 +426,10 @@ public class ObserverController {
 		modelMap.addAttribute("categoryName", categoryId);
 
 		List<BidItem> bidItemsList = new ArrayList<BidItem>();
-
-		/*
-		 * BidItem activeBidItem = bidItemsCacheService.getBidItem(
-		 * RedisCacheService.getActiveBidItemId(user.getParentId()),
-		 * bidItemsCacheService.getAuctionId(user.getParentId()),
-		 * user.getParentId());
-		 */
-		BidItem activeBidItem = AuctionCacheManager.getActiveBidItem(user
-				.getParentId());
-
+		
+		BidItem activeBidItem = bidItemsCacheService.getBidItem(
+				RedisCacheService.getActiveBidItemId(user.getParentId()),bidItemsCacheService.getAuctionId(user.getParentId()),
+				user.getParentId());
 		if (activeBidItem != null) {
 
 			if ((categoryId.longValue() == 0)
@@ -516,8 +491,7 @@ public class ObserverController {
 
 		commonVO.setUserName(name);
 		NavigationInfo navigationInfo = new NavigationInfo();
-		// String endSeq = RedisCacheService.isEndSequence(user.getParentId());
-		String endSeq = AuctionQueueUtility.isEndSequence(user.getParentId());
+		String endSeq = RedisCacheService.isEndSequence(user.getParentId());
 		Long auctionId = 0L;
 		long seqId = 0L;
 		if (endSeq == null) {
@@ -533,32 +507,17 @@ public class ObserverController {
 
 			return "observer_closed";
 		} else if (endSeq.equalsIgnoreCase("false")) {
-			BidItem activeBidItem = AuctionCacheManager.getActiveBidItem(user
+			long activeBidItemId = RedisCacheService.getActiveBidItemId(user
 					.getParentId());
-			/*
-			 * long activeBidItemId = RedisCacheService.getActiveBidItemId(user
-			 * .getParentId());
-			 */
-			/*
-			 * Map<String, String> activeItemDetails = RedisCacheService
-			 * .getBidItemSequenceDetails(activeBidItemId, user.getParentId());
-			 * auctionId = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_AUCTIONID + user.getParentId())); seqId
-			 * = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_SEQUENCEID + user.getParentId()));
-			 */
-
-			auctionId = AuctionCacheManager.getActiveAuctionId(user
-					.getParentId());
-			seqId = activeBidItem.getSeqId();
-
+			Map<String, String> activeItemDetails = RedisCacheService
+					.getBidItemSequenceDetails(activeBidItemId,user.getParentId());
+			auctionId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_AUCTIONID));
+			seqId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_SEQUENCEID));
 		} else {
-			/*
-			 * String strAuctionId = RedisCacheService.getAuctionId(user
-			 * .getParentId());
-			 */
-			String strAuctionId = AuctionCacheManager.getActiveAuctionId(
-					user.getParentId()).toString();
+			String strAuctionId = RedisCacheService.getAuctionId(user
+					.getParentId());
 			if (strAuctionId == null) {
 				return "observer_closed";
 			}
@@ -627,9 +586,8 @@ public class ObserverController {
 		if (observerVO.getCategoryId() == null)
 			observerVO.setCategoryId("0");
 		Long categoryId = Long.parseLong(observerVO.getCategoryId());
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		String name = auth.getName();
+		
+		String name = user.getUsername();
 
 		boolean success = true;
 		if (observerVO != null && observerVO.getBidItemId() != null) {
@@ -643,8 +601,7 @@ public class ObserverController {
 		commonVO.setUserName(name);
 		Long auctionId = 0L;
 		long seqId = 0L;
-		/* String endSeq = RedisCacheService.isEndSequence(user.getParentId()); */
-		String endSeq = AuctionQueueUtility.isEndSequence(user.getParentId());
+		String endSeq = RedisCacheService.isEndSequence(user.getParentId());
 		if (endSeq == null) {
 			bidsList = new ArrayList<Bids>();
 			modelMap.addAttribute("bidsList", bidsList);
@@ -656,29 +613,19 @@ public class ObserverController {
 			modelMap.addAttribute("categoryName", categoryId);
 			return "observer_closed";
 		} else if (endSeq.equalsIgnoreCase("false")) {
-			/*
-			 * long activeBidItemId = RedisCacheService.getActiveBidItemId(user
-			 * .getParentId()); Map<String, String> activeItemDetails =
-			 * RedisCacheService .getBidItemSequenceDetails(activeBidItemId,
-			 * user.getParentId()); auctionId = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_AUCTIONID + user.getParentId())); seqId
-			 * = Long.parseLong(activeItemDetails
-			 * .get(RedisConstants.ATTR_SEQUENCEID + user.getParentId()));
-			 */
-
-			BidItem bidItem = AuctionCacheManager.getActiveBidItem(user
+			long activeBidItemId = RedisCacheService.getActiveBidItemId(user
 					.getParentId());
-			auctionId = AuctionCacheManager.getActiveAuctionId(user
-					.getParentId());
-			seqId = bidItem.getSeqId();
+			Map<String, String> activeItemDetails = RedisCacheService
+					.getBidItemSequenceDetails(activeBidItemId,
+							user.getParentId());
+			auctionId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_AUCTIONID ));
+			seqId = Long.parseLong(activeItemDetails
+					.get(RedisConstants.ATTR_SEQUENCEID ));
 
 		} else {
-			/*
-			 * String strAuctionId = RedisCacheService.getAuctionId(user
-			 * .getParentId());
-			 */
-			String strAuctionId = AuctionCacheManager.getActiveAuctionId(
-					user.getParentId()).toString();
+			String strAuctionId = RedisCacheService.getAuctionId(user
+					.getParentId());
 			if (strAuctionId == null) {
 				return "observer_closed";
 			}
@@ -723,28 +670,19 @@ public class ObserverController {
 		// String userName = auth.getName();
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
 		if (bidItemId != null && extendTime != null) {
-			/*
-			 * BidItem bidItem = RedisCacheService.getBidItem(
-			 * RedisConstants.BIDITEM + bidItemId, String.valueOf(bidItemId),
-			 * user.getParentId());
-			 */
-
-			BidItem bidItem = AuctionCacheManager.getActiveBidItem(user
-					.getParentId());
-
+			BidItem bidItem = RedisCacheService.getBidItem(
+					RedisConstants.BIDITEM + bidItemId,
+					String.valueOf(bidItemId), user.getParentId());
 			Calendar cal = Calendar.getInstance();
 			cal.add(Calendar.SECOND, (int) bidItem.getTimeLeft() + extendTime);
 			bidItem.setBidEndTime(cal.getTime());
 			cal.add(Calendar.SECOND, -(bidItem.getTimeExtAfterBid() + 10));
 			bidItem.setLastUpDateTime(cal.getTime());
-			/*
-			 * RedisCacheService.setBidEndTime(bidItemId,
-			 * bidItem.getBidEndTime(), RedisConstants.BIDITEM + bidItemId,
-			 * user.getParentId());
-			 * RedisCacheService.setBidItemLastUpdateTime(bidItemId,
-			 * bidItem.getLastUpDateTime(), RedisConstants.BIDITEM + bidItemId,
-			 * user.getParentId());
-			 */
+			RedisCacheService.setBidEndTime(bidItemId, bidItem.getBidEndTime(),
+					RedisConstants.BIDITEM + bidItemId, user.getParentId());
+			RedisCacheService.setBidItemLastUpdateTime(bidItemId,
+					bidItem.getLastUpDateTime(), RedisConstants.BIDITEM
+							+ bidItemId, user.getParentId());
 			CometPusher.getInstance().pushBidExtendTime(bidItem);
 		}
 

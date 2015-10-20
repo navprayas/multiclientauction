@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -14,19 +13,6 @@
 <spring:url value="/bidder" var="bidder_home_url" />
 <spring:url value="/bidder/active" var="bidder_active_url" />
 <spring:url value="/bidder/marketlist" var="bidder_market_url" />
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<%-- <link href="${css_url}/style.css" rel="stylesheet" media="screen" /> --%>
-<%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script> --%>
-<%-- <link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" /> --%>
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<%-- <script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script> --%>
-
 <script type="text/javascript">
 
 function getResultForCategory()
@@ -49,7 +35,7 @@ function display( notifier, str ) {
    	document.getElementById(notifier).innerHTML = str;
 }
 
-function getPageForMarketType(marketType)
+/* function getPageForMarketType(marketType)
 {
 	var location1 = ""
 	if(marketType == "1")
@@ -58,8 +44,8 @@ function getPageForMarketType(marketType)
 		location1 = "${bidder_home_url}/active";
 	else if(marketType == "3")
 		location1 = "${bidder_home_url}/closed";		
-	window.location.href=location1
-}
+	window.location.href=location1;
+} */
 </script>
 
 <script type="text/javascript">
@@ -184,12 +170,9 @@ function blah( oCB )
 }
 </script>
 
-</head>
 
 <body>
 	<div class="container">
-		<div id="dhtmltooltip"></div>
-
 		<div class="mark-check1 mktlstcl">
 			<form id="form1" name="form1" method="post" action=""
 				style="margin: 0px;">
@@ -197,16 +180,12 @@ function blah( oCB )
 					<tr>
 						<td colspan="3"><input type="radio" name="radio" id="radio"
 							value="1" onclick="getPageForMarketType(this.value)" /> <a
-							href="${bidder_market_url}"  class="subTitleLink">&nbsp;Market
-								List</a></td>
+							href="${bidder_market_url}">&nbsp;Market List</a></td>
 						<td colspan="3"><input type="radio" name="radio" id="radio2"
 							value="2" onclick="getPageForMarketType(this.value)" /> <a
-							href="${bidder_active_url}"  class="subTitleLink">&nbsp;Active
-								Market</a></td>
+							href="${bidder_active_url}">&nbsp;Active Market</a></td>
 						<td colspan="3"><input type="radio" checked name="radio"
-							id="radio3" value="3" /><a href="#"
-							 class="subTitleLink">&nbsp;Closed
-								Market</a></td>
+							id="radio3" value="3" /><a href="#">&nbsp;Closed Market</a></td>
 						<td colspan="7" align="right"><strong>Total No. of
 								Forward Markets in Active List: <c:out
 									value="${fn:length(bidItemsList)}" />
@@ -291,8 +270,7 @@ function blah( oCB )
 
 				<tr>
 					<td><a href="#">Select</a></td>
-					<td><a href="#" 
-						>Sr. No</a><a href="#"></a></td>
+					<td><a href="#">Sr. No</a><a href="#"></a></td>
 					<td><a href="#">Description</a></td>
 					<td><a href="#">Lot No.</a></td>
 					<td>
@@ -322,9 +300,8 @@ function blah( oCB )
 							</select>
 						</form>
 					</td>
-					<td><a href="#"
-						>Material Name</a></td>
-					<td><a href="#" >Remark</a></td>
+					<td><a href="#">Material Name</a></td>
+					<td><a href="#">Remark</a></td>
 					<td><a href="#">Length Range</a></td>
 					<td><a href="#">Actual Length<br /> (Approx)
 					</a></td>
@@ -333,7 +310,7 @@ function blah( oCB )
 					<td><a href="#">Closed Date &amp; Time</a></td>
 					<td><a href="#">Last Bidded Amount<br />(INR)
 					</a></td>
-					<td><a href="#" >Status</a></td>
+					<td><a href="#">Status</a></td>
 				</tr>
 				<c:forEach items="${bidItemsList}" var="bidItem" varStatus="status">
 					<tr class="table">
@@ -496,9 +473,6 @@ function blah( oCB )
 		</div>
 	</div>
 	<div class="clr"></div>
-	<!-- </div> -->
-
-	<%-- <%@ include file="/WEB-INF/jsp/bidder/bidder_footer.jsp" %> --%>
 
 	<script>
 
@@ -528,7 +502,6 @@ function removePreffered(bidId)
 </script>
 
 </body>
-</html>
 
 
 

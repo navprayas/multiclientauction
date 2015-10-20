@@ -9,8 +9,8 @@
 		http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security-3.0.xsd">
-
 	<import resource="classpath:applicationContext-common-ds.xml" />
+
 	<!-- <annotation-driven/> -->
 
 	<sec:http auto-config="true">

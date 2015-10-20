@@ -2,31 +2,38 @@ package com.navprayas.bidding.bidder.service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.navprayas.bidding.auctioncache.IBidItemQueue;
 import com.navprayas.bidding.bidder.dao.IBidderDao;
+import com.navprayas.bidding.common.dao.CommonDaoImpl;
+import com.navprayas.bidding.common.dao.ICommonDao;
 import com.navprayas.bidding.common.dto.CommonVO;
 import com.navprayas.bidding.common.form.BidItem;
 import com.navprayas.bidding.common.service.IBidItemsCacheService;
 import com.navprayas.bidding.engine.orm.Bid;
-import com.navprayas.bidding.utility.BidderFactory;
 
 @Configurable
 @Service("bidderService")
-public class BidderServiceImpl implements IBidderService {
+public class BidderServiceImpl implements IBidderService, InitializingBean {
 
 	private final static Logger logger = LoggerFactory
 			.getLogger(BidderServiceImpl.class);
 
 	public static int AUTO_BIDTYPE = 2;
 	public static int NORMAL_BIDTYPE = 1;
+	
+	private AtomicLong atomicLongBidId;
+	private AtomicLong atomicLongAutoBidId;
 
 	@Autowired
 	@Qualifier("bidderRepository")
@@ -35,6 +42,13 @@ public class BidderServiceImpl implements IBidderService {
 	@Autowired
 	@Qualifier("bidItemsCacheService")
 	private IBidItemsCacheService bidItemsCacheService;
+	
+	@Autowired
+	@Qualifier("uiBidItemQueue")
+	private IBidItemQueue uiBidItemQueue;
+	
+	@Autowired
+	private ICommonDao commonDao;
 
 	@Transactional
 	public BidItem getBidItem(long bidItemId) {
@@ -94,17 +108,26 @@ public class BidderServiceImpl implements IBidderService {
 			final String userName, String comments, Long auctionId,
 			Long clientId) {
 
-		BidItem bidItem = bidItemsCacheService.getBidItem(bidItemId.longValue(), auctionId, clientId);
+		BidItem bidItem = bidItemsCacheService.getBidItem(
+				bidItemId.longValue(), auctionId, clientId);
 		Bid bid = new Bid(userName, bidItem.getAuctionId(), bidItemId,
 				bidAmount.doubleValue(), bidItem.getCurrency(),
 				bidItem.getStatusCode(), bidType, comments,
 				// Bid Type - 2 : Auto Bid, Bid Type - 1 : Normal Bid
-				(bidType == AUTO_BIDTYPE) ? bidAmount.doubleValue() : 0.0);
+				(bidType == AUTO_BIDTYPE) ? bidAmount.doubleValue() : 0.0,clientId);
+		if (bidType == AUTO_BIDTYPE) {
+			bid.setBidId(atomicLongAutoBidId.incrementAndGet());
+		} else {
+			bid.setBidId(atomicLongBidId.incrementAndGet());
+		}
 		bid.setStatus("I");
 		// bid.setVersion(bidItem.getVersion());
-		logger.debug(bidAmount + " Bid is " + bid);
+		//logger.debug(bidAmount + " Bid is " + bid);
 		try {
-			BidderFactory.create().call(bid);
+			// BidderFactory.create().call(bid);
+			//SingletonBid.getInstance().getQueue().add(bid);
+			//System.out.println("Bid added to main queue"+SingletonBid.getInstance().getQueue());
+			uiBidItemQueue.getBidItemQueue(auctionId).add(bid);
 		} catch (Exception e) {
 			e.printStackTrace();
 			// logger.debug("Error in calling for bid: " + e.getMessage());
@@ -173,6 +196,12 @@ public class BidderServiceImpl implements IBidderService {
 			CommonVO commonVO) {
 		return bidderDao
 				.findBidItemsCountForClosedListForBidderForCategory(commonVO);
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		atomicLongBidId = new AtomicLong(commonDao.getMaxBidId());
+		atomicLongAutoBidId = new AtomicLong(commonDao.getMaxAutoBidId());
 	}
 
 }

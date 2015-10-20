@@ -12,16 +12,13 @@ import org.directwebremoting.ScriptBuffer;
 import org.directwebremoting.ScriptSession;
 import org.directwebremoting.ScriptSessionFilter;
 import org.directwebremoting.ServerContextFactory;
-import org.directwebremoting.WebContextFactory;
-import org.directwebremoting.proxy.ScriptProxy;
 import org.directwebremoting.ui.dwr.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.navprayas.bidding.common.bean.Bidder;
 import com.navprayas.bidding.common.form.BidItem;
-import com.navprayas.bidding.common.service.BidItemsCacheService;
 import com.navprayas.bidding.common.service.SessionManager;
-import com.navprayas.bidding.utility.comparator.BidderAmountComparator;
 
 public class CometPusher {
 
@@ -64,6 +61,7 @@ public class CometPusher {
    	}
 	
 	public void pushBidExtendTime(final BidItem bidItem) {
+		System.out.println("bidItem obser"+bidItem.getBidSpan());
 		Browser.withPage(bidderActivePage, new Runnable() {
 			public void run() {
 				Util.setValue("extn", bidItem.getTimeLeft());

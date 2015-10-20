@@ -18,7 +18,6 @@ import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.navprayas.bidding.auctioncache.AuctionCacheManager;
 import com.navprayas.bidding.common.bean.Bidder;
 import com.navprayas.bidding.common.bean.EmailTemplate;
 import com.navprayas.bidding.common.constant.BiddingConstants;
@@ -37,7 +36,7 @@ import com.navprayas.bidding.common.form.UserActivity;
 import com.navprayas.bidding.common.form.UserDetails;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.util.CommonUtil;
-import com.navprayas.bidding.engine.orm.Bid;
+import com.navprayas.bidding.engine.common.Bid;
 import com.navprayas.bidding.utility.RedisCacheService;
 
 @Repository("commonRepository")
@@ -61,8 +60,7 @@ public class CommonDaoImpl implements ICommonDao {
 				" from Category ");
 		@SuppressWarnings("unchecked")
 		List<Category> categoryList = (List<Category>) query.list();
-		//RedisCacheService.setCategories(categoryList, clientId);
-		AuctionCacheManager.setCategories(categoryList);
+		RedisCacheService.setCategories(categoryList, clientId);
 		return categoryList;
 	}
 

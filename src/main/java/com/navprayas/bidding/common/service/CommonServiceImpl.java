@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.navprayas.bidding.auctioncache.AuctionCacheManager;
 import com.navprayas.bidding.common.dao.ICommonDao;
 import com.navprayas.bidding.common.dto.UserVO;
 import com.navprayas.bidding.common.form.Auction;
@@ -64,9 +63,8 @@ public class CommonServiceImpl implements ICommonService {
 	}
 
 	@Transactional
-	public List<BidderCategory> getCategoryList(String userName, Long clientId) {
-		Long auctionId = AuctionCacheManager.getActiveAuctionId(clientId);
-		/* String auctionId = RedisCacheService.getAuctionId(clientId); */
+	public List<BidderCategory> getCategoryList(String userName,Long clientId) {
+		String auctionId = RedisCacheService.getAuctionId(clientId);
 
 		/*
 		 * if (auctionId == null) { Long auctionId1 =
@@ -77,7 +75,7 @@ public class CommonServiceImpl implements ICommonService {
 		if (auctionId == null) {
 			return new ArrayList<BidderCategory>();
 		}
-		return commonDao.getCategoryList(userName, auctionId);
+		return commonDao.getCategoryList(userName, Long.parseLong(auctionId));
 	}
 
 	@Transactional
@@ -233,7 +231,7 @@ public class CommonServiceImpl implements ICommonService {
 	@Override
 	@Transactional
 	public void activeDeactiveUser(Long userId, int status) {
-		commonDao.activeDeactiveUser(userId, status);
-
+		commonDao.activeDeactiveUser(userId,status);
+		
 	}
 }
