@@ -54,14 +54,11 @@ public class AdminController {
 	@Autowired
 	private BidConsumerEngine bidConsumerEngine;
 
-	@RequestMapping("/home")
-	public String getAdminHome(ModelMap modelMap,
-			HttpServletRequest httpServletRequest) {
-		/* "admin/vendorRegistrationPage"; */
-		System.out.println("Admin home page rendering");
-		return "adminhome";
-	}
-
+	/*
+	 * @RequestMapping("/home") public String getAdminHome(ModelMap modelMap,
+	 * HttpServletRequest httpServletRequest) { "admin/vendorRegistrationPage";
+	 * System.out.println("Admin home page rendering"); return "adminhome"; }
+	 */
 	@RequestMapping("/variable")
 	public String getVariablePage(ModelMap modelMap,
 			HttpServletRequest httpServletRequest) {
@@ -69,7 +66,7 @@ public class AdminController {
 		modelMap.addAttribute("variable", new Variable());
 		// modelMap.addAttribute("bidItemsList", observerService.getBidItems());
 
-		return "admin/variable";
+		return "variable";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
@@ -89,7 +86,7 @@ public class AdminController {
 		return "reguser";
 	}
 
-	@RequestMapping("/superAdmin")
+	@RequestMapping(value = { "/superAdmin", "/home" }, method = RequestMethod.GET)
 	public String superAdmin(ModelMap modelMap, HttpSession session) {
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
 		List<Auction> auctionList = commonService.getAuctionListForAction(user

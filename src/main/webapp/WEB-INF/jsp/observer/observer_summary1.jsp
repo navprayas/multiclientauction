@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
@@ -20,9 +19,8 @@
 	var="lots_url" />
 <spring:url value="/report/observerSummary1/find/pdf" var="pdfURL" />
 
-<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<script language="JavaScript">
+<script>
 	function onSubmit() {
 		document.dateForm.action = "${form_url}";
 		return validate();
@@ -130,20 +128,7 @@
 	}
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" rel="stylesheet"
-	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
-	media="screen"></link>
-<script type="text/javascript"
-	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" />
-<link type="text/css" href="${css_url}/custom.css" rel="stylesheet" />
-<%-- <script type="text/javascript" src="${js_url}/tooltip.js"></script> --%>
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
+
 <script type="text/javascript">
 	$(function() {
 		/* // Dialog			
@@ -310,7 +295,8 @@
 	</div>
 	</div>
 	<div class="table-responsiveuser-map nofound itemlist">
-		<table class="table table-bordered table-striped text-center">
+		<table class="table table-bordered table-striped text-center"
+			style="width: 0%; margin-left: 5%;margin-right: 5%;">
 
 			<tr>
 				<td colspan="10">Select Date From <input type="text"
@@ -421,7 +407,7 @@
 				<td><a href="#">Total Sales (Qty X SalesPrice)</a></td>
 			</tr>
 
-			 <%-- <tr>
+			<%-- <tr>
 				<!-- <td colspan="10">&nbsp;</td>
 				<td>Company Name</td>
 				<td>Bid Price</td>
@@ -448,7 +434,7 @@
 				</select></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
-			</tr> --%> 
+			</tr> --%>
 			<c:forEach items="${BidsList}" var="bids" varStatus="status">
 				<tr class="table">
 					<td>${bids.bidItem.serialNo}.</td>
@@ -484,7 +470,8 @@
 												<tr>
 													<td align="left" valign="top"><form name="form1"
 															method="post" action="" style="margin: 0px;">
-															<table class="table table-bordered table-striped text-center">
+															<table
+																class="table table-bordered table-striped text-center">
 																<tr>
 																	<td>Sr. No.</td>
 																	<td>Category</td>
@@ -492,7 +479,8 @@
 																	<td>Material Name</td>
 																	<td>Remark</td>
 																	<td>Length Range</td>
-																	<td>Actual Length <br> (Approx) </td>
+																	<td>Actual Length <br> (Approx)
+																	</td>
 																	<td>Qty</td>
 																	<td>Zone</td>
 																</tr>

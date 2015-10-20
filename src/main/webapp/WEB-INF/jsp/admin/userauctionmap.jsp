@@ -57,17 +57,18 @@
 												</option>
 											</c:forEach>
 									</select></td>
-									<td colspan="2"><c:forEach var="category"
-											items="${CategoryList}">
+									<td colspan="2"><input type="checkbox" id="CategoriesList"
+										name="CategoriesList" class="CategoriesList"> Select All <c:forEach
+											var="category" items="${CategoryList}">
 											<input type="checkbox" id="${category.categoryId}"
-												name="Categories">${category.categoryName}
+												name="Categories" class="categoriesclass">${category.categoryName}
 				</c:forEach></td>
 								</tr>
 								<tr>
 
 									<th>Sr. No.</th>
 									<th>Select All <input type="checkbox" name="selectAll"
-										onclick="selectAllUser();"></th>
+										id="selectAll" onclick="selectAllUser();"></th>
 									<th>User Name</th>
 									<th>Full Name</th>
 									<th>Email</th>
@@ -166,16 +167,36 @@
 		}
 		return results;
 	}
-	function selectAllUser() {
-		$('.username').each(function(index) {
-			var classes = $(this).is(":checked") ? true : false;
-			if (!classes) {
-				$(this).attr('checked', true);
+	$(document).ready(function() {
+		$('#selectAll').on('click', function() {
+			if ($(this).is(':checked')) {
+				$('.username').each(function() {
+					this.checked = true;
+				});
 			} else {
-				$(this).attr('checked', false);
+				$('.username').each(function() {
+					this.checked = false;
+				});
 			}
-		});
-	}
+		})
+	});
+	
+	
+	$(document).ready(function() {
+		$('#CategoriesList').on('click', function() {
+			if ($(this).is(':checked')) {
+				$('.categoriesclass').each(function() {
+					this.checked = true;
+				});
+			} else {
+				$('.categoriesclass').each(function() {
+					this.checked = false;
+				});
+			}
+		})
+	});
+	
+	
 </script>
 
 

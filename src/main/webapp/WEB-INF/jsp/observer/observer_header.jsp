@@ -15,7 +15,7 @@
 <link href="${css_url}/font-awesome.min.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="${css_url}/custom.css" rel="stylesheet">
+<%-- <link href="${css_url}/custom.css" rel="stylesheet"> --%>
 <link type="text/css" rel="stylesheet"
 	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
 	media="screen"></link>
@@ -32,12 +32,20 @@
 <script type="text/javascript"
 	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript" src="${js_url}/json.min.js"></script>
-<script type='text/javascript' src='/bidding/dwr/engine.js'>
-	
-</script>
-<script type='text/javascript' src='/bidding/dwr/util.js'>
-	
-</script>
+<script type='text/javascript' src='/bidding/dwr/engine.js'></script>
+<script type='text/javascript' src='/bidding/dwr/util.js'></script>
+<link type="text/css" rel="stylesheet"
+	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
+	media="screen"></link>
+<script type="text/javascript"
+	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
+
+<link type="text/css" href="${css_url}/custom.css" rel="stylesheet" />
+<script type="text/javascript"
+	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
+
+
+
 <script>
 	function getPageForMarketType(marketType) {
 		var location1 = ""
@@ -71,7 +79,8 @@
 		<div class="hdr-rgt-in text-right">
 			<%-- <img
 				src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
-	 --%>	</div>
+	 --%>
+		</div>
 	</div>
 </div>
 <div class="strip-bar">

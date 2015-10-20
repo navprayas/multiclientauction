@@ -76,8 +76,8 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/admin/userauctionmap.jsp" />
 	</definition>
-	
-	
+
+
 	<definition name="createauction" extends="baseLayout">
 		<put-attribute name="title" value="Registration " />
 		<put-attribute name="header"
@@ -87,7 +87,7 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/createauction/CreateAuction.jsp" />
 	</definition>
-	
+
 	<definition name="fileupload" extends="baseLayout">
 		<put-attribute name="title" value="File Upload " />
 		<put-attribute name="header"
@@ -97,16 +97,15 @@
 		<put-attribute name="body"
 			value="/WEB-INF/jsp/fileupload/FileUpload.jsp" />
 	</definition>
-	
-	
+
+
 	<definition name="superAdmin" extends="baseLayout">
 		<put-attribute name="title" value="Super Admin " />
 		<put-attribute name="header"
 			value="/WEB-INF/jsp/admin/admin_header.jsp" />
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/superAdmin.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/superAdmin.jsp" />
 	</definition>
 	<definition name="logout" extends="loginLayout">
 		<put-attribute name="title" value="Log Out" />
@@ -120,6 +119,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/register.jsp" />
 	</definition>
 
+	<definition name="variable" extends="baseLayout">
+		<put-attribute name="title" value="Manage Variable" />
+
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/variable.jsp" />
+	</definition>
 
 
 
