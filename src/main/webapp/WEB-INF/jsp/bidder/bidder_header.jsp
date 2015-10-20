@@ -33,44 +33,17 @@
 	
 </script>
 <script>
-
-function getPageForMarketType(marketType)
-{
-	var location1 = ""
-	if(marketType == "1")
-		location1 = "${bidder_home_url}/marketlist";
-	else if(marketType == "2")
-		location1 = "${bidder_home_url}/active";
-	else if(marketType == "3")
-		location1 = "${bidder_home_url}/closed";		
-	window.location.href=location1
-}
-
+	function getPageForMarketType(marketType) {
+		var location1 = ""
+		if (marketType == "1")
+			location1 = "${bidder_home_url}/marketlist";
+		else if (marketType == "2")
+			location1 = "${bidder_home_url}/active";
+		else if (marketType == "3")
+			location1 = "${bidder_home_url}/closed";
+		window.location.href = location1;
+	}
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon"
-	href="${images_url}/<%=session.getAttribute(CommonConstants.CLIENTID)%>-favicon.png">
-
-<title></title>
-
 <!-- Bootstrap core CSS -->
 <link href="${css_url}/bootstrap.css" rel="stylesheet">
 <link href="${css_url}/font-awesome.min.css" rel="stylesheet">
@@ -107,9 +80,9 @@ function getPageForMarketType(marketType)
 		</div>
 		<div class="col-xs-12 col-sm-3 hdr-rgt">
 			<div class="hdr-rgt-in text-right">
-				<img
+				<%-- <img
 					src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
-			</div>
+		 --%>	</div>
 		</div>
 	</div>
 	<div class="strip-bar">

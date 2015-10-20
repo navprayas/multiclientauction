@@ -1,5 +1,3 @@
-
-
 <%@ page
 	import="org.springframework.security.core.AuthenticationException"%>
 <%@ page
@@ -57,7 +55,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-3 hdr-rgt">
 				<div class="hdr-rgt-in text-right">
-					<img src="${images_url}/logo.png">
+					<%-- <img src="${images_url}/logo.png"> --%>
 
 				</div>
 			</div>

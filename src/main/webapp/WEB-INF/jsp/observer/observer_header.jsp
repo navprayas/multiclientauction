@@ -69,9 +69,9 @@
 	</div>
 	<div class="col-xs-12 col-sm-3 hdr-rgt">
 		<div class="hdr-rgt-in text-right">
-			<img
+			<%-- <img
 				src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
-		</div>
+	 --%>	</div>
 	</div>
 </div>
 <div class="strip-bar">

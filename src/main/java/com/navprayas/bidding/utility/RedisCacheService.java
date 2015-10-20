@@ -713,7 +713,7 @@ public class RedisCacheService {
 
 	public static void setBidderCategories(List<Category> categories,
 			Long clientId) {
-		//Jedis jedis = null;
+		// Jedis jedis = null;
 		try {
 			/* jedis = redis.connect(); */
 			AuctionCacheBean auctionCacheBean = AuctionCacheManager
@@ -1000,8 +1000,13 @@ public class RedisCacheService {
 			// jedis = redis.connect();
 			// endSequence = jedis.get(RedisConstants.ACTIVE_BIDITEMID +
 			// clientId);
-			endSequence = AuctionCacheManager.getActiveAuctionCacheBean(
-					clientId).getActiveBidItemId();
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager
+					.getActiveAuctionCacheBean(clientId);
+			if (auctionCacheBean != null) {
+				endSequence = auctionCacheBean.getActiveBidItemId();
+			} else {
+				endSequence = 0l;
+			}
 			logger.debug("End of sequnce" + endSequence);
 			if (endSequence == null)
 				return null;
@@ -1047,7 +1052,7 @@ public class RedisCacheService {
 
 	public static String getAuctionId(Long clientId) {
 		// Jedis jedis = null;
-		Long auctionId = null;
+		Long auctionId = 0L;
 		try {
 			/*
 			 * jedis = redis.connect(); auctionId =
@@ -1055,7 +1060,9 @@ public class RedisCacheService {
 			 */
 			AuctionCacheBean auctionCacheBean = AuctionCacheManager
 					.getActiveAuctionCacheBean(clientId);
-			auctionId = auctionCacheBean.getAuctionId();
+			if (auctionCacheBean != null) {
+				auctionId = auctionCacheBean.getAuctionId();
+			}
 		} catch (Exception e) {
 			logger.error("FAILED TO GET Auction Id CACHE: " + e.getMessage());
 			e.printStackTrace();
