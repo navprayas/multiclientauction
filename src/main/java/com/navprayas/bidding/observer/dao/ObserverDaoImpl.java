@@ -307,7 +307,7 @@ public class ObserverDaoImpl implements IObserverDao {
 				emailTemplate.setLastName(user.getUserDetails().getLastName());
 			else
 				emailTemplate.setLastName("");
-			emailTemplate.setCc("helpdesk@navprayas.com");
+			emailTemplate.setCc("navprayasbidding@gmail.com");
 			BidItem bidItem = (BidItem) sessionFactory.getCurrentSession().get(
 					BidItem.class, observerVO.getBidItemId());
 			emailTemplate.setSubject("Bid Winning Confirmation:: "

@@ -1,5 +1,4 @@
 
-<%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix='security' uri='http://www.springframework.org/security/tags' %>
 <spring:url value="/static/js" var="js_url" />
@@ -14,8 +13,6 @@
 <spring:url value="bidder/bidderReport" var="bidder_report_url"/>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link href="${css_url}/style.css" rel="stylesheet" media="screen"/>
 </head>
 <body>
 <div class="Top">

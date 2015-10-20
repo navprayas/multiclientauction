@@ -36,16 +36,12 @@
 		</property>
 	</bean>
 
-	<!-- <bean id="jspViewResolver"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
- -->
- 
- <bean id="tilesViewResolver"
+	<!-- <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" 
+		/> <property name="prefix" value="/WEB-INF/jsp/" /> <property name="suffix" 
+		value=".jsp" /> </bean> -->
+
+	<bean id="tilesViewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		p:viewClass="org.springframework.web.servlet.view.tiles2.TilesView" />
 
@@ -58,13 +54,13 @@
 			</list>
 		</property>
 	</bean>
- 
- 
- 
- 
+
+
+
+
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		p:location="/WEB-INF/jdbc.properties" />
+		p:location="classpath:jdbc.properties" />
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -96,13 +92,9 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<!-- <bean id="kilimInitializer" class="com.navprayas.bidding.utility.KilimEngineGenerator"
-		init-method="init" destroy-method="destroy">
-		<constructor-arg>
-			<ref bean="sessionFactory" />
-		</constructor-arg>
-
-	</bean> -->
+	<!-- <bean id="kilimInitializer" class="com.navprayas.bidding.utility.KilimEngineGenerator" 
+		init-method="init" destroy-method="destroy"> <constructor-arg> <ref bean="sessionFactory" 
+		/> </constructor-arg> </bean> -->
 
 	<bean id="observerEmailSender" class="com.navprayas.bidding.common.email.EmailSender">
 		<constructor-arg>

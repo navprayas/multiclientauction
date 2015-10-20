@@ -1,9 +1,7 @@
 package com.cfe.bidding.testcases.admin;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.navprayas.bidding.common.constant.CommonConstants;
 import com.navprayas.bidding.common.form.Auction;
 import com.navprayas.bidding.common.form.Users;
 import com.navprayas.bidding.common.service.ICommonService;
@@ -40,7 +37,7 @@ public class FileUploadAuctionTestCase extends TestCase {
 				.getBean("fileUploadServiceImp");
 
 	}
-	public void testStopAuction() {
+	public void testFileUploadAuction() {
 		BidItemEntity bidItemEntity=new  BidItemEntity();
 		Users user = commonService.getUserForUsername("admin1");
 		String message = "File Upload Successfully";

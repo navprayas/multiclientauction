@@ -23,6 +23,12 @@ import com.navprayas.bidding.common.form.BidSequence;
 import com.navprayas.bidding.common.form.Category;
 import com.navprayas.bidding.engine.redis.RedisConstants;
 
+/**
+ * This Class Redis cache Service holding data into cache
+ * 
+ * @author cfeindia
+ * 
+ */
 public class RedisCacheService {
 
 	private static final Logger logger = LoggerFactory
@@ -707,7 +713,7 @@ public class RedisCacheService {
 
 	public static void setBidderCategories(List<Category> categories,
 			Long clientId) {
-		Jedis jedis = null;
+		//Jedis jedis = null;
 		try {
 			/* jedis = redis.connect(); */
 			AuctionCacheBean auctionCacheBean = AuctionCacheManager
@@ -939,11 +945,11 @@ public class RedisCacheService {
 			 * jedis.set(RedisConstants.ACTIVE_BIDITEMID + clientId, (bidItemId
 			 * == null) ? "0" : bidItemId);
 			 */
-			List<Long> l = new ArrayList<Long>();
-			l.addAll(seqIdBidItemId.keySet());
-			if (seqIdBidItemId.keySet() != null) {
-				System.out
-						.println("Bid Item Id" + seqIdBidItemId.get(l.get(0)));
+
+			if (seqIdBidItemId != null) {
+				List<Long> l = new ArrayList<Long>();
+				l.addAll(seqIdBidItemId.keySet());
+				logger.debug("Bid Item Id" + seqIdBidItemId.get(l.get(0)));
 				auctionCacheBean
 						.setActiveBidItemId(seqIdBidItemId.get(l.get(0)));
 				logger.debug("setting active bid item id==========="
@@ -960,6 +966,12 @@ public class RedisCacheService {
 		// redis.close(jedis);
 	}
 
+	/**
+	 * This
+	 * 
+	 * @param clientId
+	 * @return
+	 */
 	public static long getActiveBidItemId(Long clientId) {
 		// Jedis jedis = null;
 		long bidItemId = 0L;
@@ -971,6 +983,7 @@ public class RedisCacheService {
 			Long id = AuctionCacheManager.getActiveAuctionCacheBean(clientId)
 					.getActiveBidItemId();
 			bidItemId = (id == null) ? 0 : id;
+			logger.debug("bidItemId" + bidItemId);
 		} catch (Exception e) {
 			logger.error("FAILED TO GET BIDSEQUENCE IN CACHE: "
 					+ e.getMessage());
