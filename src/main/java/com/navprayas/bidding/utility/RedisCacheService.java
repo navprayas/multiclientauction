@@ -31,11 +31,9 @@ import com.navprayas.bidding.engine.redis.RedisConstants;
  */
 public class RedisCacheService {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(RedisCacheService.class);
+	private static final Logger logger = LoggerFactory.getLogger(RedisCacheService.class);
 	/* private static Redis redis = RedisImpl.getInstance(); */
-	public static SimpleDateFormat sdf = new SimpleDateFormat(
-			RedisConstants.DATESTRING);
+	public static SimpleDateFormat sdf = new SimpleDateFormat(RedisConstants.DATESTRING);
 
 	/*
 	 * public static Jedis jedis; static { try { jedis = redis.connect(); }
@@ -46,25 +44,22 @@ public class RedisCacheService {
 	public static void flushDB() {
 		/*
 		 * Jedis jedis = null; try { jedis = redis.connect(); jedis.flushAll();
-		 * jedis.bgrewriteaof(); } catch (Exception e) {
-		 * logger.error("FAILED TO FLUSH DB!!!"); } redis.close(jedis);
+		 * jedis.bgrewriteaof(); } catch (Exception e) { logger.error(
+		 * "FAILED TO FLUSH DB!!!"); } redis.close(jedis);
 		 */
 	}
 
 	public static void setBidItemList(List<BidItem> bidItems, Long clientId) {
 
 		for (BidItem item : bidItems) {
-			setBidItem(
-					RedisConstants.BIDITEM + item.getAuctionId()
-							+ item.getBidItemId() + clientId, item, clientId);
+			setBidItem(RedisConstants.BIDITEM + item.getAuctionId() + item.getBidItemId() + clientId, item, clientId);
 		}
 	}
 
 	public static void setBidItem(String key, BidItem bidItem, Long clientId) {
 
 		logger.debug("Set Bid item method is called");
-		AuctionCacheBean auctionCacheBean = AuctionCacheManager
-				.getActiveAuctionCacheBean(clientId);
+		AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 		Map<Long, BidItem> itemMap = auctionCacheBean.getBidItemsMap();
 		if (itemMap == null) {
 			itemMap = new HashMap<Long, BidItem>();
@@ -81,9 +76,8 @@ public class RedisCacheService {
 			/*
 			 * jedis = redis.connect(); jedis.sadd(RedisConstants.BIDITEMS +
 			 * clientId, String.valueOf(bidItem.getBidItemId())); //
-			 * System.out.println
-			 * ("Biditems getting after setting "+jedis.smembers
-			 * (RedisConstants.BIDITEMS // + clientId));
+			 * System.out.println ("Biditems getting after setting "
+			 * +jedis.smembers (RedisConstants.BIDITEMS // + clientId));
 			 * 
 			 * jedis.hsetnx(key, RedisConstants.ATTR_BIDITEMID + clientId,
 			 * String.valueOf(bidItem.getBidItemId())); jedis.hsetnx(key,
@@ -155,8 +149,7 @@ public class RedisCacheService {
 			 */
 
 		} catch (Exception e) {
-			logger.error("FAILED TO CACHE RedisConstants.BIDITEM: "
-					+ e.getMessage());
+			logger.error("FAILED TO CACHE RedisConstants.BIDITEM: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -173,11 +166,9 @@ public class RedisCacheService {
 				return null;
 			}
 
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 
-			bidItem = auctionCacheBean.getBidItemsCurrentMap().get(
-					Long.parseLong(bidItemId));
+			bidItem = auctionCacheBean.getBidItemsCurrentMap().get(Long.parseLong(bidItemId));
 
 			/*
 			 * bidItem = AuctionCacheManager.getActiveAuctionCacheBean(clientId)
@@ -271,8 +262,7 @@ public class RedisCacheService {
 		return bidItem;
 	}
 
-	public static boolean setBidEndTime(long bidItemId, Date bidEndTime,
-			String key, Long clientId) {
+	public static boolean setBidEndTime(long bidItemId, Date bidEndTime, String key, Long clientId) {
 		// Jedis jedis = null;
 		try {
 			/*
@@ -283,15 +273,12 @@ public class RedisCacheService {
 			 * sdf.format(bidEndTime));
 			 */
 
-			BidItem bidItem = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getBidItemsMap()
-					.get(bidItemId);
+			BidItem bidItem = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().get(bidItemId);
 			if (bidItem == null) {
 				return false;
 			} else {
 				bidItem.setBidEndTime(bidEndTime);
-				AuctionCacheManager.getActiveAuctionCacheBean(clientId)
-						.getBidItemsMap().put(bidItemId, bidItem);
+				AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().put(bidItemId, bidItem);
 			}
 
 		} catch (Exception e) {
@@ -313,9 +300,8 @@ public class RedisCacheService {
 			 * null : sdf.parse(endTime);
 			 */
 
-			bidEndTime = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getBidItemsMap()
-					.get(bidItemId).getBidEndTime();
+			bidEndTime = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().get(bidItemId)
+					.getBidEndTime();
 			System.out.println("getBid end time " + bidEndTime);
 
 		} catch (Exception e) {
@@ -326,39 +312,33 @@ public class RedisCacheService {
 		return bidEndTime;
 	}
 
-	public static boolean setBidItemLastUpdateTime(long bidItemId,
-			Date lastUpdateTime, String key, Long clientId) {
+	public static boolean setBidItemLastUpdateTime(long bidItemId, Date lastUpdateTime, String key, Long clientId) {
 		// Jedis jedis = null;
 		try {/*
-			 * jedis = redis.connect(); if
-			 * (!jedis.sismember(RedisConstants.BIDITEMS + clientId,
-			 * String.valueOf(bidItemId))) { redis.close(jedis); return false; }
-			 * jedis.hset(key, RedisConstants.ATTR_LASTUPDATETIME + clientId,
-			 * sdf.format(lastUpdateTime));
-			 */
+				 * jedis = redis.connect(); if
+				 * (!jedis.sismember(RedisConstants.BIDITEMS + clientId,
+				 * String.valueOf(bidItemId))) { redis.close(jedis); return
+				 * false; } jedis.hset(key, RedisConstants.ATTR_LASTUPDATETIME +
+				 * clientId, sdf.format(lastUpdateTime));
+				 */
 
-			BidItem bidItem = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getBidItemsMap()
-					.get(bidItemId);
+			BidItem bidItem = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().get(bidItemId);
 			if (bidItem == null) {
 				return false;
 			} else {
 
 				bidItem.setLastUpDateTime(lastUpdateTime);
-				AuctionCacheManager.getActiveAuctionCacheBean(clientId)
-						.getBidItemsMap().put(bidItemId, bidItem);
+				AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().put(bidItemId, bidItem);
 			}
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDITEM LAST UPDATE TIME: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDITEM LAST UPDATE TIME: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
 		return true;
 	}
 
-	public static Date getBidItemLastUpdateTime(long bidItemId, String key,
-			Long clientId) {
+	public static Date getBidItemLastUpdateTime(long bidItemId, String key, Long clientId) {
 		// Jedis jedis = null;
 		Date bidEndTime = null;
 		try {
@@ -373,13 +353,11 @@ public class RedisCacheService {
 			 * .equals("null")) ? null : sdf.parse(endTime);
 			 */
 
-			bidEndTime = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getBidItemsMap()
-					.get(bidItemId).getBidEndTime();
+			bidEndTime = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getBidItemsMap().get(bidItemId)
+					.getBidEndTime();
 
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDITEM LAST UPDATE TIME: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDITEM LAST UPDATE TIME: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -395,16 +373,13 @@ public class RedisCacheService {
 			 * Set<String> bidders = jedis.smembers(RedisConstants.BIDDERS +
 			 * bidItem.getBidItemId() + clientId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
-			Map<Long, List<Bidder>> bidItemIdBidderListMap = auctionCacheBean
-					.getBidderMap();
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
+			Map<Long, List<Bidder>> bidItemIdBidderListMap = auctionCacheBean.getBidderMap();
 			if (bidItemIdBidderListMap == null) {
 				bidItemIdBidderListMap = new HashMap<Long, List<Bidder>>();
 			}
 
-			List<Bidder> bidders = bidItemIdBidderListMap.get(bidItem
-					.getBidItemId());
+			List<Bidder> bidders = bidItemIdBidderListMap.get(bidItem.getBidItemId());
 			if (bidders == null) {
 				bidders = new ArrayList<Bidder>();
 			}
@@ -431,15 +406,13 @@ public class RedisCacheService {
 		if (bidders == null || bidders.isEmpty())
 			return;
 		for (Bidder b : bidders) {
-			setBidder(bidItem.getBidItemId(), b.getBidderName(), b.isAutoBid(),
-					b.getCurrentBidAmount(), clientId);
+			setBidder(bidItem.getBidItemId(), b.getBidderName(), b.isAutoBid(), b.getCurrentBidAmount(), clientId);
 		}
 	}
 
-	public static void setBidder(long bidItemId, String bidderName,
-			boolean isAutoBid, double bidAmount, Long clientId) {
-		AuctionCacheBean auctionCacheBean = AuctionCacheManager
-				.getActiveAuctionCacheBean(clientId);
+	public static void setBidder(long bidItemId, String bidderName, boolean isAutoBid, double bidAmount,
+			Long clientId) {
+		AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 		Map<String, Bidder> bidderMap = auctionCacheBean.getBidderIdMap();
 		Map<Long, List<Bidder>> bidderMapList = auctionCacheBean.getBidderMap();
 		if (bidderMap == null) {
@@ -474,15 +447,13 @@ public class RedisCacheService {
 			auctionCacheBean.setBidderIdMap(bidderMap);
 			auctionCacheBean.setBidderMap(bidderMapList);
 		} catch (Exception e) {
-			logger.error("FAILED TO STORE BIDDER FOR BIDITEM: "
-					+ e.getMessage());
+			logger.error("FAILED TO STORE BIDDER FOR BIDITEM: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
 	}
 
-	public static Bidder getBidder(long bidItemId, String bidderName,
-			Long clientId) {
+	public static Bidder getBidder(long bidItemId, String bidderName, Long clientId) {
 		// Jedis jedis = null;
 		Bidder bidder = null;
 		try {
@@ -501,10 +472,8 @@ public class RedisCacheService {
 			 * + bidderName, "bidAmount")));
 			 */
 
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
-			bidder = auctionCacheBean.getBidderIdMap().get(
-					bidderName + bidItemId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
+			bidder = auctionCacheBean.getBidderIdMap().get(bidderName + bidItemId);
 
 		} catch (Exception e) {
 			logger.error("FAILED TO GET BIDDER: " + e.getMessage());
@@ -526,8 +495,7 @@ public class RedisCacheService {
 			 * bidItemId, clientId)); }
 			 */
 
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			auctionCacheBean.getBidderMap();
 
 		} catch (Exception e) {
@@ -542,15 +510,14 @@ public class RedisCacheService {
 		// Jedis jedis = null;
 		List<BidItem> bidItems = null;
 		try {/*
-			 * jedis = redis.connect(); Set<String> bidItemIds =
-			 * jedis.smembers(RedisConstants.BIDITEMS + clientId);
-			 * System.out.println("bidItemIds" + bidItemIds); for (String
-			 * bidItemId : bidItemIds) {
-			 * bidItems.add(getBidItem(RedisConstants.BIDITEM + bidItemId +
-			 * clientId, bidItemId, clientId)); }
-			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+				 * jedis = redis.connect(); Set<String> bidItemIds =
+				 * jedis.smembers(RedisConstants.BIDITEMS + clientId);
+				 * System.out.println("bidItemIds" + bidItemIds); for (String
+				 * bidItemId : bidItemIds) {
+				 * bidItems.add(getBidItem(RedisConstants.BIDITEM + bidItemId +
+				 * clientId, bidItemId, clientId)); }
+				 */
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			bidItems = auctionCacheBean.getBidItems();
 
 		} catch (Exception e) {
@@ -569,8 +536,7 @@ public class RedisCacheService {
 			 * return jedis.sismember(RedisConstants.BIDITEMS + clientId,
 			 * bidItemId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			Map<Long, BidItem> itemMap = auctionCacheBean.getBidItemsMap();
 			if (itemMap.get(Long.parseLong(bidItemId)) != null) {
 				return true;
@@ -584,8 +550,7 @@ public class RedisCacheService {
 		return false;
 	}
 
-	public static void setCategory(long bidItemId, Category category,
-			Long clientId) {
+	public static void setCategory(long bidItemId, Category category, Long clientId) {
 		if (category == null)
 			return;
 		// Jedis jedis = null;
@@ -595,11 +560,9 @@ public class RedisCacheService {
 			 * category.getCategoryId() + clientId, String.valueOf(bidItemId));
 			 */
 
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 
-			Map<Long, Long> categoryIdBidItemIdMap = auctionCacheBean
-					.getCategoryBidItemMap();
+			Map<Long, Long> categoryIdBidItemIdMap = auctionCacheBean.getCategoryBidItemMap();
 			if (categoryIdBidItemIdMap == null) {
 				categoryIdBidItemIdMap = new HashMap<Long, Long>();
 			}
@@ -625,8 +588,7 @@ public class RedisCacheService {
 			 * RedisConstants.CATEGORY + categoryId + clientId,
 			 * RedisConstants.ATTR_CATEGORY_ID + clientId)));
 			 */
-			Map<Long, Category> categoryMap = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getCategoryMap();
+			Map<Long, Category> categoryMap = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getCategoryMap();
 			categoryMap.get(categoryId);
 
 		} catch (Exception e) {
@@ -641,8 +603,7 @@ public class RedisCacheService {
 		// Jedis jedis = null;
 		logger.debug("setting categories");
 		try {
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean == null) {
 				auctionCacheBean = new AuctionCacheBean();
 				auctionCacheBean.setClientId(clientId);
@@ -672,8 +633,7 @@ public class RedisCacheService {
 			 */
 
 		} catch (Exception e) {
-			logger.error("FAILED TO SET CATEGORIES LIST IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET CATEGORIES LIST IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -683,41 +643,37 @@ public class RedisCacheService {
 		// Jedis jedis = null;
 		List<Category> categoryList = new ArrayList<Category>();
 		try {/*
-			 * jedis = redis.connect(); Set<String> categories =
-			 * jedis.smembers(RedisConstants.CATEGORIES + clientId); Category
-			 * category = null; for (String c : categories) { category = new
-			 * Category();
-			 * category.setCategoryName(jedis.hget(RedisConstants.CATEGORY + c +
-			 * clientId, RedisConstants.ATTR_CATEGORY_NAME + clientId));
-			 * category.setCategoryId(Long.valueOf(jedis.hget(
-			 * RedisConstants.CATEGORY + c + clientId,
-			 * RedisConstants.ATTR_CATEGORY_ID + clientId)));
-			 * categoryList.add(category); }
-			 */
+				 * jedis = redis.connect(); Set<String> categories =
+				 * jedis.smembers(RedisConstants.CATEGORIES + clientId);
+				 * Category category = null; for (String c : categories) {
+				 * category = new Category();
+				 * category.setCategoryName(jedis.hget(RedisConstants.CATEGORY +
+				 * c + clientId, RedisConstants.ATTR_CATEGORY_NAME + clientId));
+				 * category.setCategoryId(Long.valueOf(jedis.hget(
+				 * RedisConstants.CATEGORY + c + clientId,
+				 * RedisConstants.ATTR_CATEGORY_ID + clientId)));
+				 * categoryList.add(category); }
+				 */
 
-			Map<Long, Category> mapCategory = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId).getCategoryMap();
+			Map<Long, Category> mapCategory = AuctionCacheManager.getActiveAuctionCacheBean(clientId).getCategoryMap();
 			Set<Long> set = mapCategory.keySet();
 			for (Long c : set) {
 				categoryList.add(mapCategory.get(c));
 			}
 
 		} catch (Exception e) {
-			logger.error("FAILED TO GET CATEGORIES LIST FROM CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO GET CATEGORIES LIST FROM CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
 		return categoryList;
 	}
 
-	public static void setBidderCategories(List<Category> categories,
-			Long clientId) {
+	public static void setBidderCategories(List<Category> categories, Long clientId) {
 		// Jedis jedis = null;
 		try {
 			/* jedis = redis.connect(); */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			Map<Long, Category> categoryMap = auctionCacheBean.getCategoryMap();
 			for (Category c : categories) {
 				/*
@@ -728,8 +684,7 @@ public class RedisCacheService {
 
 			}
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -744,8 +699,7 @@ public class RedisCacheService {
 			 */
 			AuctionCacheManager.setBidIdKey(clientId, maxBidId);
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -761,8 +715,7 @@ public class RedisCacheService {
 			AuctionCacheManager.setAutoBidIdKey(clientId, maxAutoBidId);
 
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDCATEOGIRES IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -777,38 +730,32 @@ public class RedisCacheService {
 			 * Long.parseLong(jedis.hget(RedisConstants.BIDSEQUENCE + bidItemId
 			 * + clientId, RedisConstants.ATTR_BIDSPAN + clientId));
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 
 			BidItem bidItem = auctionCacheBean.getBidItemsMap().get(bidItemId);
 			bidSpan = bidItem.getBidSpan();
 
 		} catch (Exception e) {
-			logger.error("FAILED TO GET BIDITEM SPAN FROM CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO GET BIDITEM SPAN FROM CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
 		return bidSpan;
 	}
 
-	public static void setBidSequenceList(List<BidSequence> bidSequenceList,
-			Long clientId) {
+	public static void setBidSequenceList(List<BidSequence> bidSequenceList, Long clientId) {
 		// Jedis jedis = null;
 		try {
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean == null) {
 				auctionCacheBean = new AuctionCacheBean();
 			}
 			// System.out.println("auctionCacheBean" + auctionCacheBean);
 			// jedis = redis.connect();
 
-			Map<Long, BidSequence> bidItemIdBidSequenceMap = auctionCacheBean
-					.getBidItemIdbidSequence();
+			Map<Long, BidSequence> bidItemIdBidSequenceMap = auctionCacheBean.getBidItemIdbidSequence();
 
-			Queue<Map<Long, Long>> seqandBidItemIdQueue = auctionCacheBean
-					.getSequenceIdBidItemIdQueue();
+			Queue<Map<Long, Long>> seqandBidItemIdQueue = auctionCacheBean.getSequenceIdBidItemIdQueue();
 
 			Map<Long, BidItem> bidItemMap = auctionCacheBean.getBidItemsMap();
 
@@ -823,27 +770,20 @@ public class RedisCacheService {
 				bidItemMap = new HashMap<Long, BidItem>();
 			}
 			for (BidSequence bidSequenceQueue : bidSequenceList) {
-				bidItemIdBidSequenceMap.put(bidSequenceQueue.getBidItem()
-						.getBidItemId(), bidSequenceQueue);
+				bidItemIdBidSequenceMap.put(bidSequenceQueue.getBidItem().getBidItemId(), bidSequenceQueue);
 				BidItem bidItem = bidSequenceQueue.getBidItem();
 				bidItem.setSeqId(bidSequenceQueue.getSequenceId());
 				bidItem.setBidSpan(bidSequenceQueue.getBidspan());
-				System.out.println("  setting bid sequence BidItem sequence Id"
-						+ bidItem.getSeqId());
-				System.out
-						.println("  setting bid sequence BidItem Span time Id"
-								+ bidItem.getBidSpan());
+				System.out.println("  setting bid sequence BidItem sequence Id" + bidItem.getSeqId());
+				System.out.println("  setting bid sequence BidItem Span time Id" + bidItem.getBidSpan());
 
 				bidItemMap.put(bidItem.getBidItemId(), bidItem);
-				auctionCacheBean
-						.setBidItemIdbidSequence(bidItemIdBidSequenceMap);
+				auctionCacheBean.setBidItemIdbidSequence(bidItemIdBidSequenceMap);
 				auctionCacheBean.setBidItemsMap(bidItemMap);
 				Map<Long, Long> map = new HashMap<Long, Long>();
-				map.put(bidSequenceQueue.getSequenceId(), bidSequenceQueue
-						.getBidItem().getBidItemId());
+				map.put(bidSequenceQueue.getSequenceId(), bidSequenceQueue.getBidItem().getBidItemId());
 				seqandBidItemIdQueue.add(map);
-				auctionCacheBean
-						.setSequenceIdBidItemIdQueue(seqandBidItemIdQueue);
+				auctionCacheBean.setSequenceIdBidItemIdQueue(seqandBidItemIdQueue);
 
 				/*
 				 * 
@@ -885,8 +825,7 @@ public class RedisCacheService {
 			 */
 
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDSEQUENCE IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDSEQUENCE IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -894,8 +833,7 @@ public class RedisCacheService {
 
 	// Get SEQUENCE ID, BIDITEM ID, BIDSPAN, AUCTION ID. Pass BIDITEM ID and
 	// client Id
-	public static Map<String, String> getBidItemSequenceDetails(long bidItemId,
-			Long clientId) {
+	public static Map<String, String> getBidItemSequenceDetails(long bidItemId, Long clientId) {
 		// Jedis jedis = null;
 		Map<String, String> sequenceDetails = new HashMap<String, String>();
 		try {
@@ -903,21 +841,15 @@ public class RedisCacheService {
 			 * jedis = redis.connect(); sequenceDetails =
 			 * jedis.hgetAll(RedisConstants.BIDSEQUENCE + bidItemId + clientId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
-			BidSequence bidSequence = auctionCacheBean
-					.getBidItemIdbidSequence().get(bidItemId);
-			sequenceDetails.put(RedisConstants.ATTR_AUCTIONID, bidSequence
-					.getAuction().getAuctionId().toString());
-			sequenceDetails.put(RedisConstants.ATTR_SEQUENCEID,
-					String.valueOf(bidSequence.getSequenceId()));
-			sequenceDetails.put(RedisConstants.ATTR_BIDSPAN,
-					String.valueOf(bidSequence.getBidspan()));
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
+			BidSequence bidSequence = auctionCacheBean.getBidItemIdbidSequence().get(bidItemId);
+			sequenceDetails.put(RedisConstants.ATTR_AUCTIONID, bidSequence.getAuction().getAuctionId().toString());
+			sequenceDetails.put(RedisConstants.ATTR_SEQUENCEID, String.valueOf(bidSequence.getSequenceId()));
+			sequenceDetails.put(RedisConstants.ATTR_BIDSPAN, String.valueOf(bidSequence.getBidspan()));
 
 			System.out.println("sequence Details " + sequenceDetails);
 		} catch (Exception e) {
-			logger.error("FAILED TO GET BIDSEQUENCE DETAILS FROM CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO GET BIDSEQUENCE DETAILS FROM CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		/* redis.close(jedis); */
@@ -932,10 +864,8 @@ public class RedisCacheService {
 			 * Long bidItemId = jedis.rpop(RedisConstants.BIDITEMSEQUENCEIDS +
 			 * clientId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
-			Queue<Map<Long, Long>> seqIdAndBidItemId = auctionCacheBean
-					.getSequenceIdBidItemIdQueue();
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
+			Queue<Map<Long, Long>> seqIdAndBidItemId = auctionCacheBean.getSequenceIdBidItemIdQueue();
 			logger.debug("bidItemIds" + seqIdAndBidItemId);
 			Map<Long, Long> seqIdBidItemId = seqIdAndBidItemId.poll();
 			logger.debug("sequence Id Maps" + seqIdBidItemId);
@@ -950,17 +880,14 @@ public class RedisCacheService {
 				List<Long> l = new ArrayList<Long>();
 				l.addAll(seqIdBidItemId.keySet());
 				logger.debug("Bid Item Id" + seqIdBidItemId.get(l.get(0)));
-				auctionCacheBean
-						.setActiveBidItemId(seqIdBidItemId.get(l.get(0)));
-				logger.debug("setting active bid item id==========="
-						+ auctionCacheBean.getActiveBidItemId());
+				auctionCacheBean.setActiveBidItemId(seqIdBidItemId.get(l.get(0)));
+				logger.debug("setting active bid item id===========" + auctionCacheBean.getActiveBidItemId());
 			} else {
 				logger.debug("auction cache bean object is setting ol now bit items are not availble more for bidding");
 				auctionCacheBean.setActiveBidItemId(0l);
 			}
 		} catch (Exception e) {
-			logger.error("FAILED TO SET BIDSEQUENCE IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO SET BIDSEQUENCE IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -980,16 +907,13 @@ public class RedisCacheService {
 			 * jedis = redis.connect(); String id =
 			 * jedis.get(RedisConstants.ACTIVE_BIDITEMID + clientId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean != null) {
-				bidItemId = (auctionCacheBean.getActiveBidItemId() == null) ? 0
-						: auctionCacheBean.getActiveBidItemId();
+				bidItemId = (auctionCacheBean.getActiveBidItemId() == null) ? 0 : auctionCacheBean.getActiveBidItemId();
 			}
 			logger.debug("bidItemId" + bidItemId);
 		} catch (Exception e) {
-			logger.error("FAILED TO GET BIDSEQUENCE IN CACHE: "
-					+ e.getMessage());
+			logger.error("FAILED TO GET BIDSEQUENCE IN CACHE: " + e.getMessage());
 			e.printStackTrace();
 		}
 		// redis.close(jedis);
@@ -1003,8 +927,7 @@ public class RedisCacheService {
 			// jedis = redis.connect();
 			// endSequence = jedis.get(RedisConstants.ACTIVE_BIDITEMID +
 			// clientId);
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean != null) {
 				endSequence = auctionCacheBean.getActiveBidItemId();
 			} else {
@@ -1033,8 +956,7 @@ public class RedisCacheService {
 			 * clientId));
 			 */
 			logger.debug("Setting Active Auction Id" + auctionId);
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean == null) {
 				auctionCacheBean = new AuctionCacheBean();
 				auctionCacheBean.setClientId(clientId);
@@ -1055,16 +977,16 @@ public class RedisCacheService {
 
 	public static String getAuctionId(Long clientId) {
 		// Jedis jedis = null;
-		Long auctionId = 0L;
+		Long auctionId = 0l;
 		try {
 			/*
 			 * jedis = redis.connect(); auctionId =
 			 * jedis.get(RedisConstants.AUCTIONID + clientId);
 			 */
-			AuctionCacheBean auctionCacheBean = AuctionCacheManager
-					.getActiveAuctionCacheBean(clientId);
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager.getActiveAuctionCacheBean(clientId);
 			if (auctionCacheBean != null) {
 				auctionId = auctionCacheBean.getAuctionId();
+				logger.debug("Auction Id" + auctionId);
 			}
 		} catch (Exception e) {
 			logger.error("FAILED TO GET Auction Id CACHE: " + e.getMessage());
@@ -1091,8 +1013,7 @@ public class RedisCacheService {
 			bidItem.setStatusCode("CLOSED");
 			bidItem.setBidEndTime(new Date());
 			AuctionCacheBean auctionCacheBean = new AuctionCacheBean();
-			Map<Long, BidItem> expiredItemsMap = auctionCacheBean
-					.getExpiredBidItems();
+			Map<Long, BidItem> expiredItemsMap = auctionCacheBean.getExpiredBidItems();
 			if (expiredItemsMap == null) {
 				expiredItemsMap = new HashMap<Long, BidItem>();
 			}
