@@ -11,8 +11,7 @@
 			value="/WEB-INF/jsp/admin/admin_header.jsp" />
 		<put-attribute name="footer"
 			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
-		<put-attribute name="body"
-			value="/WEB-INF/jsp/admin/registrationHome.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/home.jsp" />
 	</definition>
 	<definition name="createnewauction" extends="baseLayout">
 		<put-attribute name="title" value="Create Auction" />
@@ -121,7 +120,10 @@
 
 	<definition name="variable" extends="baseLayout">
 		<put-attribute name="title" value="Manage Variable" />
-
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/admin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/variable.jsp" />
 	</definition>
 

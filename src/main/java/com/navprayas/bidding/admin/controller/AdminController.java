@@ -1,5 +1,6 @@
 package com.navprayas.bidding.admin.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +12,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.navprayas.bidding.admin.form.Variable;
 import com.navprayas.bidding.admin.service.ManageUserService;
@@ -54,11 +59,24 @@ public class AdminController {
 	@Autowired
 	private BidConsumerEngine bidConsumerEngine;
 
-	/*
-	 * @RequestMapping("/home") public String getAdminHome(ModelMap modelMap,
-	 * HttpServletRequest httpServletRequest) { "admin/vendorRegistrationPage";
-	 * System.out.println("Admin home page rendering"); return "adminhome"; }
-	 */
+	@RequestMapping("/home")
+	public String getAdminHome(ModelMap model, HttpSession session) {
+
+		System.out.println("Admin home page rendering");
+		return "adminhome";
+	}
+
+	@RequestMapping("/adminauctionlist")
+	public @ResponseBody
+	String getAdminAuction(ModelMap model, HttpSession session)
+			throws JsonGenerationException, JsonMappingException, IOException {
+
+		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.writeValueAsString(commonService.getAuctionListAll(user
+				.getUserId()));
+	}
+
 	@RequestMapping("/variable")
 	public String getVariablePage(ModelMap modelMap,
 			HttpServletRequest httpServletRequest) {
@@ -70,7 +88,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addVariable(@ModelAttribute("variable") Variable variable,
+	public String addVariable(@ModelAttribute Variable variable,
 			BindingResult result, HttpServletRequest httpServletRequest) {
 
 		variableservice.addVariable(variable);
@@ -86,7 +104,7 @@ public class AdminController {
 		return "reguser";
 	}
 
-	@RequestMapping(value = { "/superAdmin", "/home" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/superAdmin" }, method = RequestMethod.GET)
 	public String superAdmin(ModelMap modelMap, HttpSession session) {
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
 		List<Auction> auctionList = commonService.getAuctionListForAction(user

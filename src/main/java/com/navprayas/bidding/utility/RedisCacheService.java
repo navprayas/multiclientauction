@@ -980,9 +980,12 @@ public class RedisCacheService {
 			 * jedis = redis.connect(); String id =
 			 * jedis.get(RedisConstants.ACTIVE_BIDITEMID + clientId);
 			 */
-			Long id = AuctionCacheManager.getActiveAuctionCacheBean(clientId)
-					.getActiveBidItemId();
-			bidItemId = (id == null) ? 0 : id;
+			AuctionCacheBean auctionCacheBean = AuctionCacheManager
+					.getActiveAuctionCacheBean(clientId);
+			if (auctionCacheBean != null) {
+				bidItemId = (auctionCacheBean.getActiveBidItemId() == null) ? 0
+						: auctionCacheBean.getActiveBidItemId();
+			}
 			logger.debug("bidItemId" + bidItemId);
 		} catch (Exception e) {
 			logger.error("FAILED TO GET BIDSEQUENCE IN CACHE: "

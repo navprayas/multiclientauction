@@ -56,4 +56,5 @@ public interface ICommonService {
 	public Auction isAnyRunningAuction(Long userId);
 	public List<Users> getAdminList(Long userId);
 	public void activeDeactiveUser(Long userId, int status);
+	public List<Auction>  getAuctionListAll(Long userId);
 }

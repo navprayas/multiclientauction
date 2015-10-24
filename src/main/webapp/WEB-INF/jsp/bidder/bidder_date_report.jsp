@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 
@@ -17,23 +16,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction_Bidder Report</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" />
-<link type="text/css" rel="stylesheet"
-	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
-	media="screen"></link>
-<script type="text/javascript"
-	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
-<script type="text/javascript" src="${js_url}/tooltip.js"></script>
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
 <script type="text/javascript">
-
-function onSubmit() {
+	function onSubmit() {
 		//document.dateForm.action="${form_url}";
 		return validate();
 
@@ -111,20 +95,7 @@ function onSubmit() {
 	}
 </script>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL Auction</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" rel="stylesheet"
-	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
-	media="screen"></link>
-<script type="text/javascript"
-	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
-<link type="text/css" href="${css_url}/jquery-ui-1.8.11.custom.css"
-	rel="stylesheet" />
-<script type="text/javascript" src="${js_url}/tooltip.js"></script>
-<script type="text/javascript" src="${js_url}/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="${js_url}/jquery-ui-1.8.11.custom.min.js"></script>
+
 <script type="text/javascript">
 	$(function() {
 		// Dialog			
@@ -176,9 +147,9 @@ function onSubmit() {
 </head>
 
 <body>
-	<%@ include file="/WEB-INF/jsp/bidder/bidder_report_top.jsp"%>
+	<%-- <%@ include file="/WEB-INF/jsp/bidder/bidder_report_top.jsp"%> --%>
 	<div class="Mian">
-		<div id="dhtmltooltip"></div>
+		<!-- <div id="dhtmltooltip"></div> -->
 		<script type="text/javascript">
 			pathToImages = "${static_url}" + pathToImages;
 		</script>
@@ -239,7 +210,7 @@ function onSubmit() {
 			</div>
 
 		</div>
-		
+
 		<div class="CheckBoxMenu">
 
 			<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -306,14 +277,14 @@ onmouseout="hideddrivetip()" class="TitleLink">Actual
 						;
 onmouseout="hideddrivetip()" class="TitleLink">Quantity</a></td>
 				</tr>
-				
-				
+
+
 				<c:forEach items="${wonList}" var="bidItem" varStatus="status">
-				<tr class="table">
+					<tr class="table">
 						<td height="40" align="center" valign="middle"
 							class="DetailBorRight">${status.index+1}</td>
 
-												<td align="center" valign="middle" class="DetailBorRight">
+						<td align="center" valign="middle" class="DetailBorRight">
 
 
 							<div id="dialog_desc${status.index+1}" class="desc"
@@ -417,10 +388,10 @@ onmouseout="hideddrivetip()" class="TitleLink">Quantity</a></td>
 								</table>
 							</div> <input type="submit" name="button3" id="desc${status.index+1}"
 							value="Desc" class="description ui-state-default ui-corner-all" />
-						
-						</td>	
-						
-						
+
+						</td>
+
+
 						<td align="center" valign="middle" class="DetailBorRight">${bidItem.bidItemId}</td>
 						<td align="center" valign="middle" class="DetailBorRight">${bidItem.category.categoryName}</td>
 						<td align="center" valign="middle" class="DetailBorRight"><a
@@ -441,19 +412,19 @@ onmouseout="hideddrivetip()" class="TitleLink">Quantity</a></td>
 						<td align="center" valign="middle" class="DetailBorRight">${bidItem.totalQuantity}
 							${bidItem.unit}</td>
 					</tr>
-									
-						</c:forEach>
-		
-		
-		</table>
-		
+
+				</c:forEach>
+
+
+			</table>
+
 		</div>
 		<div class="GreenSpacer"></div>
 
 
 
 	</div>
-	
+
 
 
 	<div class="AutoBidBlue"></div>

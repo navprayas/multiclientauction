@@ -749,4 +749,15 @@ public class CommonDaoImpl implements ICommonDao {
 
 	}
 
+	@Override
+	public List<Auction> getAuctionListAll(Long userId) {
+		Query query = sessionFactory
+				.getCurrentSession()
+				.createQuery(
+						"From Auction auction where  auction.userId=:userid order by auction.auctionStartTime desc");
+		query.setLong("userid", userId);
+		return (List<Auction>) query.list();
+
+	}
+
 }

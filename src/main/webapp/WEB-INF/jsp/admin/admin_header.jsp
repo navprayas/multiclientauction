@@ -29,6 +29,7 @@
 <script type="text/javascript"
 	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
 <script src="${js_url}/jquery-1.10.2.min.js"></script>
+
 <div class="container">
 	<div class="col-xs-12 col-sm-3 hdr-lft">
 		<div class="hdr-lft-in">
@@ -47,8 +48,9 @@
 	</div>
 	<div class="col-xs-12 col-sm-3 hdr-rgt">
 		<div class="hdr-rgt-in text-right">
-		<%-- 	<img src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
-		 --%></div>
+			<%-- 	<img src="${images_url}/companylogos/<%=session.getAttribute(CommonConstants.CLIENTID)%>-logo.png">
+		 --%>
+		</div>
 	</div>
 </div>
 <div class="strip-bar">
@@ -66,14 +68,25 @@
 			<div class="navbar-collapse collapse" id="navbar">
 				<ul class="nav navbar-nav auction-menu">
 
-
-					<li class="active"><a href="${admin_home_url}">Auction
+					<li class="active"><a href="home">Home</a></li>
+					<li><a href="${admin_home_url}">Auction
 							Management</a></li>
 					<li><a href="${user_auction_map_url}">User Auction Map</a></li>
 					<li><a href="${vendorRegistration_url}">Create Vendor</a></li>
 					<li><a href="${userRegistration_url}">Create User</a></li>
-					<li><a href="${passwordReset_url}">Reset Password</a></li>
-					<li><a href="${home_url}changepass">Change Password</a></li>
+					<li><a href="#" data-toggle="dropdown">Manage Password<b
+							class="caret"></b>
+					</a>
+
+
+						<ul class="dropdown-menu nav auction-menu">
+							<li><a href="${passwordReset_url}">Reset Password</a></li>
+							<li><a href="${home_url}changepass">Change Password</a></li>
+
+
+						</ul></li>
+
+
 					<li><a href="${createauction_url}">Create Auction</a></li>
 					<li><a href="${fileupload_url}">File Upload</a></li>
 				</ul>

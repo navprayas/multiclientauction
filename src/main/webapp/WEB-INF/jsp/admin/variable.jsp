@@ -1,4 +1,72 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix='security'
+	uri='http://www.springframework.org/security/tags'%>
+<spring:url value="/static/images" var="images_url" />
+<spring:url value="/static/css" var="css_url" />
+<spring:url value="/static/js" var="js_url" />
+<spring:url value="/admin/superAdmin" var="admin_url" />
+<body>
+	<!-- { middle } -->
+	<section class="main">
+		<div class="container">
+			<div class="form-container">
+				<h1>
+					<i class="fa fa-sign-in"></i> Set Value
+				</h1>
+				<c:if test="${not empty message_variable}">
+					<c:out value="${message_variable}" />.
+				</c:if>
+
+
+				<form role="form" name="form" method="post" action="add">
+
+
+					<div class="form-group">
+						<label for="exampleInputPassword1">Time extention after
+							every bid is enetered </label> <input type="text" class="form-control"
+							placeholder="Time Extension" name="timeExtension"
+							id="timeExtension">
+					</div>
+
+
+					<div class="form-group">
+						<div class="form-group">
+							<label for="exampleInputPassword1">Time difference
+								between two active lots </label> <input type="text" class="form-control"
+								placeholder="Time Difference" name="timeDiffernrce"
+								id="timeDiffernrce">
+
+
+						</div>
+
+					</div>
+					<div class="form-group">
+						<div class="form-group">
+							<label for="exampleInputPassword1">Number of active lots
+								visible at a time</label> <input type="text" id="activeLots"
+								name="activeLots" class="form-control"
+								placeholder="Number of active lots" /> <input type="hidden"
+								id="isActive" name="isActive" value="Y" />
+						</div>
+					</div>
+					<div class="form-group form-submit">
+
+						<button type="submit" class="btn btn-primary pull-right"
+							name="button" id="button">Add</button>
+
+						<div class="clearfix"></div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- /container -->
+	</section>
+
+</body>
+
+
+<%-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -68,3 +136,4 @@
 </div>
 </body>
 </html>
+ --%>

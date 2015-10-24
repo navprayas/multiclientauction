@@ -1,25 +1,77 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page contentType="text/html;charset=UTF-8"%>
-<%@page pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix='security' uri='http://www.springframework.org/security/tags' %>
+<%@ taglib prefix='security'
+	uri='http://www.springframework.org/security/tags'%>
 <spring:url value="/static/images" var="images_url" />
 <spring:url value="/static/css" var="css_url" />
 <spring:url value="/static/js" var="js_url" />
 <spring:url value="/admin/superAdmin" var="admin_url" />
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL E-Auction Vendor Registration Form</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-</head>
+
+
+
+<script src="${js_url}/jsapi.js"></script>
+<script>
+	var parentArray = new Array();
+	$(document).ready(
+			function() {
+				var arr = new Array('Total Auction', 'Auction Id',
+						'Completed Auction', 'Auction Id', 'Pending Auction',
+						'AuctionId');
+				parentArray.push(arr);
+
+				$.ajax({
+					url : "adminauctionlist",
+					async : false,
+					success : function(data) {
+						result = jQuery.parseJSON(data);
+						
+						for (var i = 0; i < result.length; i++) {
+							var arr;
+							arr = new Array(result[i].name,
+									parseInt(result[i].auctionId),
+									result[i].name,
+									parseInt(result[i].auctionId),
+									result[i].name,
+									parseInt(result[i].auctionId));
+							parentArray.push(arr);
+							if (result[i].status == 'Closed') {
+								arr = new Array(null, null, result[i].name,
+										parseInt(result[i].auctionId), null,
+										null);
+							} else {
+								arr = new Array(null, null, null, null,
+										result[i].name,
+										parseInt(result[i].auctionId));
+							}
+
+							parentArray.push(arr);
+						}
+					}
+				});
+
+			});
+
+	google.load("visualization", "1", {
+		packages : [ "corechart" ]
+	});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		console.log(parentArray);
+		var data = google.visualization.arrayToDataTable(parentArray);
+
+		var options = {
+			title : 'Auction List',
+			is3D : true
+		};
+
+		var chart = new google.visualization.PieChart(document
+				.getElementById('piechart'));
+
+		chart.draw(data, options);
+	}
+</script>
 <body>
-<%-- <%@ include file="/WEB-INF/jsp/admin/admin_top.jsp"%> --%>
-<div class="Mian">
-	<h1>Welcome Admin  Tiles sys</h1>
-</div>
- <!-- <div class="Footer">&copy; Copyright 2011 Navprayas </div>
-    <div class="clr"></div> -->
+
+	<div id="piechart" style="width: 900px; height: 500px;"></div>
+
 </body>
-</html>

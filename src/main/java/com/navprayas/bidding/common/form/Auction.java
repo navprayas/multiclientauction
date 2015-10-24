@@ -119,11 +119,11 @@ public class Auction implements Serializable {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
+	/*@Override
 	public String toString() {
 		return "Auction [auctionId=" + auctionId + "]";
 	}
-
+*/
 	/*
 	 * (non-Javadoc)
 	 * 

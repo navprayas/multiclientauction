@@ -113,7 +113,7 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 			cleanBidItem(RedisCacheService.getActiveBidItemId(clientId),
 					Long.parseLong(RedisCacheService.getAuctionId(clientId)),
 					clientId);
-			 scheduler.stop();
+			scheduler.stop();
 			return 0L;
 		} else if (auctionStartFlags.get(clientId)) {
 			logger.debug("calling next biditem============= Start sequnce");
@@ -194,7 +194,7 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 
 		auctionCacheBean.getBidItemsCurrentMap().put(bidItem.getBidItemId(),
 				bidItem);
-		//auctionCacheBean.setBidItem(bidItem);
+		// auctionCacheBean.setBidItem(bidItem);
 		logger.debug("DAO Set BidItem : " + bidItem);
 
 		/*
@@ -212,10 +212,13 @@ public class BidItemsCacheService implements IBidItemsCacheService {
 		 * + auctionId + bidItemId + clientId, String.valueOf(bidItemId),
 		 * clientId);
 		 */
-		 AuctionCacheBean auctionCacheBean = AuctionCacheManager
-		.getActiveAuctionCacheBean(clientId);
-		
-		BidItem bidItem = auctionCacheBean.getBidItemsCurrentMap().get(bidItemId);
+		BidItem bidItem = null;
+		AuctionCacheBean auctionCacheBean = AuctionCacheManager
+				.getActiveAuctionCacheBean(clientId);
+		if (auctionCacheBean != null) {
+			 bidItem = auctionCacheBean.getBidItemsCurrentMap().get(
+					bidItemId);
+		}
 		if (bidItem == null && bidItemId != 0) {
 			bidItem = commonDao.getBidItem(bidItemId);
 			initializeBidItem(bidItem, clientId);

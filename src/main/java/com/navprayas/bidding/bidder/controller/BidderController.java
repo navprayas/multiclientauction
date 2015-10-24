@@ -67,7 +67,7 @@ public class BidderController {
 	@Qualifier("bidItemsCacheService")
 	private IBidItemsCacheService bidItemsCacheService;
 
-	@RequestMapping("/home")
+	/*@RequestMapping("/home")
 	public String getBidItems(ModelMap modelMap, HttpServletRequest request) {
 		logger.info("In getBidItems Method:");
 		modelMap.addAttribute("bidItem", new BidItem());
@@ -76,11 +76,11 @@ public class BidderController {
 		// (List<BidItem>)(modelMap.get("bidItemsList"));
 		// return "bidder/bidder_marketlist";
 		return "bidder_marketlist";
-	}
+	}*/
 
-	@RequestMapping(value = { "/marketlist" })
+	@RequestMapping(value = { "/marketlist","/home" })
 	public String getBidItemsForCategoryForMarketListForBidder(
-			@RequestParam(value = "category", required = false) Integer categoryId,
+			@RequestParam(value = "category",defaultValue="0", required = false) Integer categoryId,
 			@RequestParam(required = false, defaultValue = "1", value = "page") String page,
 			ModelMap modelMap, HttpServletRequest request) {
 		HttpSession session = request.getSession();

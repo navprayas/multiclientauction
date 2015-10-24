@@ -1,6 +1,5 @@
 package com.navprayas.bidding.common.form;
 
-import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.CascadeType;

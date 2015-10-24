@@ -1,5 +1,4 @@
-<%@page contentType="text/html;charset=UTF-8"%>
-<%@page pageEncoding="UTF-8"%>
+
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix='security'
 	uri='http://www.springframework.org/security/tags'%>
@@ -8,8 +7,7 @@
 <spring:url value="/static/css" var="css_url" />
 <spring:url value="/static/js" var="js_url" />
 
-<%@page import="java.util.Date"%><html
-	xmlns="http://www.w3.org/1999/xhtml">
+<%@page import="java.util.Date"%>
 
 <script type="text/javascript">
 	function getResultForCategory(categoryId) {
@@ -239,11 +237,6 @@
 
 			</table>
 		</div>
-		<!-- <div class="GreenSpacer"></div> -->
-
-		<!-- <div class="AutoBidBlue"></div>
-      <div class="Footer">© Copyright 2011 Navprayas</div>
-    <div class="clr"></div>-->
+		
 	</div>
 </body>
-</html>

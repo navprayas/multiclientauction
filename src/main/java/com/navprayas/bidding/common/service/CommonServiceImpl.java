@@ -63,7 +63,7 @@ public class CommonServiceImpl implements ICommonService {
 	}
 
 	@Transactional
-	public List<BidderCategory> getCategoryList(String userName,Long clientId) {
+	public List<BidderCategory> getCategoryList(String userName, Long clientId) {
 		String auctionId = RedisCacheService.getAuctionId(clientId);
 
 		/*
@@ -231,7 +231,16 @@ public class CommonServiceImpl implements ICommonService {
 	@Override
 	@Transactional
 	public void activeDeactiveUser(Long userId, int status) {
-		commonDao.activeDeactiveUser(userId,status);
-		
+		commonDao.activeDeactiveUser(userId, status);
+
+	}
+/**
+ * 
+ */
+	@Override
+	@Transactional
+	public List<Auction> getAuctionListAll(Long userId) {
+
+		return commonDao.getAuctionListAll(userId);
 	}
 }

@@ -90,4 +90,6 @@ public interface ICommonDao {
 	public List<Users> getAllAdmin(Long userId);
 
 	public void activeDeactiveUser(Long userId, int status);
+
+	public List<Auction> getAuctionListAll(Long userId);
 }

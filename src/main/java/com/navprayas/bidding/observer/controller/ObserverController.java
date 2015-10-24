@@ -84,7 +84,7 @@ public class ObserverController {
 		return "observer_onlineUser";
 	}
 
-	@RequestMapping("/home")
+	/*@RequestMapping("/home")
 	public String getBidItems(ModelMap modelMap,
 			HttpServletRequest httpServletRequest) {
 		logger.info("In getBidItems Method:");
@@ -93,7 +93,7 @@ public class ObserverController {
 		String name = auth.getName();
 		logger.debug("UserName" + name);
 
-		/*
+		
 		 * List<BidItem> bidItemsList = null; bidItemsList =
 		 * observerService.getBidItemsForCategoryForMarketListForObserver(name);
 		 * logger.debug(" For category: BidItems List::"+bidItemsList);
@@ -103,7 +103,7 @@ public class ObserverController {
 		 * commonService.getCategoryList(name);
 		 * modelMap.addAttribute("bidderCategoryList", bidCategoryList);
 		 * logger.debug(" For category: categoryList List::"+bidCategoryList);
-		 */
+		 
 
 		modelMap.addAttribute("bidItem", new BidItem());
 		// List<BidItem> bidItemsList =
@@ -117,7 +117,7 @@ public class ObserverController {
 
 		return "observerhome";
 	}
-
+*/
 	/*
 	 * @RequestMapping(value="/marketlist/{categoryId}", method =
 	 * RequestMethod.GET) public String
@@ -205,9 +205,9 @@ public class ObserverController {
 	 * return "observer/observer_active"; }
 	 */
 
-	@RequestMapping(value = "/marketlist")
+	@RequestMapping(value = {"/marketlist","/home"})
 	public String getBidItemsForCategoryForMarketListForObserver(
-			@RequestParam(value = "category", required = false) Integer categoryId,
+			@RequestParam(value = "category",defaultValue = "0", required = false) Integer categoryId,
 			@RequestParam(required = false, defaultValue = "1", value = "page") String page,
 			ModelMap modelMap, HttpServletRequest httpServletRequest) {
 		HttpSession session = httpServletRequest.getSession();
