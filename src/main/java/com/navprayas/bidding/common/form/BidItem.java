@@ -169,11 +169,12 @@ public class BidItem implements Serializable {
 	private Integer totalQuantity;
 
 	@Transient
-	private List<Bidder> currentBiddersList = Collections
-			.synchronizedList(new ArrayList<Bidder>());
+	private List<Bidder> currentBiddersList = Collections.synchronizedList(new ArrayList<Bidder>());
 
 	@Transient
 	private long bidSpan;
+	@Column(name = "image_url")
+	private String imageUrl;
 
 	public long getBidSpan() {
 		return bidSpan;
@@ -387,8 +388,7 @@ public class BidItem implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((bidItemId == null) ? 0 : bidItemId.hashCode());
+		result = prime * result + ((bidItemId == null) ? 0 : bidItemId.hashCode());
 		return result;
 	}
 
@@ -462,20 +462,17 @@ public class BidItem implements Serializable {
 	}
 
 	public void setTimeLeft(long timeLeft) {
-		
+
 		this.timeLeft = timeLeft;
 	}
 
 	public long getTimeLeft() {
-		
 
 		if (bidEndTime == null)
 			return timeLeft;
 		long bEndTime = TimeUnit.MILLISECONDS.toSeconds(bidEndTime.getTime());
-		long lUpdateTime = TimeUnit.MILLISECONDS.toSeconds(lastUpDateTime
-				.getTime());
-		long currTime = TimeUnit.MILLISECONDS.toSeconds(System
-				.currentTimeMillis());
+		long lUpdateTime = TimeUnit.MILLISECONDS.toSeconds(lastUpDateTime.getTime());
+		long currTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
 		if (lUpdateTime > bEndTime - timeExtAfterBid) {
 			return currTime - lUpdateTime + timeExtAfterBid;
 		}
@@ -514,6 +511,14 @@ public class BidItem implements Serializable {
 
 	public Date getCreatedTime() {
 		return createdTime;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 }

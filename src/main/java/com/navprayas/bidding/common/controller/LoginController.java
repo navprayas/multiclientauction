@@ -28,8 +28,7 @@ import com.navprayas.bidding.common.service.ICommonService;
 @Controller
 public class LoginController {
 
-	private final static Logger logger = LoggerFactory
-			.getLogger(LoginController.class);
+	private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
 	@Qualifier("commonService")
@@ -37,8 +36,7 @@ public class LoginController {
 
 	@RequestMapping("/home")
 	public String homePageForUser(HttpServletRequest httpServletRequest) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<GrantedAuthority> authorities = auth.getAuthorities();
 		String name = auth.getName();
 		Object principal = auth.getPrincipal();
@@ -63,30 +61,29 @@ public class LoginController {
 				commonService.saveUserActivity(userActivity);
 				return "redirect:/firsttimechangepass";
 			}
-			if (authority.getAuthority().equalsIgnoreCase(
-					BiddingConstants.ROLE_ADMIN)) {
+			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_ADMIN)) {
 				userActivity.setRole(BiddingConstants.ROLE_ADMIN);
 				session.setAttribute(CommonConstants.CLIENTID, user.getUserId());
+				session.setAttribute(CommonConstants.ROLE_ADMIN, BiddingConstants.ROLE_ADMIN);
 				pageToForward = "admin/home";
 			}
-			if (authority.getAuthority().equalsIgnoreCase(
-					BiddingConstants.ROLE_OBSERVER)) {
+			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_OBSERVER)) {
 				userActivity.setRole(BiddingConstants.ROLE_OBSERVER);
-				session.setAttribute(CommonConstants.CLIENTID,
-						user.getParentId());
+				session.setAttribute(CommonConstants.CLIENTID, user.getParentId());
+				session.setAttribute(CommonConstants.ROLE_OBSERVER, BiddingConstants.ROLE_OBSERVER);
 				pageToForward = "observer/home";
 			}
-			if (authority.getAuthority().equalsIgnoreCase(
-					BiddingConstants.ROLE_BIDDER)) {
+			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_BIDDER)) {
 				userActivity.setRole(BiddingConstants.ROLE_BIDDER);
-				session.setAttribute(CommonConstants.CLIENTID,
-						user.getParentId());
+				session.setAttribute(CommonConstants.CLIENTID, user.getParentId());
+				session.setAttribute(CommonConstants.ROLE_BIDDER, BiddingConstants.ROLE_BIDDER);
+
 				pageToForward = "bidder/home";
 			}
-			if (authority.getAuthority().equalsIgnoreCase(
-					BiddingConstants.ROLE_SUPER_ADMIN)) {
+			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_SUPER_ADMIN)) {
 				userActivity.setRole(BiddingConstants.ROLE_SUPER_ADMIN);
 				session.setAttribute(CommonConstants.CLIENTID, user.getUserId());
+				session.setAttribute(CommonConstants.ROLE_SUPER_ADMIN, BiddingConstants.ROLE_SUPER_ADMIN);
 				pageToForward = "superadmin/home";
 			}
 			userActivity.setMessage("Login Successful.");
@@ -105,21 +102,26 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/changepass", method = RequestMethod.GET)
-	public String changepasswd(
-			@RequestParam(value = "ChangePassMessage", required = false) String message,
-			ModelMap map) {
-
+	public String changepasswd(@RequestParam(value = "ChangePassMessage", required = false) String message,
+			ModelMap map, HttpSession session) {
+		String page = "changepass";
+		String role = session.getAttribute(CommonConstants.ROLE_ADMIN).toString();
+		System.out.println("Role " + role);
 		if (message != null) {
 			map.addAttribute("ChangePassMessage", message);
-			logger.debug(message);
-			return "changepass";
-		} else
-			return "changepass";
+		}
+		logger.debug(message);
+		if (CommonConstants.ROLE_ADMIN.equalsIgnoreCase(role)) {
+			page = "adminchangepass";
+		} else {
+			page = "changepass";
+		}
+
+		return page;
 	}
 
 	@RequestMapping(value = "/firsttimechangepass", method = RequestMethod.GET)
-	public String firstTimeChangepasswd(
-			@RequestParam(value = "ChangePassMessage", required = false) String message,
+	public String firstTimeChangepasswd(@RequestParam(value = "ChangePassMessage", required = false) String message,
 			ModelMap map) {
 
 		if (message != null) {
@@ -131,8 +133,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/firsttimechangepassconf", method = RequestMethod.GET)
-	public String firsttimechangepassconf(
-			@RequestParam(value = "ChangePassMessage", required = false) String message,
+	public String firsttimechangepassconf(@RequestParam(value = "ChangePassMessage", required = false) String message,
 			ModelMap map) {
 		if (message != null) {
 			map.addAttribute("ChangePassMessage", message);
@@ -144,17 +145,13 @@ public class LoginController {
 
 	// ***********************First time Password Change**********************/
 	@RequestMapping(value = "/firsttimechangepassword", method = RequestMethod.POST)
-	public String firstTimeChangPasswrd(
-			@RequestParam(value = "Oldpass", required = true) String Oldpass,
+	public String firstTimeChangPasswrd(@RequestParam(value = "Oldpass", required = true) String Oldpass,
 			@RequestParam(value = "Newpass", required = true) String Newpass,
-			@RequestParam(value = "Cnfpass", required = true) String Cnfpass,
-			HttpServletRequest httpServletRequest) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+			@RequestParam(value = "Cnfpass", required = true) String Cnfpass, HttpServletRequest httpServletRequest) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String LoggerName = auth.getName();
 		logger.debug("********************Password Change******************");
-		String Status = commonService.ChangePassword(LoggerName, Oldpass,
-				Newpass);
+		String Status = commonService.ChangePassword(LoggerName, Oldpass, Newpass);
 		logger.debug("Status of Password Change-->" + Status);
 
 		if ("error".equalsIgnoreCase(Status)) {
@@ -168,17 +165,13 @@ public class LoginController {
 
 	// ***********************Password Change**********************/
 	@RequestMapping(value = "/changepassword", method = RequestMethod.POST)
-	public String ChangPasswrd(
-			@RequestParam(value = "Oldpass", required = true) String Oldpass,
+	public String ChangPasswrd(@RequestParam(value = "Oldpass", required = true) String Oldpass,
 			@RequestParam(value = "Newpass", required = true) String Newpass,
-			@RequestParam(value = "Cnfpass", required = true) String Cnfpass,
-			HttpServletRequest httpServletRequest) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+			@RequestParam(value = "Cnfpass", required = true) String Cnfpass, HttpServletRequest httpServletRequest) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String LoggerName = auth.getName();
 		logger.debug("********************Password Change******************");
-		String Status = commonService.ChangePassword(LoggerName, Oldpass,
-				Newpass);
+		String Status = commonService.ChangePassword(LoggerName, Oldpass, Newpass);
 		logger.debug("Status of Password Change-->" + Status);
 
 		if ("error".equalsIgnoreCase(Status)) {
@@ -196,21 +189,18 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-	public String forgotPasswordSendEmail(
-			@RequestParam(value = "userId", required = true) String userId,
+	public String forgotPasswordSendEmail(@RequestParam(value = "userId", required = true) String userId,
 			@RequestParam(value = "secretAnswer", required = true) String secretAnswer,
 			HttpServletRequest httpServletRequest, ModelMap modelMap) {
 		String status = null;
 		try {
-			status = commonService.checkUserExistsAndSendPasswordMail(userId,
-					secretAnswer);
+			status = commonService.checkUserExistsAndSendPasswordMail(userId, secretAnswer);
 		} catch (Exception e) {
 			logger.error("Email Could not be sent", e);
 			status = "error";
 		}
 		if ("error".equalsIgnoreCase(status)) {
-			modelMap.addAttribute("forgotPassMessage",
-					"Problem in resetting password, Please try again Later.");
+			modelMap.addAttribute("forgotPassMessage", "Problem in resetting password, Please try again Later.");
 		} else {
 			modelMap.addAttribute("forgotPassMessage",
 					"Email sent Successfully. Please try logging with new Password.");

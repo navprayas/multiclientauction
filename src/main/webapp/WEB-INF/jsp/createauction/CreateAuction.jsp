@@ -1,4 +1,319 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix='security'
+	uri='http://www.springframework.org/security/tags'%>
+<spring:url value="/static/css" var="css_url" />
+<spring:url value="/static/js" var="js_url" />
+<link type="text/css" rel="stylesheet"
+	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
+	media="screen"></link>
+<script type="text/javascript"
+	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
+<body class="hold-transition skin-blue sidebar-mini">
 
+
+
+
+	<div class="wrapper">
+
+
+		<!-- Left side column. contains the logo and sidebar -->
+
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Create Auction <small>Home</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Admin -
+							Dashboard</a></li>
+					<li class="active">Dashboard</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="row">
+					<!-- left column -->
+					<div class="col-md-6">
+						<!-- general form elements -->
+						<div class="box box-primary">
+							<div class="box-header with-border">
+								<h3 class="box-title">Auction Details</h3>
+							</div>
+
+
+
+							<form role="form" id="createAuction" name="createAuction"
+								method="post" action="createAuction"
+								modelAttribute="firmDetails">
+								<div class="box-body">
+									<c:if test="${not empty auctionDetails.auctionId}">
+
+										<input type="hidden" name="auctionId" id="auctionId"
+											value="${auctionDetails.auctionId}" />
+
+
+									</c:if>
+
+
+									<div class="form-group">
+
+
+										<label for="exampleInputEmail1">Auction Name</label> <input
+											type="text" class="form-control" id="name" name="name"
+											placeholder="Auction Name" value="${auctionDetails.name}">
+									</div>
+
+
+
+									<div class="form-group">
+
+
+										<label for="exampleInputEmail1">Status</label> <select
+											name="status" id="status" class="form-control">
+											<option
+												<c:if test="${auctionDetails.status=='0'}">selected='selected'</c:if>
+												value="0">select</option>
+											<option
+												<c:if test="${auctionDetails.status=='Start'}">selected='selected'</c:if>
+												value="Start">Start</option>
+											<option
+												<c:if test="${auctionDetails.status=='Running'}">selected='selected'</c:if>
+												value="Running">Running</option>
+										</select>
+									</div>
+
+
+
+									<div class="form-group">
+
+
+										<label for="exampleInputEmail1">Is Approved</label> <select
+											name="isApproved" id="isApproved" class="form-control">
+											<option
+												<c:if test="${auctionDetails.isApproved=='-1'}">selected='selected'</c:if>
+												value="-1">select</option>
+											<option
+												<c:if test="${auctionDetails.isApproved=='1'}">selected='selected'</c:if>
+												value="1">Yes</option>
+											<option
+												<c:if test="${auctionDetails.isApproved=='0'}">selected='selected'</c:if>
+												value="0">No</option>
+										</select>
+
+									</div>
+
+
+
+
+
+
+
+									<div class="form-group">
+
+
+										<label for="exampleInputEmail1">Created Date</label> <input
+											type="text" class="form-control pull-right"
+											id="createdTimeFormat" name="createdTimeFormat"
+											placeholder="Select Date"
+											value="${auctionDetails.createdTime}" readonly
+											onclick="displayCalendar(document.createAuction.createdTimeFormat,'yyyy/mm/dd',this)">
+									</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+								</div>
+								<!-- /.box-body -->
+
+								<div class="box-footer">
+									<button type="button" class="btn btn-primary"
+										onclick="checkAuction();">Submit</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="box">
+							<div class="box-header">
+								<h3 class="box-title">Available Auction</h3>
+
+								<div class="box-tools">
+									<ul class="pagination pagination-sm no-margin pull-right">
+										<li><a href="#">&laquo;</a></li>
+										<li><a href="#">1</a></li>
+										<li><a href="#">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#">&raquo;</a></li>
+									</ul>
+								</div>
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body no-padding">
+								<table class="table">
+									<tr>
+										<th style="width: 10px">#</th>
+										<th>Auction Name</th>
+										<th>Status</th>
+										<th style="width: 40px">Date</th>
+									</tr>
+									<tr>
+										<td>1.</td>
+										<td>Update software</td>
+										<td>
+											<div class="progress progress-xs">
+												<div class="progress-bar progress-bar-danger"
+													style="width: 55%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-red">55%</span></td>
+									</tr>
+									<tr>
+										<td>2.</td>
+										<td>Clean database</td>
+										<td>
+											<div class="progress progress-xs">
+												<div class="progress-bar progress-bar-yellow"
+													style="width: 70%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-yellow">70%</span></td>
+									</tr>
+									<tr>
+										<td>3.</td>
+										<td>Cron job running</td>
+										<td>
+											<div class="progress progress-xs progress-striped active">
+												<div class="progress-bar progress-bar-primary"
+													style="width: 30%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-light-blue">30%</span></td>
+									</tr>
+									<tr>
+										<td>4.</td>
+										<td>Fix and squish bugs</td>
+										<td>
+											<div class="progress progress-xs progress-striped active">
+												<div class="progress-bar progress-bar-success"
+													style="width: 90%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-green">90%</span></td>
+									</tr>
+
+									<tr>
+										<td>5.</td>
+										<td>Fix and squish bugs</td>
+										<td>
+											<div class="progress progress-xs progress-striped active">
+												<div class="progress-bar progress-bar-success"
+													style="width: 90%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-green">90%</span></td>
+									</tr>
+
+
+									<tr>
+										<td>6.</td>
+										<td>Fix and squish bugs</td>
+										<td>
+											<div class="progress progress-xs progress-striped active">
+												<div class="progress-bar progress-bar-success"
+													style="width: 90%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-green">90%</span></td>
+									</tr>
+
+
+									<tr>
+										<td>7.</td>
+										<td>Fix and squish bugs</td>
+										<td>
+											<div class="progress progress-xs progress-striped active">
+												<div class="progress-bar progress-bar-success"
+													style="width: 90%"></div>
+											</div>
+										</td>
+										<td><span class="badge bg-green">90%</span></td>
+									</tr>
+
+
+								</table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+
+					</div>
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+
+
+	</div>
+	<!-- ./wrapper -->
+
+</body>
+
+<script>
+	function checkAuction() {
+
+		var Name = document.getElementById("name").value;
+		var CreatedTimeFormat = document.getElementById("createdTimeFormat").value;
+		var Status = document.getElementById("status").value;
+		var IsApproved = document.getElementById("isApproved").value;
+
+		if (Name == "") {
+			alert(" Name Cannot Be Blank.");
+			return false;
+		}
+
+		if (Status == 0) {
+			alert(" Select Status.");
+			return false;
+		}
+		if (IsApproved == -1) {
+			alert(" Select IsApproved.");
+			return false;
+		}
+		if (CreatedTimeFormat == "") {
+			alert("Created Time Cannot Be Blank.");
+			return false;
+		}
+		document.createAuction.submit();
+
+	}
+</script>
+
+
+
+
+
+
+
+
+<%-- 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix='security'
@@ -14,8 +329,8 @@
 	media="screen"></link>
 <script type="text/javascript"
 	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
-	<%-- <link href="${css_url}/bootstrap.css" rel="stylesheet">
-<link href="${css_url}/font-awesome.min.css" rel="stylesheet"> --%>
+	<link href="${css_url}/bootstrap.css" rel="stylesheet">
+<link href="${css_url}/font-awesome.min.css" rel="stylesheet">
 <section class="main">
 
 
@@ -193,217 +508,4 @@
 	}
 </script>
 
-
-<%-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<%@page contentType="text/html;charset=UTF-8"%>
-<%@page pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix='security'
-	uri='http://www.springframework.org/security/tags'%>
-<spring:url value="/static/" var="static_url" />
-<spring:url value="/static/images" var="images_url" />
-<spring:url value="/static/css" var="css_url" />
-<spring:url value="/static/js" var="js_url" />
-<spring:url value="/admin/superAdmin" var="admin_url" />
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MSL E-Auction Vendor Registration Form</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-<link type="text/css" rel="stylesheet"
-	href="${css_url}/dhtmlgoodies_calendar.css?random=20051112"
-	media="screen"></link>
-<script type="text/javascript"
-	src="${js_url}/dhtmlgoodies_calendar.js?random=20060118"></script>
-</head>
-<body>
-	<%@ include file="/WEB-INF/jsp/admin/superadmin_top.jsp"%>
-	<script type="text/javascript">
-		pathToImages = "${static_url}" + pathToImages;
-	</script>
-	<div class="Mian">
-		<form id="createAuction" name="createAuction" method="post"
-			action="createAuction" modelAttribute="firmDetails">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0"
-				align="center">
-
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>E-Create
-							Auction</b><br /></td>
-					<td valign="middle"></td>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="right"><b><c:out
-								value="${messages }"></c:out></b><br /></td>
-					<td valign="middle"></td>
-				</tr>
-				<c:if test="${not empty auctionDetails.auctionId}">
-					<tr>
-						<td width="266" height="30" align="center"
-							style="font: 14px calibri; color: #4f81bc;" align="left"></td>
-						<td width="150" align="left"><input type="hidden"
-							name="auctionId" id="auctionId"
-							value="${auctionDetails.auctionId}" /></td>
-
-					</tr>
-				</c:if>
-
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="left">Auction
-						Name :</td>
-					<td width="150" align="left"><input type="text" name="name"
-						id="name"  value="${auctionDetails.name}" /></td>
-
-				</tr>
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="left">Status</td>
-					<td width="150" align="left"><select name="status" id="status">
-							<option
-								<c:if test="${auctionDetails.status=='0'}">selected='selected'</c:if>
-								value="0">select</option>
-							<option
-								<c:if test="${auctionDetails.status=='Start'}">selected='selected'</c:if>
-								value="Start">Start</option>
-							<option
-								<c:if test="${auctionDetails.status=='Running'}">selected='selected'</c:if>
-								value="Running">Running</option>
-					</select></td>
-				</tr>
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="left">Is
-						Approved</td>
-					<td width="150" align="left"><select name="isApproved"
-						id="isApproved">
-							<option
-								<c:if test="${auctionDetails.isApproved=='-1'}">selected='selected'</c:if>
-								value="-1">select</option>
-							<option
-								<c:if test="${auctionDetails.isApproved=='1'}">selected='selected'</c:if>
-								value="1">Yes</option>
-							<option
-								<c:if test="${auctionDetails.isApproved=='0'}">selected='selected'</c:if>
-								value="0">No</option>
-					</select></td>
-				</tr>
-
-
-
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="left">Created
-						Time</td>
-					<td width="150" align="left"><input type="text"
-						name="createdTimeFormat" id="createdTimeFormat" readonly
-						onclick="displayCalendar(document.createAuction.createdTimeFormat,'yyyy/mm/dd',this)"
-						value="${auctionDetails.createdTime}" /></td>
-				</tr>
-
-				<tr>
-					<td height="30">&nbsp;</td>
-					<td valign="middle"><input type="button" name="button"
-						id="button" value="Submit" onclick="javascript:checkAuction();"
-						onclass="ui-corner-all" /></td>
-				</tr>
-			</table>
-		</form>
-
-		<table width="100%" border="1" cellspacing="0" cellpadding="0">
-			<c:if test="${not empty auctionlist}">
-				<tr>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>Auction
-							Id</b><br /></td>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>Auction
-							Name</b><br /></td>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>Auction
-							Status</b><br /></td>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>Auction
-							Is Approved</b><br /></td>
-					<td width="266" height="30" align="center"
-						style="font: 14px calibri; color: #4f81bc;" align="center"><b>Modify
-							Auction</b><br /></td>
-
-				</tr>
-
-
-				<c:forEach var="auction" items="${auctionlist}" varStatus="status">
-					<tr>
-
-						<td width="266" height="30" align="center"
-							style="font: 12px calibri;" align="center"><b>${status.index+1}</b><br /></td>
-						<td width="266" height="30" align="center"
-							style="font: 12px calibri;" align="center"><b>${auction.name}</b><br /></td>
-
-						<td width="266" height="30" align="center"
-							style="font: 12px calibri;" align="center"><b>${auction.status}</b><br /></td>
-
-						<td width="266" height="30" align="center"
-							style="font: 12px calibri;" align="center"><b> <c:choose>
-
-									<c:when test="${auction.isApproved==1}">
-					Appoved
-					</c:when>
-									<c:otherwise>
-					Not Approved
-					</c:otherwise>
-								</c:choose>
-						</b><br /></td>
-						<td width="266" height="30" align="center"
-							style="font: 12px calibri;" align="center"><b><a
-								href="editauction?auctionId=${auction.auctionId}">Modify </a></b><br /></td>
-
-
-					</tr>
-				</c:forEach>
-			</c:if>
-		</table>
-
-
-
-
-
-
-
-	</div>
-	<br />
-	<div class="Footer">&copy; Copyright 2011 Navprayas</div>
-	<div class="clr"></div>
-	<script>
-		function checkAuction() {
-
-			var Name = document.getElementById("name").value;
-			var CreatedTimeFormat = document
-					.getElementById("createdTimeFormat").value;
-			var Status = document.getElementById("status").value;
-			var IsApproved = document.getElementById("isApproved").value;
-
-			if (Name == "") {
-				alert(" Name Cannot Be Blank.")
-				return false;
-			}
-
-			if (Status == 0) {
-				alert(" Select Status.")
-				return false;
-			}
-			if (IsApproved == -1) {
-				alert(" Select IsApproved.")
-				return false;
-			}
-			if (CreatedTimeFormat == "") {
-				alert("Created Time Cannot Be Blank.")
-				return false;
-			}
-			document.createAuction.submit();
-
-		}
-	</script>
-</body>
-</html> --%>
+ --%>

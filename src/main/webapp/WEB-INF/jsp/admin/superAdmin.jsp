@@ -1,3 +1,150 @@
+
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix='security'
+	uri='http://www.springframework.org/security/tags'%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<spring:url value="/admin/initcache" var="admin_initcache_url" />
+<spring:url value="admin/closeAuction" var="close_auction_url" />
+
+
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+		<!-- Left side column. contains the logo and sidebar -->
+
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Auction's <small></small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Admin
+							Auction</a></li>
+					<li class="active"></li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="box">
+							<div class="box-header">
+								<h4 class="box-title">Available Auction</h4>
+
+
+
+							</div>
+							<!-- /.box-header -->
+							<div class="box-body">
+								<table id="example2" class="table table-bordered table-hover">
+									<thead>
+										<tr>
+											<th>Sr. No.</th>
+											<th>Auction Id</th>
+											<th>Auction Name</th>
+											<th>Status</th>
+											<th>Auction Start Time</th>
+											<th>Auction End Time</th>
+											<th>Action</th>
+
+
+										</tr>
+									</thead>
+									<tbody>
+
+
+
+										<c:forEach items="${AuctionList}" var="auction"
+											varStatus="status">
+											<tr>
+												<td>${status.index+1}</td>
+												<td>${auction.auctionId}</td>
+												<td>${auction.name}</td>
+												<td>${auction.status}</td>
+												<td>${auction.auctionStartTime}</td>
+												<td>${auction.auctionEndTime}</td>
+												<td><c:if test="${auction.status == 'Start'}">
+														<c:if test="${aunctionRunningOrClosedPresent == 0}">
+															<a
+																href="${admin_initcache_url}?auctionId=${auction.auctionId}">Start</a>
+														</c:if>
+														<c:if test="${aunctionRunningOrClosedPresent == 1}">
+     					Close Running or Ended Auction First
+     				</c:if>
+													</c:if> <c:if test="${auction.status == 'End'}">
+														<a
+															href="${close_auction_url}?auctionId=${auction.auctionId}">Close</a>
+													</c:if> <c:if test="${auction.status == 'Running'}">
+														<a
+															href="${close_auction_url}?auctionId=${auction.auctionId}">Close</a>
+													</c:if></td>
+											</tr>
+
+
+										</c:forEach>
+
+
+
+
+									</tbody>
+									<tfoot>
+										<tr>
+											<th>Sr. No.</th>
+											<th>Auction Id</th>
+											<th>Auction Name</th>
+											<th>Status</th>
+											<th>Auction Start Time</th>
+											<th>Auction End Time</th>
+											<th>Action</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+							<!-- /.box-body -->
+						</div>
+						<!-- /.box -->
+					</div>
+					<!-- /.col -->
+				</div>
+
+
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+
+
+	</div>
+	<!-- ./wrapper -->
+
+</body>
+
+
+<script>
+	$(function() {
+		$('#example2').DataTable({
+			"paging" : true,
+			"lengthChange" : false,
+			"searching" : false,
+			"ordering" : true,
+			"info" : true,
+			"autoWidth" : true
+		});
+	});
+</script>
+
+
+
+
+
+
+<%-- 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix='security'
 	uri='http://www.springframework.org/security/tags'%>
@@ -60,14 +207,16 @@
 									<th>Auction End Time</th>
 									<th>Action</th>
 								</tr>
-								
+
 								<c:if test="${ empty AuctionList}">
-								<tr><td colspan="7"> No Record Found</td></tr>
-								
+									<tr>
+										<td colspan="7">No Record Found</td>
+									</tr>
+
 								</c:if>
-								
-								
-								
+
+
+
 								<c:forEach items="${AuctionList}" var="auction"
 									varStatus="status">
 									<tr>
@@ -179,116 +328,6 @@
 
 
 </body>
-<script>
-
-var message ='<%=request.getParameter("Message")%>';
-
-if (message && message != 'null') {
-	alert(message);
-}
-	function initializeAuction(time) {
-		var auctionId = document.getElementById("auctionId").value;
-		var location1 = "${admin_initcache_url}?auctionId=" + auctionId
-				+ "&auctionTimeExt=" + time;
-		window.location.href = location1;
-	}
-</script>
+ --%>
 
 
-
-
-<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.*,java.text.*" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix='security' uri='http://www.springframework.org/security/tags' %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
-<spring:url value="/static/images" var="images_url" />
-<spring:url value="/static/css" var="css_url" />
-<spring:url value="/admin/initcache" var="admin_initcache_url" />
-<spring:url value="admin/closeAuction" var="close_auction_url"/>
-
-<html>
-<script type="text/javascript">
-function initializeAuction(time){
-	var auctionId = document.getElementById("auctionId").value;
-	var location1 = "${admin_initcache_url}?auctionId="+auctionId+"&auctionTimeExt="+time;
-	window.location.href=location1;
-}
-</script>
-<head>
-<title>MSL Auction - Initialize the Cache</title>
-<link href="${css_url}/style.css" rel="stylesheet" media="screen" />
-</head>
-<body>
-
-<%@ include file="/WEB-INF/jsp/admin/superadmin_top.jsp"%>
-
-
-<br/>
-<div class="Mian">
-  <h2>Auction Management</h2>
-  <% if(request.getParameter("Message") != null && !((String)request.getParameter("Message")).equalsIgnoreCase("") && !((String)request.getParameter("Message")).equalsIgnoreCase("null")) {
-  		out.println("<font size='5px' color=blue>" + request.getParameter("Message")+ "</font>");
-  	}
-  %>
-  <div class="DetailDiv">
-  <table width="100%" border="0" style = "font:14px bold;" bgcolor="#dce6f2" cellspacing="0" cellpadding="0">
-     <tr>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Sr. No.</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Auction Id</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Auction Name</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Status</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Auction Start Time</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Auction End Time</td>
-          <td align="center" valign="middle" bgcolor="#4f81bc" class="DetailBorRightTitle">Action</td>
-     </tr>
-     <c:forEach items="${AuctionList}" var="auction" varStatus="status">
- 		<tr class="table">
-     		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${status.index+1}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${auction.auctionId}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${auction.name}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${auction.status}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${auction.auctionStartTime}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-     			${auction.auctionEndTime}
-      		</td>
-      		<td align="center" valign="middle" bgcolor="#f7c794" style="border:1px solid #fff;">
-      			<c:if test="${auction.status == 'Start'}" >
-      			    <c:if test="${aunctionRunningOrClosedPresent == 0}">
-     					<a href="${admin_initcache_url}?auctionId=${auction.auctionId}">Start</a>
-     				</c:if>
-     				<c:if test="${aunctionRunningOrClosedPresent == 1}">
-     					Close Running or Ended Auction First
-     				</c:if>
-     			</c:if>
-     			<c:if test="${auction.status == 'End'}" >
-     				<a href="${close_auction_url}?auctionId=${auction.auctionId}">Close</a>
-     			</c:if>
-     			<c:if test="${auction.status == 'Running'}" >
-     				<a href="${close_auction_url}?auctionId=${auction.auctionId}">Close</a>
-     			</c:if>
-      		</td>
-      	</tr>
-  	</c:forEach>
-  </table>
-  </div>
-  </div>
-	<br/>
- <div class="clr"></div>
-<div class="Footer" style="margin-top:380px">&copy; Copyright 2011 Navprayas</div>
-   
-   
-</body>
-</html> --%>

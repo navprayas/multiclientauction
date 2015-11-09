@@ -17,18 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class BidItemEntity {
 	@Transient
 	private MultipartFile file;
-
-	public MultipartFile getFile() {
-		return file;
-	}
-
-	public void setFile(MultipartFile file) {
-		this.file = file;
-	}
 	@Transient
 	Long selectedAuctionId;
-	
-	
+
 	public Long getSelectedAuctionId() {
 		return selectedAuctionId;
 	}
@@ -36,6 +27,7 @@ public class BidItemEntity {
 	public void setSelectedAuctionId(Long selectedAuctionId) {
 		this.selectedAuctionId = selectedAuctionId;
 	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "bidItemId")
@@ -73,7 +65,7 @@ public class BidItemEntity {
 	@Column(name = "createdTime")
 	private Date createdTime;
 	@Column(name = "autobidid")
-	private int autobidid;
+	private Integer autobidid;
 	@Column(name = "autobiddername")
 	private String autobiddername;
 	@Column(name = "Biddername")
@@ -89,14 +81,22 @@ public class BidItemEntity {
 	@Column(name = "document")
 	private Long document;
 	@Transient
-	@Column(name="main1")
+	@Column(name = "main1")
 	private String main1;
 	@Transient
-	@Column(name="desc1")
+	@Column(name = "desc1")
 	private String desc1;
 	@Transient
-	@Column(name="nocolum")
+	@Column(name = "nocolum")
 	private String nocolum;
+
+	@Column(name = "image_url")
+	private String imageUrl;
+
+	@Column(name = "userId")
+	private Long userId;
+	@Column(name = "parent_auction")
+	private Long parentAuction;
 
 	public int getBidItemId() {
 		return bidItemId;
@@ -234,11 +234,11 @@ public class BidItemEntity {
 		this.createdTime = createdTime;
 	}
 
-	public int getAutobidid() {
+	public Integer getAutobidid() {
 		return autobidid;
 	}
 
-	public void setAutobidid(int autobidid) {
+	public void setAutobidid(Integer autobidid) {
 		this.autobidid = autobidid;
 	}
 
@@ -321,5 +321,37 @@ public class BidItemEntity {
 	public void setNocolum(String nocolum) {
 		this.nocolum = nocolum;
 	}
-			
+
+	public MultipartFile getFile() {
+		return file;
+	}
+
+	public void setFile(MultipartFile file) {
+		this.file = file;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public Long getParentAuction() {
+		return parentAuction;
+	}
+
+	public void setParentAuction(Long parentAuction) {
+		this.parentAuction = parentAuction;
+	}
+
 }

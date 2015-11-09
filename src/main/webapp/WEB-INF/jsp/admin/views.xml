@@ -126,10 +126,46 @@
 			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/variable.jsp" />
 	</definition>
+	<definition name="biditemupload" extends="baseLayout">
+		<put-attribute name="title" value="File Upload " />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/admin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/biditemupload.jsp" />
+	</definition>
 
+	<definition name="biditemslist" extends="baseLayout">
+		<put-attribute name="title" value="Bid Item List " />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/admin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/biditemslist.jsp" />
+	</definition>
 
-
-
+	<definition name="adminchangepass" extends="baseLayout">
+		<put-attribute name="title" value="Change Password" />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/admin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/adminchangepass.jsp" />
+	</definition>
+	
+	
+	<definition name="biditemslistwithoutauction" extends="baseLayout">
+		<put-attribute name="title" value="Bid Item List " />
+		<put-attribute name="header"
+			value="/WEB-INF/jsp/admin/admin_header.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/jsp/admin/admin_footer.jsp" />
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/biditemslistwithoutauction.jsp" />
+	</definition>
 
 
 

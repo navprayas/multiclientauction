@@ -297,6 +297,7 @@ function blah( oCB )
 					<td><a href="#">Last Bidded Amount<br />(INR)
 					</a></td>
 					<td><a href="#">Status</a></td>
+					<td><a href="#">Image</a></td>
 				</tr>
 				<c:forEach items="${bidItemsList}" var="bidItem" varStatus="status">
 					<tr class="table">
@@ -454,6 +455,8 @@ function blah( oCB )
 						<td><div id="endtimeMain${bidItem.bidItemId}">${bidItem.bidEndTime}</div></td>
 						<td><div id="currentMarketPrice${bidItem.bidItemId}">${bidItem.currentMarketPrice}</div></td>
 						<td>${bidItem.status}</td>
+						<td><%-- <a href="${bidItem.imageUrl}" target="_blank"> --%> <img
+								alt="" src="${bidItem.imageUrl}" height="80px" width="120px" onclick="window.open('${bidItem.imageUrl}', 'Large', 'width=500, height=350'); return false;"><!-- </a> --></td>
 					</tr>
 				</c:forEach>
 			</table>

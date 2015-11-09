@@ -12,6 +12,11 @@
 <head>
 <script type='text/javascript'>
 
+
+
+
+
+
 function changeStyleSelectedHover()
 {
 	if(document.getElementById("ranktd"))
@@ -312,8 +317,7 @@ function blah( oCB )
 							value="1" onClick="getPageForMarketType(this.value)" /> <a
 							href="${bidder_market_url}">&nbsp;Market List</a></td>
 						<td colspan="3"><input type="radio" checked name="radio"
-							id="radio2" value="2" /> <a href="#">&nbsp;Active
-								Market</a></td>
+							id="radio2" value="2" /> <a href="#">&nbsp;Active Market</a></td>
 						<td colspan="3"><input type="radio" name="radio" id="radio3"
 							value="3" onClick="getPageForMarketType(this.value)" /> <a
 							href="${bidder_close_url}">&nbsp;Closed Market</a></td>
@@ -385,6 +389,7 @@ function blah( oCB )
 					<td><a href="#">Time Left</a></td>
 					<td><a href="#">Next Bid</a><a href="#"></a></td>
 					<td><a href="#"> Other Bids</a></td>
+					<td><a href="#">Image</a></td>
 				</tr>
 				<c:forEach items="${bidItemsList}" var="bidItem" varStatus="status">
 					<div id="bidStartTime${bidItem.bidItemId}" style="display: none">${bidItem.bidStartTime}</div>
@@ -429,7 +434,8 @@ function blah( oCB )
 																		<td>Material Name</td>
 																		<td>Remark</td>
 																		<td>Length Range</td>
-																		<td>Actual Length <br> (Approx) </td>
+																		<td>Actual Length <br> (Approx)
+																		</td>
 																		<td>Qty</td>
 																		<td>Zone</td>
 																	</tr>
@@ -507,8 +513,8 @@ function blah( oCB )
 							</c:if>
 						</c:forEach>
 
-						<td >${bidItem.category.categoryName}</td>
-						<td >
+						<td>${bidItem.category.categoryName}</td>
+						<td>
 							<div id="bidItemName${bidItem.bidItemId}" style="display: none">${bidItem.name}</div>
 							<a href="#" class="LinkSelected"
 							onclick="javascript:setIdForBiddingHistory(${bidItem.bidItemId});">${bidItem.name}</a>
@@ -516,9 +522,9 @@ function blah( oCB )
 						<c:if test="${fn:length(bidItem.itemLots) == 1}">
 							<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
 								varStatus="status2">
-								<td >${itemLotUnique.remark}</td>
-								<td >${itemLotUnique.lengthRange}</td>
-								<td >${itemLotUnique.actualLengh}</td>
+								<td>${itemLotUnique.remark}</td>
+								<td>${itemLotUnique.lengthRange}</td>
+								<td>${itemLotUnique.actualLengh}</td>
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
@@ -536,26 +542,24 @@ function blah( oCB )
 							</c:forEach>
 						</c:if>
 						<c:if test="${fn:length(bidItem.itemLots) > 1}">
-							<td >&nbsp;</td>
+							<td>&nbsp;</td>
 						</c:if>
 
 
-						<td ><div
-								id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
-						<td >
+						<td><div id="minBidIncrement${bidItem.bidItemId}">${bidItem.minBidIncrement}</div></td>
+						<td>
 							<div id="Item${bidItem.bidItemId}">${bidItem.currentMarketPrice}</div>
 						</td>
-						<td  id="ranktd"
-							>
+						<td id="ranktd">
 							<div id="rank${bidItem.bidItemId}">
 								<c:out value='${bidItemWithRanks[bidItem.bidItemId]}' />
 							</div>
 						</td>
-						<td >
+						<td>
 							<div id="countdown${bidItem.bidItemId}"></div> <script>setTimeLefts(parseInt('${bidItem.timeLeft}'), '${bidItem.bidItemId}');</script>
 
 						</td>
-						<td ><c:choose>
+						<td><c:choose>
 								<c:when
 									test='${bidItemWithAutoBidFlag[bidItem.bidItemId] == 2 && bidItemWithRanks[bidItem.bidItemId] == 1} '>
 									<input type="submit" name="button3"
@@ -610,18 +614,17 @@ function blah( oCB )
 							<table class="table table-bordered table-striped text-center">
 								<tr>
 									<td>
-										<form action="" method="post" name="form1" id="form2"
-											>
+										<form action="" method="post" name="form1" id="form2">
 											<table class="table table-bordered table-striped text-center">
 												<tr>
-												<td>${status.index+1}.</td>
-													<td >${bidItem.name}
+													<td>${status.index+1}.</td>
+													<td>${bidItem.name}
 														&nbsp;&nbsp;&nbsp;&nbsp;${bidItem.totalQuantity}
 														${bidItem.unit}</td>
 												</tr>
 												<tr>
 													<td>&nbsp; Bid Type</td>
-													<td >
+													<td>
 														<table
 															class="table table-bordered table-striped text-center">
 															<tr>
@@ -653,7 +656,7 @@ function blah( oCB )
 												<tr>
 													<td>&nbsp;&nbsp;Comments</td>
 													<td><textarea name="textfield2"
-															id="Comments${bidItem.bidItemId}" ></textarea></td>
+															id="Comments${bidItem.bidItemId}"></textarea></td>
 												</tr>
 												<tr>
 													<td>&nbsp;</td>
@@ -698,6 +701,10 @@ function blah( oCB )
 									</c:otherwise>
 								</c:choose>
 							</div></td>
+
+						<td><%-- <a href="${bidItem.imageUrl}" target="_blank"> --%> <img
+								alt="" src="${bidItem.imageUrl}" height="80px" width="120px" onclick="window.open('${bidItem.imageUrl}', 'Large', 'width=500, height=350'); return false;"><!-- </a> --></td>
+
 					</tr>
 
 				</c:forEach>

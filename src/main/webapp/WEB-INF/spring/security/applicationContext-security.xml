@@ -18,6 +18,7 @@
 			filters="none" />
 		<sec:intercept-url pattern="/dwr/**" filters="none" />
 		<sec:intercept-url pattern="/static/**" filters="none" />
+		<sec:intercept-url pattern="/adminthemecontent/**" filters="none" />
 		<sec:intercept-url pattern="/images/**" filters="none" />
 		<sec:intercept-url pattern="/css/**" filters="none" />
 		<sec:intercept-url pattern="/css/fonts/**" filters="none" />
@@ -35,6 +36,10 @@
 		<sec:intercept-url pattern="/bidder/**" access="ROLE_BIDDER" />
 		<sec:intercept-url pattern="/**"
 			access="ROLE_ADMIN, ROLE_OBSERVER, ROLE_BIDDER, ROLE_SUPER_ADMIN" />
+		<sec:intercept-url pattern="/webservices/**"
+			filters="none" />
+
+
 		<!-- Disable web URI authorization, as we're using <annotation-driven> 
 			and have @Secured the services layer instead <intercept-url pattern="/listAccounts.html" 
 			access="IS_AUTHENTICATED_REMEMBERED" /> <intercept-url pattern="/post.html" 
@@ -78,10 +83,15 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean
-		class="org.springframework.security.authentication.encoding.ShaPasswordEncoder"
-		id="passwordEncoder">
-		<property name="encodeHashAsBase64" value="true"></property>
+	<!-- <bean class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" 
+		id="passwordEncoder"> <property name="encodeHashAsBase64" value="true"></property> 
+		</bean> -->
+	
+	<bean id="passwordEncoder"
+		class="org.springframework.security.authentication.encoding.MessageDigestPasswordEncoder">
+		<constructor-arg value="MD5" />
 	</bean>
+	
+	
 
 </beans>
