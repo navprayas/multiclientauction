@@ -215,18 +215,18 @@
 			alert("Please Enter Minimum Bid Price. It should be a Number");
 			return false;
 		}
-
-		if (isNaN($('#minBidIncrement').val())) {
+		var minbidIncr = $('#minBidIncrement').val();
+		if (isNaN(minbidIncr) || minbidIncr == "") {
 			alert("Please Enter Minimum Bid increment Price. It should be a Number");
 			return false;
 		}
-
-		if (isNaN($('#initialStartTime').val())) {
+		var initstartTime = $('#initialStartTime').val();
+		if (isNaN(initstartTime) || initstartTime == "") {
 			alert("Please Enter Initial Start time. It should be a Number(In Minutes)");
 			return false;
 		}
-
-		if (isNaN($('#timeExtn').val())) {
+		var timeext = $('#timeExtn').val();
+		if (isNaN(timeext) || timeext == "") {
 			alert("Please Enter Initial Time Extention time. It should be a Number(In seconds)");
 			return false;
 		}

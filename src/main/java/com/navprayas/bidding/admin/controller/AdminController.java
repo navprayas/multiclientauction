@@ -305,7 +305,7 @@ public class AdminController {
 	@RequestMapping(value = "/createbiditem", method = RequestMethod.POST)
 	public String createBidItem(@ModelAttribute BidItemEntity bidItemEntity, ModelMap model, HttpSession session) {
 		String message = null;
-		String result = null;
+		Integer id=null;
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
 		System.out.println(user.getUserId());
 		try {
@@ -321,12 +321,12 @@ public class AdminController {
 			System.out.println(context.getContextPath());
 			bidItemEntity.setUserId(user.getUserId());
 			bidItemEntity.setImageUrl(context.getContextPath() + "/static/auctionuploadedimages/");
-			BidItemEntity bidItem = adminBidItemService.createBidItem(bidItemEntity);
+			 id = adminBidItemService.createBidItem(bidItemEntity);
 
 			MultipartFile mFile = bidItemEntity.getFile();
 			InputStream inputStream = (InputStream) mFile.getInputStream();
 			OutputStream outputStream = new FileOutputStream(
-					path + "/" + bidItemEntity.getAuctionId() + mFile.getOriginalFilename());
+					path + "/" + id+ mFile.getOriginalFilename());
 			int readBytes = 0;
 			byte[] buffer = new byte[mFile.getBytes().length];
 			while ((readBytes = inputStream.read(buffer, 0, mFile.getBytes().length)) != -1) {
@@ -334,8 +334,8 @@ public class AdminController {
 			}
 			outputStream.close();
 			inputStream.close();
-			bidItemEntity.setImageUrl(context.getContextPath() + "/static/auctionuploadedimages/"
-					+ bidItem.getBidItemId() + mFile.getOriginalFilename());
+			bidItemEntity.setImageUrl(
+					context.getContextPath() + "/static/auctionuploadedimages/" + id + mFile.getOriginalFilename());
 
 			System.out.println("image path   " + bidItemEntity.getImageUrl());
 
@@ -343,7 +343,7 @@ public class AdminController {
 			e.printStackTrace();
 		}
 
-		if (CommonConstants.SUCCESS.equalsIgnoreCase(result)) {
+		if (id != null) {
 			message = "Successfully Uploaded";
 		} else {
 			message = "Uploading Failed";

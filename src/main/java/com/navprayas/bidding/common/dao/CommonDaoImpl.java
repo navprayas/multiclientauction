@@ -756,6 +756,7 @@ public class CommonDaoImpl implements ICommonDao {
 				.createQuery(
 						"From Auction auction where  auction.userId=:userid order by auction.auctionStartTime desc");
 		query.setLong("userid", userId);
+		
 		return (List<Auction>) query.list();
 
 	}

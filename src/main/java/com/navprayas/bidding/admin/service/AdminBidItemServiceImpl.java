@@ -16,7 +16,7 @@ public class AdminBidItemServiceImpl implements AdminBidItemService {
 	@Autowired
 	private AdminBidItemDao adminBidItemDao;
 
-	public BidItemEntity createBidItem(BidItemEntity bidItemEntity) {
+	public Integer createBidItem(BidItemEntity bidItemEntity) {
 		bidItemEntity.setCreatedTime(new Date());
 		return adminBidItemDao.createBidItem(bidItemEntity);
 	}

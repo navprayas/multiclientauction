@@ -17,7 +17,7 @@ public class AdminBidItemDaoImpl implements AdminBidItemDao {
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public BidItemEntity createBidItem(BidItemEntity bidItemEntity) {
+	public Integer createBidItem(BidItemEntity bidItemEntity) {
 
 		Integer id = (Integer) sessionFactory.getCurrentSession().save(bidItemEntity);
 		MultipartFile mFile = bidItemEntity.getFile();
@@ -27,7 +27,7 @@ public class AdminBidItemDaoImpl implements AdminBidItemDao {
 		if (bidItemEntity != null) {
 			sessionFactory.getCurrentSession().update(bidItemEntity);
 		}
-		return bidItemEntity;
+		return id;
 	}
 
 	@Override

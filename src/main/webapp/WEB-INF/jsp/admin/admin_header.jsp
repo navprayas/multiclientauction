@@ -192,16 +192,7 @@
 					<li class="active"><a href="${userRegistration_url}"><i
 							class="fa fa-circle-o"></i> User Registration</a></li>
 				</ul></li>
-			<li class="treeview"><a href="#"> <i class="fa fa-laptop"></i>
-					<span>Manage Password</span> <i class="fa fa-angle-left pull-right"></i>
-			</a>
-				<ul class="treeview-menu">
-					<li class="active"><a href="${passwordReset_url}"><i
-							class="fa fa-circle-o"></i> Reset Password</a></li>
-					<li><a href="${home_url}changepass"><i
-							class="fa fa-circle-o"></i> Change Password</a></li>
 
-				</ul></li>
 
 
 			<li class="treeview"><a href="#"> <i class="fa fa-laptop"></i>
@@ -216,6 +207,15 @@
 					<li><a href="${searchbiditems_url}"><i
 							class="fa fa-circle-o"></i> Update Bid Item </a></li>
 
+				</ul></li>
+			<li class="treeview"><a href="#"> <i class="fa fa-laptop"></i>
+					<span>Manage Password</span> <i class="fa fa-angle-left pull-right"></i>
+			</a>
+				<ul class="treeview-menu">
+					<li class="active"><a href="${passwordReset_url}"><i
+							class="fa fa-circle-o"></i> Reset Password</a></li>
+					<li><a href="${home_url}changepass"><i
+							class="fa fa-circle-o"></i> Change Password</a></li>
 				</ul></li>
 
 
