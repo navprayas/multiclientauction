@@ -95,7 +95,7 @@ public class BidItemEntity {
 
 	@Column(name = "userId")
 	private Long userId;
-	@Column(name = "parent_auction")
+	@Column(name = "parent_auctionId")
 	private Long parentAuction;
 
 	public int getBidItemId() {

@@ -16,7 +16,7 @@ public class AdminBidItemServiceImpl implements AdminBidItemService {
 	@Autowired
 	private AdminBidItemDao adminBidItemDao;
 
-	public String createBidItem(BidItemEntity bidItemEntity) {
+	public BidItemEntity createBidItem(BidItemEntity bidItemEntity) {
 		bidItemEntity.setCreatedTime(new Date());
 		return adminBidItemDao.createBidItem(bidItemEntity);
 	}
@@ -32,7 +32,7 @@ public class AdminBidItemServiceImpl implements AdminBidItemService {
 	}
 
 	@Override
-	public String updateBidItemById(Long auctionId, Long bidItemId) {
+	public String updateBidItemById(Long auctionId, Integer bidItemId) {
 		return adminBidItemDao.updateBidItemById(auctionId, bidItemId);
 	}
 

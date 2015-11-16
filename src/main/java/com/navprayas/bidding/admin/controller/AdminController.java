@@ -319,6 +319,10 @@ public class AdminController {
 			// System.out.println(context.getResourcePaths("auctionuploadedimages")
 			// );
 			System.out.println(context.getContextPath());
+			bidItemEntity.setUserId(user.getUserId());
+			bidItemEntity.setImageUrl(context.getContextPath() + "/static/auctionuploadedimages/");
+			BidItemEntity bidItem = adminBidItemService.createBidItem(bidItemEntity);
+
 			MultipartFile mFile = bidItemEntity.getFile();
 			InputStream inputStream = (InputStream) mFile.getInputStream();
 			OutputStream outputStream = new FileOutputStream(
@@ -331,10 +335,10 @@ public class AdminController {
 			outputStream.close();
 			inputStream.close();
 			bidItemEntity.setImageUrl(context.getContextPath() + "/static/auctionuploadedimages/"
-					+ bidItemEntity.getAuctionId() + mFile.getOriginalFilename());
-			bidItemEntity.setUserId(user.getUserId());
+					+ bidItem.getBidItemId() + mFile.getOriginalFilename());
+
 			System.out.println("image path   " + bidItemEntity.getImageUrl());
-			result = adminBidItemService.createBidItem(bidItemEntity);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -368,6 +372,13 @@ public class AdminController {
 		return "biditemslist";
 	}
 
+	/**
+	 * This method is show result of biditems without Auction Selection
+	 * 
+	 * @param model
+	 * @param session
+	 * @return
+	 */
 	@RequestMapping(value = "/biditemslistwithoutauction", method = RequestMethod.GET)
 	public String createBidItemWithoutAuction(ModelMap model, HttpSession session) {
 
@@ -389,12 +400,12 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/updatebiditemauction", method = RequestMethod.GET)
 	@ResponseBody
-	public String updateBIdItemAuction(@RequestParam Long auctionId, @RequestParam Long bidItemId, ModelMap model,
+	public String updateBIdItemAuction(@RequestParam Long auctionId, @RequestParam Integer bidItemId, ModelMap model,
 			HttpSession session) {
-		logger.debug("{}" + auctionId);
-		logger.debug("" + bidItemId);
+
+		logger.debug("Bid Item" + bidItemId);
 		Users user = (Users) session.getAttribute(CommonConstants.USER_INFO);
-		logger.debug("User Id" + user.getUserId());
+		logger.debug("User Id  " + user.getUserId());
 		String result = adminBidItemService.updateBidItemById(auctionId, bidItemId);
 		String message = null;
 		if (CommonConstants.SUCCESS.equalsIgnoreCase(result)) {

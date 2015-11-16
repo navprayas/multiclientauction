@@ -19,12 +19,11 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Auction Mapping <small>user</small>
+					Bid Item Mapping <small>Auction</small>
 				</h1>
 				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-dashboard"></i>Admin
-							Auction</a></li>
-					<li class="active">User Mapping</li>
+					<li><a href="#"><i class="fa fa-dashboard"></i>Auction</a></li>
+					<li class="active">Bid Item Mapping</li>
 				</ol>
 			</section>
 
@@ -34,18 +33,23 @@
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
-								<h4 class="box-title">Select Auction</h4>
-								<select name="auctionId" id="auctionId">
-									<option value="-1">Select</option>
-									<c:forEach var="auction" items="${auctionlist}">
-										<c:if test="${selectedAuctionId==auction.auctionId }">
-											<option value="${auction.auctionId}" selected="selected">
-												${auction.name}</option>
-										</c:if>
-										<option value="${auction.auctionId}">${auction.name}</option>
-									</c:forEach>
-								</select> <input type="button" name="Update BidItem" value="update"
-									id="updatebiditem" onclick="updateBidItem();">
+								<div class="form-group">
+									<label for="exampleInputEmail1">Select Auction</label> <select
+										name="auctionId" id="auctionId">
+										<option value="-1">Select</option>
+										<c:forEach var="auction" items="${auctionlist}">
+											<c:if test="${selectedAuctionId==auction.auctionId }">
+												<option value="${auction.auctionId}" selected="selected">
+													${auction.name}</option>
+											</c:if>
+											<option value="${auction.auctionId}">${auction.name}</option>
+										</c:forEach>
+									</select> <input type="button" name="Update BidItem" value="update"
+										id="updatebiditem" onclick="updateBidItem();"
+										class="btn btn-primary">
+								</div>
+
+
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body">
@@ -58,14 +62,9 @@
 											<th align="center">MINIMUM BID PRICE</th>
 											<th align="center">MINIMUM BID INCREMENT</th>
 											<th align="center">VIEW IMAGE</th>
-
-
 										</tr>
 									</thead>
 									<tbody>
-
-
-
 										<c:forEach items="${biditemslist}" var="biditem"
 											varStatus="status">
 											<tr>
@@ -75,21 +74,12 @@
 												<td>${biditem.name}</td>
 												<td>${biditem.minBidPrice}</td>
 												<td>${biditem.minBidIncrement}</td>
-
 												<td><a href="${biditem.imageUrl}" target="_blank">
 														<img alt="" src="${biditem.imageUrl}" height="80px"
 														width="120px">
 												</a></td>
-
-												<%-- <td><a href='${biditem.imageUrl}' target="_blank">View
-														Image</a></td> --%>
-
 											</tr>
 										</c:forEach>
-
-
-
-
 									</tbody>
 									<tfoot>
 										<tr>
@@ -149,7 +139,6 @@
 			alert("Please Select Auction ");
 			return false;
 		}
-		console.log(ids);
 		if (ids != "") {
 
 			$.ajax({
@@ -158,6 +147,7 @@
 				method : "get",
 				success : function(data) {
 					alert(data);
+					location.reload();
 				}
 			});
 		} else {

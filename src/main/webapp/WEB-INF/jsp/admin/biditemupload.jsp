@@ -45,7 +45,7 @@
 								method="POST" action="createbiditem"
 								enctype="multipart/form-data">
 								<div class="box-body">
-									<div class="form-group">
+									<%-- <div class="form-group">
 										<label for="exampleInputEmail1">Select Auction</label> <select
 											name="auctionId" id="auctionId" class="form-control">
 											<option value="-1">Select</option>
@@ -55,7 +55,7 @@
 												</option>
 											</c:forEach>
 										</select>
-									</div>
+									</div> --%>
 
 
 									<div class="form-group">
@@ -197,10 +197,10 @@
 			return false;
 		}
 
-		if ($('#auctionId').val() == -1) {
+		/* if ($('#auctionId').val() == -1) {
 			alert("Please Select Auction");
 			return false;
-		}
+		} */
 
 		if ($('#categoryId').val() == -1) {
 			alert("Please Select Category");
