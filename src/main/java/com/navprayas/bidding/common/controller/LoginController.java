@@ -64,26 +64,26 @@ public class LoginController {
 			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_ADMIN)) {
 				userActivity.setRole(BiddingConstants.ROLE_ADMIN);
 				session.setAttribute(CommonConstants.CLIENTID, user.getUserId());
-				session.setAttribute(CommonConstants.ROLE_ADMIN, BiddingConstants.ROLE_ADMIN);
+				session.setAttribute(CommonConstants.ROLE, BiddingConstants.ROLE_ADMIN);
 				pageToForward = "admin/home";
 			}
 			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_OBSERVER)) {
 				userActivity.setRole(BiddingConstants.ROLE_OBSERVER);
 				session.setAttribute(CommonConstants.CLIENTID, user.getParentId());
-				session.setAttribute(CommonConstants.ROLE_OBSERVER, BiddingConstants.ROLE_OBSERVER);
+				session.setAttribute(CommonConstants.ROLE, BiddingConstants.ROLE_OBSERVER);
 				pageToForward = "observer/home";
 			}
 			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_BIDDER)) {
 				userActivity.setRole(BiddingConstants.ROLE_BIDDER);
 				session.setAttribute(CommonConstants.CLIENTID, user.getParentId());
-				session.setAttribute(CommonConstants.ROLE_BIDDER, BiddingConstants.ROLE_BIDDER);
+				session.setAttribute(CommonConstants.ROLE, BiddingConstants.ROLE_BIDDER);
 
 				pageToForward = "bidder/home";
 			}
 			if (authority.getAuthority().equalsIgnoreCase(BiddingConstants.ROLE_SUPER_ADMIN)) {
 				userActivity.setRole(BiddingConstants.ROLE_SUPER_ADMIN);
 				session.setAttribute(CommonConstants.CLIENTID, user.getUserId());
-				session.setAttribute(CommonConstants.ROLE_SUPER_ADMIN, BiddingConstants.ROLE_SUPER_ADMIN);
+				session.setAttribute(CommonConstants.ROLE, BiddingConstants.ROLE_SUPER_ADMIN);
 				pageToForward = "superadmin/home";
 			}
 			userActivity.setMessage("Login Successful.");
@@ -104,20 +104,13 @@ public class LoginController {
 	@RequestMapping(value = "/changepass", method = RequestMethod.GET)
 	public String changepasswd(@RequestParam(value = "ChangePassMessage", required = false) String message,
 			ModelMap map, HttpSession session) {
-		String page = "changepass";
-		String role = session.getAttribute(CommonConstants.ROLE_ADMIN).toString();
-		System.out.println("Role " + role);
+
 		if (message != null) {
 			map.addAttribute("ChangePassMessage", message);
 		}
 		logger.debug(message);
-		if (CommonConstants.ROLE_ADMIN.equalsIgnoreCase(role)) {
-			page = "adminchangepass";
-		} else {
-			page = "changepass";
-		}
 
-		return page;
+		return "changepass";
 	}
 
 	@RequestMapping(value = "/firsttimechangepass", method = RequestMethod.GET)

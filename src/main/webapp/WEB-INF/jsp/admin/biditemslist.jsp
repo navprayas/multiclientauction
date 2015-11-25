@@ -19,11 +19,10 @@
 			<!-- Content Header (Page header) -->
 			<section class="content-header">
 				<h1>
-					Auction Mapping <small>user</small>
+					Bid Items<small>Admin</small>
 				</h1>
 				<ol class="breadcrumb">
-					<li><a href="#"><i class="fa fa-dashboard"></i>Admin
-							Auction</a></li>
+					<li><a href="#"><i class="fa fa-dashboard"></i>Admin Auction</a></li>
 					<li class="active">User Mapping</li>
 				</ol>
 			</section>

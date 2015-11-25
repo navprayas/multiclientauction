@@ -150,7 +150,7 @@
 						</div>
 					</div>
 
-					<div class="col-md-6">
+					<!-- <div class="col-md-6">
 						<div class="box">
 							<div class="box-header">
 								<h3 class="box-title">Available Auction</h3>
@@ -165,7 +165,7 @@
 									</ul>
 								</div>
 							</div>
-							<!-- /.box-header -->
+							/.box-header
 							<div class="box-body no-padding">
 								<table class="table">
 									<tr>
@@ -260,10 +260,10 @@
 
 								</table>
 							</div>
-							<!-- /.box-body -->
+							/.box-body
 						</div>
 
-					</div>
+					</div> -->
 			</section>
 			<!-- /.content -->
 		</div>

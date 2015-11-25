@@ -35,7 +35,8 @@
 							<div class="box-header">
 								<div class="form-group">
 									<label for="exampleInputEmail1">Select Auction</label> <select
-										name="auctionId" id="auctionId">
+										name="auctionId" id="auctionId"
+										class="form-control select2 select2-hidden-accessible">
 										<option value="-1">Select</option>
 										<c:forEach var="auction" items="${auctionlist}">
 											<c:if test="${selectedAuctionId==auction.auctionId }">
@@ -44,9 +45,12 @@
 											</c:if>
 											<option value="${auction.auctionId}">${auction.name}</option>
 										</c:forEach>
-									</select> <input type="button" name="Update BidItem" value="update"
-										id="updatebiditem" onclick="updateBidItem();"
-										class="btn btn-primary">
+									</select>
+									<div class="box-footer">
+										<input type="button" name="Update BidItem" value="update"
+											id="updatebiditem" onclick="updateBidItem();"
+											class="btn btn-primary">
+									</div>
 								</div>
 
 
@@ -56,7 +60,7 @@
 								<table id="example2" class="table table-bordered table-hover">
 									<thead>
 										<tr>
-											<th align="center">Sr. No.</th>
+											<th align="center">Sr.No.</th>
 											<th align="center">SELECT BID ITEM</th>
 											<th align="center">BID ITEM</th>
 											<th align="center">MINIMUM BID PRICE</th>
@@ -83,7 +87,8 @@
 									</tbody>
 									<tfoot>
 										<tr>
-											<th align="center">Sr. No.</th>
+											<th align="center">Sr.No.</th>
+											<th align="center">SELECT BID ITEM</th>
 											<th align="center">BID ITEM</th>
 											<th align="center">MINIMUM BID PRICE</th>
 											<th align="center">MINIMUM BID INCREMENT</th>

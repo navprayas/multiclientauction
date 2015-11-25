@@ -339,7 +339,7 @@ onmouseout="hideddrivetip()" class="TitleLink">Qty</a></td>
      
     </table>
   </div>
-<%@ include file="/WEB-INF/jsp/observer/observer_footer.jsp" %>
+
     <div class="clr"></div>
 </div>
 </body>

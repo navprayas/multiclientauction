@@ -92,126 +92,378 @@ function getResultForCategory()
 {
 	document.forms["categoryform"].submit();
 }
-			$(function(){
-				// Dialog			
-				
-				$('.desc').dialog({
-					autoOpen: false,
-					width:'auto',
-				});
-				$('.partici').dialog({
-					autoOpen: false,
-					width:'auto',
-				});
-				$('.bidhistory').dialog({
-					autoOpen: false,
-					width:'auto',
-					height:310,
-				});
-				$('.biddetail').dialog({
-					autoOpen: false,
-					width:'auto',
-				});
-				$('.textension').dialog({
-					autoOpen: false,
-					width:'auto',
-					height:310,
-				});
-				$('.change').dialog({
-					autoOpen: false,
-					width:'auto',
-					height:110,
-				});
-				
-				
-				$('.description').click(function(){
-				
-					//$('.desc').dialog('open');
-					$('#dialog_'+$(this).attr('id')).dialog('open');
-					return false;
-				});
-				
-				
-				
-				$('.partcipents').click(function(){
-				
-					$('.partici').dialog('open');
-					return false;
-				});
-				$('.history').click(function(){
-				
-					$('.bidhistory').dialog('open');
-					return false;
-				});
-				$('.detail').click(function(){
-				
-					if(document.getElementById("bidItemIdVal")){
-						var bidItemId = document.getElementById("bidItemIdVal").value;
-						if(bidItemId=="" || bidItemId.length < 1) {
-							alert("Please first select the Material name for getting detail for that");
-							return false;
-						}							
-					}				
-					$('.biddetail').dialog('open');
-					return false;
-				});
-				$('.time').click(function(){
-				
-					$('.textension').dialog('open');
-					return false;
-				});
-				$('.changepass').click(function(){
-				
-					$('.change').dialog('open');
-					return false;
-				});
-				
-				
-			
-				
-			});
+				</script>
+
+
+
+<spring:url value="/static/adminthemecontent" var="theme_url" />
+<body class="hold-transition skin-blue sidebar-mini"
+	onload="displayTimes();">
+	<div class="wrapper">
+
+
+		<!-- Left side column. contains the logo and sidebar -->
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Admin <small>Home</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Admin -
+							Dashboard</a></li>
+					<li class="active">Dashboard</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<input id="extn" type="hidden" name="extn" value="0" /> <input
+					id="lLTime" type="hidden" name="lastLoadTime" value="0" /> <input
+					id="lLCount" type="hidden" name="freqCounts" value="0" />
+
+				<div class="mark-check1 mktlst">
+					<form id="form1" name="form1" method="post" action="">
+						<table class="table table-bordered table-striped text-center">
+							<tr>
+								<td colspan="3"><input type="radio" name="radio" id="radio"
+									value="1" onclick="getPageForMarketType(this.value)" /> <a
+									href="${observer_market_url}">&nbsp;Market List</a></td>
+								<td colspan="3"><input type="radio" checked name="radio"
+									id="radio2" value="2" /><a href="#">&nbsp;Active Market</a></td>
+								<td colspan="3"><input type="radio" name="radio"
+									id="radio3" value="3"
+									onclick="getPageForMarketType(this.value)" /> <a
+									href="${observer_close_url}">&nbsp;Closed Market</a></td>
+								<td colspan="7" align="right"><strong>Total No. of
+										Forward Markets in Active List: <c:out
+											value="${fn:length(bidItemsList)}" />
+								</strong></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+
+				<div class="table-responsive user-map nofound itemlist">
+					<table class="table table-bordered table-striped text-center">
+
+						<tr>
+							<td>Sr. No</td>
+							<td>Description</td>
+							<td>Lot No.</td>
+							<td>
+								<form name="categoryform" action="active" method="get">
+									<select name="category" id="category"
+										onchange="getResultForCategory()">
+
+										<option value="0">All</option>
+
+										<c:forEach var="bidderCategory" items="${bidderCategoryList}">
+											<c:if
+												test="${bidderCategory.bidderCategoryId.category.categoryId==categoryName}">
+												<option
+													value="${bidderCategory.bidderCategoryId.category.categoryId}"
+													selected="selected">
+													<c:out
+														value="${bidderCategory.bidderCategoryId.category.categoryName}" />
+												</option>
+											</c:if>
+											<c:if
+												test="${bidderCategory.bidderCategoryId.category.categoryId!=categoryName}">
+												<option
+													value="${bidderCategory.bidderCategoryId.category.categoryId}">
+													<c:out
+														value="${bidderCategory.bidderCategoryId.category.categoryName}" />
+												</option>
+											</c:if>
+										</c:forEach>
+									</select>
+								</form>
+							</td>
+							<td><a href="#">Market Name</a></td>
+							<td><a href="#">Remark</a></td>
+							<td><a href="#">Length Range</a></td>
+							<td><a href="#">Actual Length<br /> (Approx)
+							</a></td>
+							<td><a href="#">Quantity</a></td>
+							<td><a href="#">Zone</a></td>
+							<td><a href="#">Current <br /> Market Price<br />(INR)
+							</a></td>
+							<td><a href="#">H1</a></td>
+							<td><a href="#">Time Left</a></td>
+							<td><a href="#">Reserve Price<br />(INR)
+							</a></td>
+							<td><a href="#">Last Price<br />(INR)
+							</a></td>
+							<td><a href="#">Time Extension</a></td>
+							<td><a href="#">View Image</a></td>
+						</tr>
+						<c:forEach items="${bidItemsList}" var="bidItem"
+							varStatus="status">
+							<tr class="table">
+								<td><div id="seqId${bidItem.bidItemId}">${bidItem.serialNo}.</div></td>
+								<td align="center" valign="middle" class="DetailBorRight">
+
+
+									<div class="modal fade" id="dialog_desc${status.index+1}"
+										tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close" data-dismiss="modal"
+														aria-label="Close">
+														<span aria-hidden="true">&times;</span>
+													</button>
+													<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+												</div>
+												<div class="modal-body">
+
+
+
+
+													<div id="dialog_desc${status.index+1}" class="desc"
+														title="Item Description">
+
+														<table
+															class="table table-bordered table-striped text-center">
+															<tr>
+																<td><form name="form1" method="post" action=""
+																		style="margin: 0px;">
+																		<table
+																			class="table table-bordered table-striped text-center">
+
+																			<tr>
+																				<td>Sr. No.</td>
+																				<td>Category</td>
+																				<td>Lot No.</td>
+																				<td>Market Name</td>
+																				<td>Remark</td>
+																				<td>Length Range</td>
+																				<td>Actual Length <br /> (Approx)
+																				</td>
+																				<td>Qty</td>
+																				<td>Zone</td>
+																			</tr>
+																			<tr>
+																				<td>${bidItem.serialNo}.</td>
+																				<td><div id="categoryName${bidItem.bidItemId}">
+																						${bidItem.category.categoryName}</div></td>
+
+																				<c:forEach items="${bidItem.itemLots}"
+																					var="itemLotUnique" varStatus="status2">
+																					<c:if test="${status2.index+1 == 1}">
+																						<td>${itemLotUnique.lotNo}</td>
+																					</c:if>
+																				</c:forEach>
+																				<td>${bidItem.name}</td>
+																				<c:if test="${fn:length(bidItem.itemLots) == 1}">
+																					<c:forEach items="${bidItem.itemLots}"
+																						var="itemLotUnique" varStatus="status2">
+																						<td>${itemLotUnique.remark}</td>
+																						<td>${itemLotUnique.lengthRange}</td>
+																						<td>${itemLotUnique.actualLengh}</td>
+																					</c:forEach>
+																				</c:if>
+																				<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																					<td>&nbsp;</td>
+																					<td>&nbsp;</td>
+																					<td>&nbsp;</td>
+																				</c:if>
+																				<td>${bidItem.totalQuantity}${bidItem.unit}</td>
+																				<c:if test="${fn:length(bidItem.itemLots) == 1}">
+																					<c:forEach items="${bidItem.itemLots}"
+																						var="itemLotUnique" varStatus="status2">
+																						<td>${bidItem.zone}</td>
+																					</c:forEach>
+																				</c:if>
+																				<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																					<td>&nbsp;</td>
+																				</c:if>
+																			</tr>
+																			<c:if test="${fn:length(bidItem.itemLots) > 1}">
+																				<c:forEach items="${bidItem.itemLots}" var="itemLot"
+																					varStatus="status1">
+																					<tr>
+																						<td>${status1.index+1}.</td>
+																						<td>${bidItem.category.categoryName}</td>
+																						<td>${itemLot.lotNo}</td>
+																						<td>${itemLot.name}</td>
+																						<td>${itemLot.remark}</td>
+																						<td>${itemLot.lengthRange}</td>
+																						<td>${itemLot.actualLengh}</td>
+																						<td>${itemLot.quantity}${itemLot.unit}</td>
+																						<td>${itemLot.zone}</td>
+																					</tr>
+																				</c:forEach>
+																			</c:if>
+																		</table>
+																	</form></td>
+															</tr>
+														</table>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div> <input type="submit" name="button7" id="desc${status.index+1}"
+									value="Desc" data-toggle="modal"
+									data-target="#dialog_desc${status.index+1}" />
+								</td>
+								<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
+									varStatus="status2">
+									<c:if test="${status2.index+1 == 1}">
+										<td align="center" valign="middle" class="DetailBorRight">${itemLotUnique.lotNo}</td>
+									</c:if>
+								</c:forEach>
+								<td align="center" valign="middle" class="DetailBorRight"><div
+										id="categoryName${bidItem.bidItemId}">${bidItem.category.categoryName}</div></td>
+								<td align="center" valign="middle" class="DetailBorRight">
+									<div id="bidItemName${bidItem.bidItemId}" style="display: none">${bidItem.name}</div>
+									<a href="#services" class="LinkSelected"
+									onclick="javascript:setIdForBiddingHistory(${bidItem.bidItemId});">${bidItem.name}</a>
+								</td>
+								<c:if test="${fn:length(bidItem.itemLots) == 1}">
+									<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
+										varStatus="status2">
+
+										<td>${itemLotUnique.remark}</td>
+										<td>${itemLotUnique.lengthRange}</td>
+										<td>${itemLotUnique.actualLengh}</td>
+									</c:forEach>
+								</c:if>
+								<c:if test="${fn:length(bidItem.itemLots) > 1}">
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</c:if>
+								<td><div id="totalQuantity${bidItem.bidItemId}">
+										${bidItem.totalQuantity} ${bidItem.unit}</div></td>
+								<c:if test="${fn:length(bidItem.itemLots) == 1}">
+									<c:forEach items="${bidItem.itemLots}" var="itemLotUnique"
+										varStatus="status2">
+										<td>${bidItem.zone}<input type="hidden"
+											value="${bidItem.bidItemId}" id="bidItemIdinput" />
+										</td>
+									</c:forEach>
+								</c:if>
+								<c:if test="${fn:length(bidItem.itemLots) > 1}">
+									<td>&nbsp;</td>
+								</c:if>
+								<td><div id="Item${bidItem.bidItemId}">${bidItem.currentMarketPrice}</div></td>
+								<td><div id="firm${bidItem.bidItemId}">
+										<c:out value="${CurrentBidder}"></c:out>
+									</div></td>
+								<td>
+									<div id="countdown${bidItem.bidItemId}"></div> <script>setTimeLefts(parseInt('${bidItem.timeLeft}'), '${bidItem.bidItemId}');</script>
+								</td>
+								<td><div id="Item${bid.bidItem.bidItemId}"
+										style="display: none">${bid.bidItem.minBidPrice}</div></td>
+								<td align="center" valign="middle" class="DetailBorRight"><div
+										id="minBidIncrement${bid.bidItem.bidItemId}"
+										style="display: none">${bid.bidItem.minBidIncrement}</div></td>
+								<td align="center" valign="middle" class="DetailBorRight"><input
+									type="text" style="width: 5em"
+									id="extendTime${bidItem.bidItemId}" name="extendTime" />&nbsp;&nbsp;Min<br />
+									<input type="button" name="extension"
+									id="extention${bidItem.bidItemId}" value="Extension"
+									onclick="extension(${bidItem.bidItemId});"
+									class="ui-state-default-time-top ui-corner-all" /></td>
+									<td><a href="${bidItem.imageUrl}" target="_blank"> <img
+										alt="" src="${bidItem.imageUrl}" height="75px" width="120px"
+										onclick="window.open('${bidItem.imageUrl}', 'Large', 'width=500, height=350'); return false;"></a></td>
+									
+							</tr>
+						</c:forEach>
+					</table>
+				</div>
+				<script>
+	function extension(bidItemId)
+	{
+  		var extendTime = document.getElementById('extendTime'+bidItemId).value;
+  		if(extendTime == null || extendTime.length == 0) {
+  			alert("Enter Extended Time in Minutes");
+  			return false;
+  		}
+  		if(!isNumber(extendTime)) {
+  			alert("Enter Valid Numeric Extended Time in Minutes");
+  			return false;
+  		}
+  		var extendTimeInt = parseFloat(extendTime);
+  		extendTimeInt *= 60;
+  		$.getJSON("extension", { bidItemId:  bidItemId, extendTime: extendTimeInt }, function(data){
+  			document.getElementById('extendTime'+bidItemId).value = '';
+  		});	
+ 		return false;
+	}  	
 	
-	$(function() {
-		$(".desc").dialog({
-			bgiframe: false,
-			modal: true,
+ 
+function fn()
+{
+	dwr.engine.setActiveReverseAjax(true);
+    dwr.engine.setNotifyServerOnPageUnload(true);
+    
+    var bidIdObj = document.getElementById('bidItemIdinput');
+    if(bidIdObj)
+	{
+		if(document.getElementById('Item'+bidIdObj.value)) {
+    		tempVal = document.getElementById('Item'+bidIdObj.value).innerHTML;    		
+		}
+	}
+}
+fn();
+var tempVal;
+function update()
+{
+	var bidIdObj = document.getElementById('bidItemIdinput');
+	if(bidIdObj)
+	{
+		var bitItemId = bidIdObj.value;
+		if(document.getElementById('Item'+bitItemId)) {
 			
-		});
+			var tempVal1 = document.getElementById('Item'+bitItemId).innerHTML;
+			if(tempVal != tempVal1){
+				//document.getElementById('firmtd').style.background = '#bbd5e6';	
+				//document.getElementById('currentpricetd').style.background = '#bbd5e6';
+				tempVal = tempVal1;
+				setTimeout("resetTextColor("+bitItemId+")",3000);
+			}			
+		}
 		
-		
-		$(".partici").dialog({
-			bgiframe: false,
-			modal: true,
-			
-		});
-			$(".bidhistory").dialog({
-			bgiframe: false,
-			modal: true,
-			
-		});
-
-
-		$(".biddetail").dialog({
-			bgiframe: false,
-			modal: true,
-			
-		});
-		$(".textension").dialog({
-			bgiframe: false,
-			modal: true,
-			
-		});
-		$(".change").dialog({
-			bgiframe: false,
-			modal: true,
-			
-		});
-
-	});
+	}
 	
+}
+function resetTextColor(bitItemId)
+{
+		document.getElementById('firmtd').style.background = '#EAEDF4';	
+		document.getElementById('currentpricetd').style.background = '#EAEDF4';
 	
+}
+</script>
 
-	</script>
+
+
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+
+
+	</div>
+	<!-- ./wrapper -->
+
+</body>
+
+
+
+
+
+<%-- 
+
+
 
 <body onload="displayTimes();">
 	<div class="container">
@@ -535,7 +787,7 @@ function resetTextColor(bitItemId)
 
 
 
-<%-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <%@page contentType="text/html;charset=UTF-8"%>
 <%@page pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>

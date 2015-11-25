@@ -44,13 +44,13 @@
 								<table id="example2" class="table table-bordered table-hover">
 									<thead>
 										<tr>
-											<th>Sr. No.</th>
-											<th>Auction Id</th>
-											<th>Auction Name</th>
-											<th>Status</th>
-											<th>Auction Start Time</th>
-											<th>Auction End Time</th>
-											<th>Action</th>
+											<th >Sr.No.</th>
+											<th>AUCTION ID</th>
+											<th>AUCTION NAME</th>
+											<th>STATUS</th>
+											<th>AUCTION START TIME</th>
+											<th>AUCTION END TIME</th>
+											<th>ACTION</th>
 
 
 										</tr>
@@ -94,13 +94,13 @@
 									</tbody>
 									<tfoot>
 										<tr>
-											<th>Sr. No.</th>
-											<th>Auction Id</th>
-											<th>Auction Name</th>
-											<th>Status</th>
-											<th>Auction Start Time</th>
-											<th>Auction End Time</th>
-											<th>Action</th>
+											<th>Sr.No.</th>
+											<th>AUCTION ID</th>
+											<th>AUCTION NAME</th>
+											<th>STATUS</th>
+											<th>AUCTION START TIME</th>
+											<th>AUCTION END TIME</th>
+											<th>ACTION</th>
 										</tr>
 									</tfoot>
 								</table>

@@ -11,5 +11,6 @@ public interface CommonConstants {
 	public static final String SUCCESS = "SUCCESS";
 	public static final String FAILURE = "FAILURE";
 	public static final String USERTOKEN = "TOKEN";
+	public static final String ROLE = "ROLE";
 
 }

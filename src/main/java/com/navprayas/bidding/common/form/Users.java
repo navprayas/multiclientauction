@@ -38,10 +38,11 @@ public class Users {
 	private int active;
 	@Column(name = "parentId")
 	private Long parentId;
-
 	@OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY, mappedBy = "user")
 	@JoinColumn(name = "userDetailsId", referencedColumnName = "userDetailsId")
 	private UserDetails userDetails = new UserDetails();
+	@Column(name = "additional_columns")
+	private String additionalColumns;
 
 	/**
 	 * @return the username
@@ -95,8 +96,7 @@ public class Users {
 	 */
 	@Override
 	public String toString() {
-		return "Users [enabled=" + enabled + ", password=" + password
-				+ ", username=" + username + "]";
+		return "Users [enabled=" + enabled + ", password=" + password + ", username=" + username + "]";
 	}
 
 	@Override
@@ -104,10 +104,8 @@ public class Users {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (enabled ? 1231 : 1237);
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result
-				+ ((username == null) ? 0 : username.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 

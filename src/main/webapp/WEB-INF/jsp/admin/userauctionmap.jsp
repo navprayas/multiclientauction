@@ -34,9 +34,9 @@
 					<div class="col-xs-12">
 						<div class="box">
 							<div class="box-header">
-								<h4 class="box-title">Select Auction</h4>
-								&nbsp;&nbsp;&nbsp;&nbsp;<select
-									name="auction" id="auction">
+								<label for="inputname2">Select Auction</label> <select
+									name="auction" id="auction"
+									class="form-control select2 select2-hidden-accessible">
 									<option value="-1">Select</option>
 									<c:forEach var="auction1" items="${AuctionList}">
 										<option id="${auction1.auctionId}"
@@ -44,16 +44,26 @@
 											<c:out value="${auction1.name}" />
 										</option>
 									</c:forEach>
-								</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								<h4 class="box-title">Select Category</h4>
-								&nbsp;&nbsp;&nbsp;&nbsp; <input
-									type="checkbox" id="CategoriesList" name="CategoriesList"
-									class="CategoriesList"> Select All
-								<c:forEach var="category" items="${CategoryList}">
-									<input type="checkbox" id="${category.categoryId}"
-										name="Categories" class="categoriesclass">${category.categoryName}
+								</select> <label for="inputname2">Select Category </label>
+								<div class="form-group">
+
+									<c:forEach var="category" items="${CategoryList}">
+										
+										<input type="checkbox" id="${category.categoryId}"
+											name="Categories" class="myClass" >${category.categoryName}
 				                  </c:forEach>
 
+									<form action="auctionmapping" name="auctionmapform"
+										method="post">
+										<input type="hidden" id="selectedAuctionId"
+											name="selectedAuctionId" /> <input type="hidden"
+											id="selectedCategoryIdList" name="selectedCategoryIdList" />
+										<input type="hidden" id="selectedUserIdList"
+											name="selectedUserIdList" /> <input type="button"
+											value="Submit" onclick="setValuesAndSubmit()"
+											class="btn btn-primary" />
+									</form>
+								</div>
 
 
 
@@ -64,11 +74,11 @@
 									<thead>
 										<tr>
 											<th>Sr. No.</th>
-											<th>Select All <input type="checkbox" name="selectAll"
+											<th>SELECT ALL <input type="checkbox" name="selectAll"
 												id="selectAll" onclick="selectAllUser();"></th>
-											<th>User Name</th>
-											<th>Full Name</th>
-											<th>Email</th>
+											<th>USER NAME</th>
+											<th>FULL NAME</th>
+											<th>EMAIL</th>
 
 
 										</tr>
@@ -100,11 +110,12 @@
 									<tfoot>
 										<tr>
 											<th>Sr. No.</th>
-											<th>Select All <input type="checkbox" name="selectAll"
+											<th>SELECT ALL <input type="checkbox" name="selectAll"
 												id="selectAll" onclick="selectAllUser();"></th>
-											<th>User Name</th>
-											<th>Full Name</th>
-											<th>Email</th>
+											<th>USER NAME</th>
+											<th>FULL NAME</th>
+											<th>EMAIL</th>
+
 
 										</tr>
 									</tfoot>
@@ -150,7 +161,7 @@
 	}
 
 	function setValuesAndSubmit() {
-		var auctionId = document.getElementById("auction").value;
+		var auctionId = $("#auction").val();
 		document.getElementById("selectedAuctionId").value = auctionId;
 
 		var catList = getValues("Categories");
@@ -158,16 +169,16 @@
 
 		var userList = getValues("Users");
 		document.getElementById("selectedUserIdList").value = userList;
-		if (!auctionId) {
-			alert("auction needs to be Selected");
+		if (!auctionId || auctionId == -1) {
+			alert("Please Select Auction");
 			return false;
 		}
 		if (catList.length == 0) {
-			alert("categories need to be Selected");
+			alert("Please Select category");
 			return false;
 		}
 		if (userList.length == 0) {
-			alert("users need to be Selected");
+			alert("Please Select Users");
 			return false;
 		}
 

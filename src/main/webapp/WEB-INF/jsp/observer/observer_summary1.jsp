@@ -233,13 +233,391 @@
 
 	}); */
 </script>
-
+<script type="text/javascript">
+			pathToImages = "${static_url}" + pathToImages;
+		</script>
 </head>
 
+
+
+<spring:url value="/static/adminthemecontent" var="theme_url" />
+<body class="hold-transition skin-blue sidebar-mini">
+	<div class="wrapper">
+
+
+		<!-- Left side column. contains the logo and sidebar -->
+
+
+		<!-- Content Wrapper. Contains page content -->
+		<div class="content-wrapper">
+			<!-- Content Header (Page header) -->
+			<section class="content-header">
+				<h1>
+					Admin <small>Home</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i>Admin -
+							Dashboard</a></li>
+					<li class="active">Dashboard</li>
+				</ol>
+			</section>
+
+			<!-- Main content -->
+			<section class="content">
+
+				<form action="${form_url}" method="post" modelAttribute="reportVO"
+					name="dateForm">
+					<div class="table-responsiveuser-map nofound itemlist">
+						<table class="table table-bordered table-striped text-center">
+
+							<tr>
+								<td colspan="10">Select Date From <input type="text"
+									id="dateFrom" value='${dateFromStr}' name="paramDateFrom"
+									onclick="displayCalendar(document.dateForm.dateFrom,'dd/mm/yyyy',this)" />
+
+									To <input type="text" id="dateTo" name="paramDateTo"
+									onclick="displayCalendar(document.dateForm.dateTo,'dd/mm/yyyy',this)"
+									value="${dateToStr}" /> <input type="hidden" name="categoryId" />
+									<input type="hidden" name="lotsStatus" value="" /> <input
+									type="submit" name="Submit" value="Go"
+									onclick="return onSubmit();" /></td>
+
+
+
+								<td colspan="9" align="right"><a href="#"
+									onclick="javascript:onSubmitExcel();">Export to Excel</a>&nbsp;&nbsp;&nbsp;&nbsp;
+									<a href="#" onclick="javascript:onSubmitPDF();">download
+										PDF</a></td>
+							</tr>
+
+
+							<tr>
+								<td><a href="#">Sr. No.</a></td>
+								<td><a href="#">Lot. No</a></td>
+								<td><a href="#">Description</a></td>
+								<td><select name="category" id="category"
+									onChange="getResultForCategory(this.value)">
+										<option value="0">All</option>
+										<c:forEach var="bidderCategory" items="${bidderCategoryList}">
+											<c:if
+												test="${bidderCategory.bidderCategoryId.category.categoryId==categoryName}">
+												<option
+													value="${bidderCategory.bidderCategoryId.category.categoryId}"
+													selected="selected">
+													<c:out
+														value="${bidderCategory.bidderCategoryId.category.categoryName}" />
+												</option>
+											</c:if>
+											<c:if
+												test="${bidderCategory.bidderCategoryId.category.categoryId!=categoryName}">
+												<option
+													value="${bidderCategory.bidderCategoryId.category.categoryId}">
+													<c:out
+														value="${bidderCategory.bidderCategoryId.category.categoryName}" />
+												</option>
+											</c:if>
+										</c:forEach>
+								</select></td>
+								<td><a href="#">Material Name</a></td>
+								<td><a href="#">Remark</a></td>
+								<td><a href="#">Length Range</a></td>
+								<td><a href="#">Actual Length<br /> (Approx)
+								</a></td>
+								<td><a href="#">Quantity</a></td>
+								<td><a href="#">Zone</a></td>
+								<td colspan="2">
+									<table>
+										<tr>
+											<td colspan="2"><a href="#">H1</a></td>
+										</tr>
+
+										<tr>
+											<td>Company Name</td>
+											<td>Bid Price</td>
+										</tr>
+									</table>
+								</td>
+								<td colspan="2">
+									<table>
+										<tr>
+											<td colspan="2"><a href="#">H2</a></td>
+										</tr>
+										<tr>
+											<td><a href="#">Company Name</a></td>
+											<td><a href="#">Bid Price</a></td>
+										</tr>
+									</table>
+								</td>
+								<td colspan="2"><a href="#">H3</a>
+									<table>
+										<tr>
+											<td>Company Name</td>
+											<td>Bid Price</td>
+										</tr>
+									</table></td>
+								<td><a href="#">Lot's Status</a>
+									<table>
+										<tr>
+											<td><select name="bidsStatus" id="bidsStatus"
+												onchange="getResultForLotStatus(this.value)">
+													<option value="0">All</option>
+													<c:forEach var="bidsStatus" items="${bidsStatusSet}">
+														<option value="${bidsStatus}">
+															<%-- <c:if test="${bidsStatus==bidsStat}">
+										<option value="${bidsStatus}" selected="selected"> --%>
+															<c:out value="${bidsStatus}" />
+														</option>
+														<%-- </c:if> --%>
+														<%-- <c:if test="${bidsStatus!=bidsStat}">
+										<option value="${bidsStatus}">
+											<c:out value="${bidsStatus}" />
+										</option>
+									</c:if> --%>
+													</c:forEach>
+											</select></td>
+										</tr>
+									</table></td>
+								<td><a href="#">Sales Price</a></td>
+								<td><a href="#">Total Sales (Qty X SalesPrice)</a></td>
+							</tr>
+							<c:forEach items="${BidsList}" var="bids" varStatus="status">
+								<tr class="table">
+									<td>${bids.bidItem.serialNo}.</td>
+									<c:forEach items="${bids.bidItem.itemLots}" var="itemLotUnique"
+										varStatus="status2">
+										<c:if test="${status2.index+1 == 1}">
+											<td>${itemLotUnique.lotNo}</td>
+										</c:if>
+									</c:forEach>
+
+									<td>
+
+										<div class="modal fade" id="dialog_desc${status.index+1}"
+											tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+											<div class="modal-dialog" role="document">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal"
+															aria-label="Close">
+															<span aria-hidden="true">&times;</span>
+														</button>
+														<h4 class="modal-title" id="myModalLabel">Description</h4>
+													</div>
+													<div class="modal-body">
+
+
+
+
+														<div id="dialog_desc${status.index+1}"
+															title="Item Description"
+															class="table-responsive user-map">
+
+															<table
+																class="table table-bordered table-striped text-center">
+																<tr>
+																	<td align="left" valign="top"><form name="form1"
+																			method="post" action="">
+																			<table
+																				class="table table-bordered table-striped text-center">
+																				<tr>
+																					<td>Sr. No.</td>
+																					<td>Category</td>
+																					<td>Lot No.</td>
+																					<td>Material Name</td>
+																					<td>Remark</td>
+																					<td>Length Range</td>
+																					<td>Actual Length <br> (Approx)
+																					</td>
+																					<td>Qty</td>
+																					<td>Zone</td>
+																				</tr>
+																				<tr>
+																					<td>${bids.bidItem.serialNo}.</td>
+																					<td>${bids.bidItem.category.categoryName}</td>
+																					<c:forEach items="${bids.bidItem.itemLots}"
+																						var="itemLotUnique" varStatus="status2">
+																						<c:if test="${status2.index+1 == 1}">
+																							<td>${itemLotUnique.lotNo}</td>
+																						</c:if>
+																					</c:forEach>
+
+																					<td>${bids.bidItem.name}</td>
+																					<c:if
+																						test="${fn:length(bids.bidItem.itemLots) == 1}">
+																						<c:forEach items="${bids.bidItem.itemLots}"
+																							var="itemLotUnique" varStatus="status2">
+																							<td>${itemLotUnique.remark}</td>
+																							<td>${itemLotUnique.lengthRange}</td>
+																							<td>${itemLotUnique.actualLengh}</td>
+																						</c:forEach>
+																					</c:if>
+																					<c:if
+																						test="${fn:length(bids.bidItem.itemLots) > 1}">
+																						<td>&nbsp;</td>
+																						<td>&nbsp;</td>
+																						<td>&nbsp;</td>
+																					</c:if>
+
+																					<td>${bids.bidItem.totalQuantity}
+																						${bids.bidItem.unit}</td>
+																					<c:if
+																						test="${fn:length(bids.bidItem.itemLots) == 1}">
+																						<c:forEach items="${bids.bidItem.itemLots}"
+																							var="itemLotUnique" varStatus="status2">
+																							<td>${bids.bidItem.zone}</td>
+																						</c:forEach>
+																					</c:if>
+																					<c:if
+																						test="${fn:length(bids.bidItem.itemLots) > 1}">
+																						<td>&nbsp;</td>
+																					</c:if>
+																				</tr>
+
+																				<c:if test="${fn:length(bids.bidItem.itemLots) > 1}">
+																					<c:forEach items="${bids.bidItem.itemLots}"
+																						var="itemLot" varStatus="status1">
+																						<tr>
+																							<td>${status1.index+1}.</td>
+																							<td>${bids.bidItem.category.categoryName}</td>
+																							<td>${itemLot.lotNo}</td>
+																							<td>${itemLot.name}</td>
+
+																							<td>${itemLot.remark}</td>
+																							<td>${itemLot.lengthRange}</td>
+																							<td>${itemLot.actualLengh}</td>
+																							<td>${itemLot.quantity}${itemLot.unit}</td>
+																							<td>${itemLot.zone}</td>
+																						</tr>
+																					</c:forEach>
+																				</c:if>
+
+																			</table>
+																		</form></td>
+																</tr>
+															</table>
+														</div>
+
+
+													</div>
+												</div>
+											</div>
+										</div> <input type="submit" name="button7"
+										id="desc${status.index+1}" value="Desc" data-toggle="modal"
+										data-target="#dialog_desc${status.index+1}" />
+									</td>
+									<td align="center" valign="middle">${bids.bidItem.category.categoryName}</td>
+									<td align="center" valign="middle"><a href="#"
+										class="LinkSelected">${bids.bidItem.name}</a></td>
+									<c:if test="${fn:length(bids.bidItem.itemLots) == 1}">
+										<c:forEach items="${bids.bidItem.itemLots}"
+											var="itemLotUnique" varStatus="status2">
+
+											<td align="center" valign="middle">${itemLotUnique.remark}</td>
+											<td align="center" valign="middle">${itemLotUnique.lengthRange}</td>
+											<td>${itemLotUnique.actualLengh}</td>
+										</c:forEach>
+									</c:if>
+
+									<c:if test="${fn:length(bids.bidItem.itemLots) > 1}">
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</c:if>
+
+
+									<td>${bids.bidItem.totalQuantity}${bids.bidItem.unit}</td>
+									<c:if test="${fn:length(bids.bidItem.itemLots) == 1}">
+										<c:forEach items="${bids.bidItem.itemLots}"
+											var="itemLotUnique" varStatus="status2">
+											<td>${bids.bidItem.zone}</td>
+										</c:forEach>
+									</c:if>
+									<c:if test="${fn:length(bids.bidItem.itemLots) > 1}">
+										<td>&nbsp;</td>
+									</c:if>
+									<td>${bids.bidderName}</td>
+									<td>${bids.bidAmount}</td>
+									<td>${bids.bidderName2}</td>
+									<td>${bids.bidAmount2}</td>
+									<td>${bids.bidderName3}</td>
+									<td>${bids.bidAmount3}</td>
+									<td>${bids.bidItem.isProcessed}</td>
+									<td><c:if test="${not empty bids.salesPrice}">  
+        		${bids.bidItem.currency} ${bids.salesPrice} 
+        	</c:if></td>
+									<td><c:if test="${not empty bids.totalSalesPrice}"> 
+        		${bids.bidItem.currency} ${bids.totalSalesPrice}
+        	</c:if></span></td>
+								</tr>
+
+							</c:forEach>
+							<tr>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td><strong>Total</strong></td>
+								<td>${reportsTotal.totalQuantity}${bids.bidItem.unit}</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>INR ${reportsTotal.totalBidAmount1}</td>
+								<td>&nbsp;</td>
+								<td>INR ${reportsTotal.totalBidAmount2}</td>
+								<td>&nbsp;</td>
+								<td>INR ${reportsTotal.totalBidAmount3}</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>INR ${reportsTotal.finalTotalSalesPrice}</td>
+							</tr>
+
+							<tr>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td><strong>&nbsp;</strong></td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+								<td>&nbsp;</td>
+							</tr>
+
+						</table>
+					</div>
+				</form>
+			</section>
+			<!-- /.content -->
+		</div>
+		<!-- /.content-wrapper -->
+
+
+
+	</div>
+	<!-- ./wrapper -->
+
+</body>
+
+
+
+
+<%-- 
 <body>
-	<%-- <%@ include file="/WEB-INF/jsp/observer/observer_report_top.jsp"%> --%>
+
 	<div class="container">
-		<!-- <div id="dhtmltooltip"></div> -->
+
 		<script type="text/javascript">
 			pathToImages = "${static_url}" + pathToImages;
 		</script>
@@ -249,14 +627,14 @@
 			name="dateForm">
 			<div class="mark-check1 mktlst">
 
-				<%-- <div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12 col-sm-6">
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active"><a
 							aria-controls="home" role="tab" data-toggle="tab"
 							href="${report_summary1_url}"
 							>Summary</a></li>
 					</ul>
-				</div> --%>
+				</div>
 
 				<!-- <div class="col-xs-12 col-sm-6">
 					<ul class="list-inline pull-right">
@@ -272,7 +650,7 @@
 			</div>
 			<div class="table-responsive user-map nofound itemlist">
 				<!--<table class="table table-bordered table-striped text-center"> -->
-				<%-- <tr>
+				<tr>
 							<td>Select Date From <input type="text" id="dateFrom"
 								value='${dateFromStr}' name="paramDateFrom"
 								onclick="displayCalendar(document.dateForm.dateFrom,'dd/mm/yyyy',this)" />
@@ -289,14 +667,13 @@
 							<td align="right"><a href="#"
 								onclick="javascript:onSubmitExcel();">Export to Excel</a>&nbsp;&nbsp;&nbsp;&nbsp;
 								<a href="#" onclick="javascript:onSubmitPDF();">download PDF</a></td>
-						</tr> --%>
+						</tr>
 				<!-- </table>-->
 			</div>
-	</div>
-	</div>
+	
 	<div class="table-responsiveuser-map nofound itemlist">
 		<table class="table table-bordered table-striped text-center"
-			style="width: 0%; margin-left: 5%;margin-right: 5%;">
+			style="width: 0%; margin-left: 5%; margin-right: 5%;">
 
 			<tr>
 				<td colspan="10">Select Date From <input type="text"
@@ -389,16 +766,16 @@
 									<option value="0">All</option>
 									<c:forEach var="bidsStatus" items="${bidsStatusSet}">
 										<option value="${bidsStatus}">
-											<%-- <c:if test="${bidsStatus==bidsStat}">
-										<option value="${bidsStatus}" selected="selected"> --%>
+											<c:if test="${bidsStatus==bidsStat}">
+										<option value="${bidsStatus}" selected="selected">
 											<c:out value="${bidsStatus}" />
 										</option>
-										<%-- </c:if> --%>
-										<%-- <c:if test="${bidsStatus!=bidsStat}">
+										</c:if>
+										<c:if test="${bidsStatus!=bidsStat}">
 										<option value="${bidsStatus}">
 											<c:out value="${bidsStatus}" />
 										</option>
-									</c:if> --%>
+									</c:if>
 									</c:forEach>
 							</select></td>
 						</tr>
@@ -407,7 +784,7 @@
 				<td><a href="#">Total Sales (Qty X SalesPrice)</a></td>
 			</tr>
 
-			<%-- <tr>
+			<tr>
 				<!-- <td colspan="10">&nbsp;</td>
 				<td>Company Name</td>
 				<td>Bid Price</td>
@@ -434,7 +811,7 @@
 				</select></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
-			</tr> --%>
+			</tr>
 			<c:forEach items="${BidsList}" var="bids" varStatus="status">
 				<tr class="table">
 					<td>${bids.bidItem.serialNo}.</td>
@@ -652,3 +1029,4 @@
 	</div>
 </body>
 </html>
+ --%>
